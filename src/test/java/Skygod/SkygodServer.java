@@ -32,6 +32,6 @@ public class SkygodServer {
         });
 
         // Start the server
-        minecraftServer.start("localhost", 25565);
+        minecraftServer.start("192.168.1.64", 6969);
     }
 }

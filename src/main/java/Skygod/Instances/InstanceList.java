@@ -98,8 +98,10 @@ public class InstanceList {
      */
     public void removePlayerInstance(Player player) {
     	int ID = getPlayerInstanceID(player);
-    	playerInstances.remove(ID);
-    	UUIDS.remove(ID);
+    	if (ID != -1) {
+	    	playerInstances.remove(ID);
+	    	UUIDS.remove(ID);
+    	}
     }
     
     /**
