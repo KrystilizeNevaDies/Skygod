@@ -3,9 +3,14 @@
  */
 package Skygod.Generators;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
+
+import com.google.gson.JsonObject;
 
 import de.articdive.jnoise.JNoise;
 import net.minestom.server.entity.Player;
@@ -86,17 +91,8 @@ public class TutorialGenerator  {
 		}
 		
 		public void generateSpawn(BlockPosition position) {
-			for (int x = -5; x < 5; x++)
-				for (int z = -5; z < 5; z++) {
-					int posX = position.getX() + x;
-					int posY = position.getY();
-					int posZ = position.getZ() + z;
-					// set platform
-					instance.setBlock(posX, posY, posZ, Block.QUARTZ_BLOCK);
-					for (int y = 1; y < 5; y++) {
-						instance.setBlock(posX, posY + y, posZ, Block.AIR);
-					}
-				}
+			Schematic spawnSchematic = new Schematic("Spawn.txt");
+			spawnSchematic.load(instance, position);
 		}
 	}
 }
