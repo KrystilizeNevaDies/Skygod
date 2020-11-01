@@ -8,6 +8,7 @@ import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.network.ConnectionManager;
+
 import Skygod.Events.PlayerDisconnect;
 import Skygod.Events.PlayerLogin;
 import Skygod.Events.PlayerSpawn;
@@ -15,6 +16,7 @@ import Skygod.Instances.HubInstance;
 
 public class SkygodServer {
     public static void main(String[] args) {
+    	
         // Initialization
         MinecraftServer minecraftServer = MinecraftServer.init();
         
@@ -32,6 +34,6 @@ public class SkygodServer {
         });
 
         // Start the server
-        minecraftServer.start("192.168.1.64", 6969);
+        minecraftServer.start("localhost", 25565);
     }
 }

@@ -1,0 +1,17 @@
+0|0|0|IRON_BLOCK
+-1|0|0|IRON_BLOCK
+0|0|-1|IRON_BLOCK
+-1|0|-1|IRON_BLOCK
+
+# Player Space
+0|1|0|AIR
+-1|1|0|AIR
+0|1|-1|AIR
+-1|1|-1|AIR
+0|2|0|AIR
+-1|2|0|AIR
+0|2|-1|AIR
+-1|2|-1|AIR
+
+# Objects
+0|1|2|KELP_PLANT

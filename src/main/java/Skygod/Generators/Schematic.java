@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import net.minestom.server.instance.Instance;
-import net.minestom.server.instance.block.Block;
 import net.minestom.server.utils.BlockPosition;
 
 public class Schematic {
 	
-	ArrayList<int[]> blockList = new ArrayList<int[]>(); 
+	ArrayList<Object[]> blockList = new ArrayList<Object[]>(); 
 			
 	Schematic(String fileName) {
 		// Load file
 		File spawnSchematic = new File(fileName);
+		
 		// Create scanner
 		Scanner myReader = null;
 		try {
@@ -23,26 +23,32 @@ public class Schematic {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 		// Read each line and add blocks to block list
         while (myReader.hasNextLine()) {
 	        // Get line
         	String line = myReader.nextLine();
-	        // Split Line
-        	String[] properties = line.split("|");
-        	// Create Block
-        	int[] newBlock = {};
-        	newBlock[1] = Integer.parseInt(properties[1]);
-        	newBlock[2] = Integer.parseInt(properties[2]);
-        	newBlock[3] = Integer.parseInt(properties[3]);
-        	newBlock[4] = Integer.parseInt(properties[4]);
-        	// Add block to list
-        	blockList.add(newBlock);
+        	// If line Is Valid
+        	if (!line.startsWith("#") && !line.isBlank()) {
+		        // Split Line
+	        	String[] properties = line.split("[|]");
+	        	
+	        	// Create Block
+	        	Object[] newBlock = {0, 0, 0, -1};
+	        	newBlock[0] = Integer.parseInt(properties[0]);
+	        	newBlock[1] = Integer.parseInt(properties[1]);
+	        	newBlock[2] = Integer.parseInt(properties[2]);
+	        	newBlock[3] = properties[3];
+	        	
+	        	// Add block to list
+	        	blockList.add(newBlock);
+        	}
         }
 	}
 	
 	public void load(Instance instance, BlockPosition pos) {
 		blockList.forEach(block -> {
-			instance.setBlock(block[1] + pos.getX(), block[2] + pos.getY(), block[3] + pos.getZ(), Block.fromStateId((short) block[4]));
+				instance.setBlock((int) block[0] + pos.getX(), (int) block[1] + pos.getY(), (int) block[2] + pos.getZ(), BlockMappings.get().getBlock((String) block[3]));
 		});
 	}
 }
