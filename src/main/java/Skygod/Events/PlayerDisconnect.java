@@ -5,6 +5,7 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.instance.Instance;
+import net.minestom.server.utils.time.TimeUnit;
 
 public class PlayerDisconnect {
 	public static void Event(PlayerDisconnectEvent event) {
@@ -14,8 +15,12 @@ public class PlayerDisconnect {
         
         InstanceList.get().removePlayerInstance(player);
         
-        playerInstance.scheduleNextTick(instance -> {
-        	MinecraftServer.getInstanceManager().unregisterInstance(instance);
-        });
+        MinecraftServer.getSchedulerManager().buildTask(new Runnable() {
+                    @Override
+                    public void run() {
+                    	MinecraftServer.getInstanceManager().unregisterInstance(playerInstance);
+
+                    }
+        }).delay(2, TimeUnit.TICK).schedule();
 	}
 }

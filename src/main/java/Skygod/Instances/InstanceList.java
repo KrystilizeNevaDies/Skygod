@@ -111,6 +111,9 @@ public class InstanceList {
      */
     public Player getInstancesPlayer(Instance instance) {
     	int ID = getInstanceID(instance);
+    	if (ID == -1) {
+    		return null;
+    	}
     	return MinecraftServer.getConnectionManager().getPlayer(UUIDS.get(ID));
     }
     

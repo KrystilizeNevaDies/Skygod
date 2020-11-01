@@ -1,5 +1,6 @@
 package Skygod.Instances;
 
+import Skygod.EntitySpawners.TutorialSpawners;
 import Skygod.Generators.TutorialGenerator;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
@@ -38,8 +39,12 @@ public class PlayerInstance {
 				break;
 			}
 		}
+		
 		// Apply generator
 		generator.Finisher.generateSpawn(new BlockPosition(0, maxY, 0));
+		
+		// Apply Entity Spawner
+		new TutorialSpawners(instance);
 		
 		// Disable new chunks
 		instance.enableAutoChunkLoad(false);

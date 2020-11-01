@@ -3,15 +3,9 @@
  */
 package Skygod.Generators;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-
-import com.google.gson.JsonObject;
-
 import de.articdive.jnoise.JNoise;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Chunk;
@@ -25,7 +19,7 @@ import net.minestom.server.world.biomes.Biome;
 
 public class TutorialGenerator  {
 	
-	private int seed;
+	private int seed = -1;
 	
 	public TutorialChunkGenerator ChunkGenerator;
 	public TutorialFinisher Finisher;
