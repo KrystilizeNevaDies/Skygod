@@ -19,8 +19,7 @@ public class PlayerDisconnect {
                     @Override
                     public void run() {
                     	MinecraftServer.getInstanceManager().unregisterInstance(playerInstance);
-
                     }
-        }).delay(2, TimeUnit.TICK).schedule();
+        }).delay(1, TimeUnit.TICK).schedule();
 	}
 }

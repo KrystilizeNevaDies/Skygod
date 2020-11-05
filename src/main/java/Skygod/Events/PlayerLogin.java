@@ -2,6 +2,7 @@ package Skygod.Events;
 
 import Skygod.Instances.InstanceList;
 import Skygod.Instances.PlayerInstance;
+import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.instance.Instance;
@@ -27,5 +28,6 @@ public class PlayerLogin {
 		InstanceList.get().getPlayerInstances().forEach(instance -> {
 			player.sendMessage(InstanceList.get().getInstancesPlayer(instance).getUsername() + " | " + instance.getDimensionType().getName().toString());
 		});
+		player.setGameMode(GameMode.CREATIVE);
 	}
 }

@@ -40,7 +40,7 @@ public class PlayerInstance {
 			}
 		}
 		
-		// Apply generator
+		// Apply finishers
 		generator.Finisher.generateSpawn(new BlockPosition(0, maxY, 0));
 		
 		// Apply Entity Spawner
