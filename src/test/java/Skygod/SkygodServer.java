@@ -3,16 +3,16 @@
  */
 package Skygod;
 
+import Skygod.Events.PlayerDisconnect;
+import Skygod.Events.PlayerLogin;
+import Skygod.Events.PlayerSpawn;
+import Skygod.Generators.BlockMappings;
+import Skygod.Instances.HubInstance;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.network.ConnectionManager;
-
-import Skygod.Events.PlayerDisconnect;
-import Skygod.Events.PlayerLogin;
-import Skygod.Events.PlayerSpawn;
-import Skygod.Instances.HubInstance;
 
 public class SkygodServer {
     public static void main(String[] args) {
@@ -32,7 +32,13 @@ public class SkygodServer {
             player.addEventCallback(PlayerDisconnectEvent.class, event -> {PlayerDisconnect.Event(event);});
             
         });
-
+        
+        // Do some loading
+        BlockMappings.get();
+        
+        // Testing Area
+        // Do testing code here
+        
         // Start the server
         minecraftServer.start("localhost", 25565);
     }

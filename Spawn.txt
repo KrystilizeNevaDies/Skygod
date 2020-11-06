@@ -1,3 +1,4 @@
+# Platform
 0|0|0|IRON_BLOCK
 -1|0|0|IRON_BLOCK
 0|0|-1|IRON_BLOCK
@@ -14,4 +15,3 @@
 -1|2|-1|AIR
 
 # Objects
-0|1|2|KELP_PLANT

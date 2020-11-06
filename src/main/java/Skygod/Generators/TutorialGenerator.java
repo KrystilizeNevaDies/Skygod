@@ -80,8 +80,26 @@ public class TutorialGenerator  {
 		
 		private Instance instance;
 		
-		public TutorialFinisher(Instance constuctorInstance) {
+		TutorialFinisher(Instance constuctorInstance) {
 			instance = constuctorInstance;
+		}
+		
+		public void applyFinishers() {
+			
+			// Generate Spawn
+			// Get max Y
+			int maxY = 256;
+			for (int i = 0; i < Chunk.CHUNK_SIZE_Y; i++) {
+				if (instance.getBlockStateId(0, i, 0) == Block.AIR.getBlockId()) {
+					maxY = i;
+					break;
+				}
+			}
+			
+			// Generate
+			generateSpawn(new BlockPosition(0, maxY, 0));
+			
+			
 		}
 		
 		public void generateSpawn(BlockPosition position) {

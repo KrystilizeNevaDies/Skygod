@@ -1,2 +1,2 @@
 # Player Instance Settings
-EntityLimit: 500
+EntityLimit: 1

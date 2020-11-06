@@ -30,5 +30,5 @@ dependencies {
     implementation 'com.google.guava:guava:28.2-jre'
 
     // Minestom library
-    compile 'com.github.Minestom:Minestom:96dcd0e'
+    compile 'com.github.Minestom:Minestom:16051e0'
 }
