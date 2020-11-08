@@ -7,7 +7,8 @@ import Skygod.Events.PlayerDisconnect;
 import Skygod.Events.PlayerLogin;
 import Skygod.Events.PlayerSpawn;
 import Skygod.Generators.BlockMappings;
-import Skygod.Instances.HubInstance;
+import Skygod.Stages.InstanceList;
+import Skygod.Stages.Hub.HubInstance;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
@@ -20,10 +21,7 @@ public class SkygodServer {
         // Initialization
         MinecraftServer minecraftServer = MinecraftServer.init();
         
-        // Prepare hub instance
-        HubInstance.init();
-        
-        // Register connection event
+        // Register events
         ConnectionManager connectionManager = MinecraftServer.getConnectionManager();
         connectionManager.addPlayerInitialization(player -> {
         	// Add event listeners
@@ -33,8 +31,10 @@ public class SkygodServer {
             
         });
         
-        // Do some loading
+        // Do some pre-loading (not needed, mostly for speed)
         BlockMappings.get();
+        HubInstance.get();
+        InstanceList.get();
         
         // Testing Area
         // Do testing code here

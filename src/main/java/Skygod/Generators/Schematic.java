@@ -12,7 +12,7 @@ public class Schematic {
 	
 	ArrayList<Object[]> blockList = new ArrayList<Object[]>(); 
 			
-	Schematic(String fileName) {
+	public Schematic(String fileName) {
 		// Load file
 		File spawnSchematic = new File(fileName);
 		

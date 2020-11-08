@@ -1,4 +1,4 @@
-package Skygod.Instances;
+package Skygod.Stages.Hub;
 
 import Skygod.Generators.AlphaChunkGenerator;
 import net.minestom.server.MinecraftServer;
@@ -9,7 +9,7 @@ public class HubInstance {
 	
 	private static Instance inst;
 	
-	public static void init() {
+	private static void init() {
 		// Get instance manager
 		InstanceManager instanceManager = MinecraftServer.getInstanceManager();
 		
@@ -29,6 +29,8 @@ public class HubInstance {
 	}
 	
 	public static Instance get() {
+		if (inst == null)
+			init();
 	    return inst;
 	}
 }

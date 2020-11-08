@@ -1,6 +1,6 @@
 package Skygod.Events;
 
-import Skygod.Instances.InstanceList;
+import Skygod.Stages.InstanceList;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerDisconnectEvent;

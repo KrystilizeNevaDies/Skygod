@@ -2,9 +2,9 @@ package Skygod.Events;
 
 import Skygod.ColorGradient;
 import Skygod.Gradients;
-import Skygod.Advancements.TutorialAdvancements;
 import Skygod.Sound.PlayerSound;
-import Skygod.Sound.Song;
+import Skygod.Sound.Songs;
+import Skygod.Stages.Tutorial.TutorialAdvancements;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerSpawnEvent;
@@ -12,7 +12,6 @@ import net.minestom.server.instance.Chunk;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.sound.Sound;
-import net.minestom.server.sound.SoundCategory;
 import net.minestom.server.utils.Position;
 import net.minestom.server.utils.time.TimeUnit;
 
@@ -31,7 +30,7 @@ public class PlayerSpawn {
 		
 		player.teleport(new Position(0, spawnY, 0));
 		
-		PlayerSound.playSong(player, new Song("TacottaAndFugueDmin.txt"));
+		PlayerSound.playSong(player, Songs.INTRO);
 		
  		player.sendMessage(ColorGradient.of(Gradients.TUTORIAL, "Welcome to your very own generated world!"));
  		

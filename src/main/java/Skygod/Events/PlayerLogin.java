@@ -1,7 +1,9 @@
 package Skygod.Events;
 
-import Skygod.Instances.InstanceList;
-import Skygod.Instances.PlayerInstance;
+import Skygod.PlayerData;
+import Skygod.Stages.InstanceList;
+import Skygod.Stages.Hub.HubInstance;
+import Skygod.Stages.Tutorial.TutorialInstance;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerLoginEvent;
@@ -9,25 +11,27 @@ import net.minestom.server.instance.Instance;
 
 public class PlayerLogin {
 	public static void Event(PlayerLoginEvent event) {
+		
         Player player = (Player) event.getPlayer();
         
+        // Get player's data
+        PlayerData playerData = PlayerData.get(player);
         
+        // Find player's current world and load it.
+        switch (playerData.getStage()) {
+        case NONE: player.setInstance(HubInstance.get());
+		case TUTORIAL: InstanceList.get().registerPlayerInstance(player, TutorialInstance.create(player));
+		case WORLDONE: InstanceList.get().registerPlayerInstance(player, TutorialInstance.create(player));
+		default:
+			break;
+        }
         
-        if (InstanceList.get().getPlayerInstance(player) == null) {
-        	Instance playerInstance = PlayerInstance.createNew(player);
-    		
-    		InstanceList.get().registerPlayerInstance(player, playerInstance);
-        };
-        
+        // Get instance
 		Instance spawningInstance = InstanceList.get().getPlayerInstance(player);
         
+		// Spawn instance
 		event.setSpawningInstance(spawningInstance);
 		
-		player.sendMessage("You have been sent to " + InstanceList.get().getInstancesPlayer(spawningInstance).getUsername() + "'s world.");
-		player.sendMessage("Player Worlds Loaded:");
-		InstanceList.get().getPlayerInstances().forEach(instance -> {
-			player.sendMessage(InstanceList.get().getInstancesPlayer(instance).getUsername() + " | " + instance.getDimensionType().getName().toString());
-		});
-		player.setGameMode(GameMode.CREATIVE);
+		player.setGameMode(GameMode.ADVENTURE);
 	}
 }

@@ -5,8 +5,8 @@ import net.minestom.server.chat.ChatColor;
 public class Gradients {
 	// Used for tutorial stages
 	public static ChatColor[] TUTORIAL = {
-			ChatColor.fromRGB((byte) 242, (byte) 153, (byte) 74), // #F2994A
-			ChatColor.fromRGB((byte) 242, (byte) 201, (byte) 201) // #F2C94C
+			ChatColor.fromRGB((byte) 255, (byte) 226, (byte) 89), // #ffe259
+			ChatColor.fromRGB((byte) 255, (byte) 167, (byte) 81) // #ffa751
 	};
 	
 	// Used for minion entity
