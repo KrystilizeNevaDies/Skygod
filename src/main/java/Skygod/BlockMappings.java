@@ -1,4 +1,4 @@
-package Skygod.Generators;
+package Skygod;
 
 import java.util.HashMap;
 import java.util.Map;

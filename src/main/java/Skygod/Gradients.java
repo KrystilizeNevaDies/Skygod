@@ -3,6 +3,12 @@ package Skygod;
 import net.minestom.server.chat.ChatColor;
 
 public class Gradients {
+	// Used for Books
+	public static ChatColor[] BOOK = {
+			ChatColor.fromRGB((byte) 65, (byte) 41, (byte) 90),
+			ChatColor.fromRGB((byte) 47, (byte) 7, (byte) 67)
+	};
+	
 	// Used for tutorial stages
 	public static ChatColor[] TUTORIAL = {
 			ChatColor.fromRGB((byte) 255, (byte) 226, (byte) 89), // #ffe259

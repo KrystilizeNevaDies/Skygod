@@ -6,6 +6,7 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.advancements.AdvancementRoot;
 import net.minestom.server.advancements.AdvancementTab;
 import net.minestom.server.advancements.FrameType;
+import net.minestom.server.instance.Instance;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 
@@ -13,8 +14,8 @@ public class TutorialAdvancements{
 	
 	AdvancementTab tutorialTab;
 	
-	public TutorialAdvancements() {
-		tutorialTab = MinecraftServer.getAdvancementManager().createTab("tutorial", 
+	public TutorialAdvancements(Instance instance) {
+		tutorialTab = MinecraftServer.getAdvancementManager().createTab(instance.getUniqueId().toString() + "tutorial", 
 			new AdvancementRoot(
 				ColorGradient.of(Gradients.TUTORIAL, "Tutorial"),
 				ColorGradient.of(Gradients.TUTORIAL, "goals"), 

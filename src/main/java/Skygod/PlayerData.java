@@ -16,7 +16,11 @@ public class PlayerData {
 	public StageType getStage() {
 		return StageType.NONE;
 	}
-
+	/**
+	 * Gets a player's player data. Creates it if it doesnt exist.
+	 * @param player
+	 * @return PlayerData
+	 */
 	public static PlayerData get(Player player) {
 		if (players.containsKey(player)) {
 			return players.get(player);

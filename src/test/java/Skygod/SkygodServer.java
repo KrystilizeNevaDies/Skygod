@@ -6,9 +6,7 @@ package Skygod;
 import Skygod.Events.PlayerDisconnect;
 import Skygod.Events.PlayerLogin;
 import Skygod.Events.PlayerSpawn;
-import Skygod.Generators.BlockMappings;
 import Skygod.Stages.InstanceList;
-import Skygod.Stages.Hub.HubInstance;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
@@ -33,7 +31,6 @@ public class SkygodServer {
         
         // Do some pre-loading (not needed, mostly for speed)
         BlockMappings.get();
-        HubInstance.get();
         InstanceList.get();
         
         // Testing Area

@@ -1,4 +1,4 @@
-package Skygod.Generators;
+package Skygod;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -2,7 +2,7 @@ package Skygod.Events;
 
 import Skygod.PlayerData;
 import Skygod.Stages.InstanceList;
-import Skygod.Stages.Hub.HubInstance;
+import Skygod.Stages.Blank.BlankInstance;
 import Skygod.Stages.Tutorial.TutorialInstance;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
@@ -14,24 +14,28 @@ public class PlayerLogin {
 		
         Player player = (Player) event.getPlayer();
         
-        // Get player's data
-        PlayerData playerData = PlayerData.get(player);
+        Instance spawningInstance = null;
         
         // Find player's current world and load it.
-        switch (playerData.getStage()) {
-        case NONE: player.setInstance(HubInstance.get());
-		case TUTORIAL: InstanceList.get().registerPlayerInstance(player, TutorialInstance.create(player));
-		case WORLDONE: InstanceList.get().registerPlayerInstance(player, TutorialInstance.create(player));
+        switch (PlayerData.get(player).getStage()) {
+        case NONE: {
+        	spawningInstance = BlankInstance.create(player);
+        	InstanceList.get().registerPlayerInstance(player, spawningInstance);
+        	break;
+        }
+		case TUTORIAL: {
+			spawningInstance = TutorialInstance.create(player);
+			InstanceList.get().registerPlayerInstance(player, spawningInstance);
+			break;
+		}
 		default:
 			break;
         }
         
-        // Get instance
-		Instance spawningInstance = InstanceList.get().getPlayerInstance(player);
-        
 		// Spawn instance
 		event.setSpawningInstance(spawningInstance);
 		
+		// Set correct gamemode
 		player.setGameMode(GameMode.ADVENTURE);
 	}
 }

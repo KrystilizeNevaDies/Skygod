@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import Skygod.Generators.Schematic;
+import Skygod.Schematic;
 import de.articdive.jnoise.JNoise;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Chunk;

@@ -1,35 +1,28 @@
 package Skygod.Stages.Tutorial;
 
+import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Instance;
-import net.minestom.server.world.DimensionType;
+import net.minestom.server.utils.Position;
 
-public abstract class TutorialInstance extends Instance {
-	
-	private TutorialSpawners spawners;
-	private TutorialAdvancements advancements;
-	
-	
-	@Override
-	public void tick(long time) {
-		// Do ticks
-		this.getSpawners().tick();
-		super.tick(time);
-	}
-	
-	public TutorialInstance(Player player) {
-		super(null, DimensionType.OVERWORLD);
+public class TutorialInstance {
+	public static Instance create(Player player) {
+		
+		System.out.println("Creating new tutorial instance for " + player.getUsername());
+		
+		// Create new Instance
+		Instance instance = MinecraftServer.getInstanceManager().createInstanceContainer();
 		
 		// Create Generator
-		TutorialGenerator generator = new TutorialGenerator(player, this);
+		TutorialGenerator generator = new TutorialGenerator(player, instance);
 		
 		// Set Chunk Generator
-		setChunkGenerator(generator.ChunkGenerator);
+		instance.setChunkGenerator(generator.ChunkGenerator);
 		
 		// Load 20 x 20 Chunks
 		for (int x = -20; x < 20; x++) {
 			for (int y = -20; y < 20; y++) {
-				loadChunk(x, y);
+				instance.loadChunk(x, y);
 			}	
 		}
 		
@@ -37,26 +30,16 @@ public abstract class TutorialInstance extends Instance {
 		generator.Finisher.applyFinishers();
 		
 		// Set Entity Spawner
-		setSpawners(new TutorialSpawners(this));
+		new TutorialSpawners(instance);
 		
 		// Set Advancements
-		setAdvancements(new TutorialAdvancements());
+		new TutorialAdvancements(instance);
+		
+		return instance;
 	}
 
-	public TutorialAdvancements getAdvancements() {
-		return advancements;
+	public static void playerSpawn(Instance instance, Player player) {
+		player.teleport(new Position(0, 256, 0));
+		System.out.println(player.getUsername());
 	}
-
-	public void setAdvancements(TutorialAdvancements advancements) {
-		this.advancements = advancements;
-	}
-
-	public TutorialSpawners getSpawners() {
-		return spawners;
-	}
-
-	public void setSpawners(TutorialSpawners spawners) {
-		this.spawners = spawners;
-	}
-	
 }
