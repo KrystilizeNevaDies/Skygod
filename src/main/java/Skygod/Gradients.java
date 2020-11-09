@@ -6,7 +6,8 @@ public class Gradients {
 	// Used for Books
 	public static ChatColor[] BOOK = {
 			ChatColor.fromRGB((byte) 65, (byte) 41, (byte) 90),
-			ChatColor.fromRGB((byte) 47, (byte) 7, (byte) 67)
+			ChatColor.fromRGB((byte) 128, (byte) 7, (byte) 67),
+			ChatColor.fromRGB((byte) 65, (byte) 41, (byte) 90),
 	};
 	
 	// Used for tutorial stages

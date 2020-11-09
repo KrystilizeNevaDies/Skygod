@@ -1,6 +1,6 @@
 package Skygod.Stages.Tutorial;
 
-import Skygod.ColorGradient;
+import Skygod.Gradient;
 import Skygod.Gradients;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.advancements.AdvancementRoot;
@@ -17,8 +17,8 @@ public class TutorialAdvancements{
 	public TutorialAdvancements(Instance instance) {
 		tutorialTab = MinecraftServer.getAdvancementManager().createTab(instance.getUniqueId().toString() + "tutorial", 
 			new AdvancementRoot(
-				ColorGradient.of(Gradients.TUTORIAL, "Tutorial"),
-				ColorGradient.of(Gradients.TUTORIAL, "goals"), 
+				Gradient.of(Gradients.TUTORIAL, "Tutorial"),
+				Gradient.of(Gradients.TUTORIAL, "goals"), 
 				new ItemStack(Material.STONE, (byte) 1),
 				FrameType.TASK,
 				0, 0,

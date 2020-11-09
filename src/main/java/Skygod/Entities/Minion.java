@@ -2,7 +2,7 @@ package Skygod.Entities;
 
 import java.util.Arrays;
 
-import Skygod.ColorGradient;
+import Skygod.Gradient;
 import Skygod.Gradients;
 import net.minestom.server.attribute.Attribute;
 import net.minestom.server.entity.EntityCreature;
@@ -20,10 +20,15 @@ public class Minion extends EntityCreature{
 		this.setAttribute(Attribute.MOVEMENT_SPEED, (float) (this.getAttributeValue(Attribute.MOVEMENT_SPEED) + (0.05 * (double) level)));
 		// Set attack
 		this.setAttribute(Attribute.ATTACK_DAMAGE, level);
-		this.setCustomName(ColorGradient.of(Gradients.MINION, "Minion lv. " + level));
+		this.setCustomName(Gradient.of(Gradients.MINION, "Minion lv. " + level));
 		this.setCustomNameVisible(true);
 	}
 	
+	public Minion() {
+		super(EntityType.ZOMBIE, new Position(0, 0, 0));
+		this.setCustomName(Gradient.of(Gradients.MINION, "Minion lv. " + 0));
+	}
+
 	@Override
 	public void spawn() {
 		this.setGlowing(true);

@@ -1,9 +1,12 @@
 package Skygod;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.minestom.server.chat.ChatColor;
 import net.minestom.server.chat.ColoredText;
 
-public class ColorGradient {
+public class Gradient {
 	
 	
 	public static ColoredText of(ChatColor[] gradients, String message) {
@@ -26,6 +29,28 @@ public class ColorGradient {
 		}
 		
 		return text;
+	}
+	
+	public static ColoredText combine(Object[][] gradientPairs) {
+		// Create lists
+		ArrayList<ChatColor> gradients = new ArrayList<ChatColor>(); 
+		String text = "";
+		
+		// Iterate over args
+		for (int i = 0; i < gradientPairs.length; i++) {
+			// Insert into lists
+			text = text + (String) gradientPairs[i][1] + "\n";
+			for (ChatColor color : (ChatColor[]) gradientPairs[i][0])
+				gradients.add(color);
+		}
+		
+		// Convert to array
+		Object[] grads = gradients.toArray();
+		ChatColor[] finalGradients = Arrays.copyOf(grads, grads.length, ChatColor[].class);
+		
+		
+		
+		return Gradient.of(finalGradients, text);
 	}
 	
 	// Linear gradient function
