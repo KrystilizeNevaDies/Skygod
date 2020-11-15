@@ -2,6 +2,7 @@ package Skygod.Stages.Tutorial;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
+import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.utils.Position;
 
@@ -41,5 +42,14 @@ public class TutorialInstance {
 	public static void playerSpawn(Instance instance, Player player) {
 		player.teleport(new Position(0, 256, 0));
 		System.out.println(player.getUsername());
+	}
+
+	public static void playerLeave(Instance instance, Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void playerChat(Instance instance, Player player, PlayerChatEvent event) {
+		// TODO Auto-generated method stub
 	}
 }

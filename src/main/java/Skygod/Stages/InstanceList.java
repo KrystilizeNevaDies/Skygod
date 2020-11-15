@@ -9,9 +9,9 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Instance;
 
-public class InstanceList {
+public enum InstanceList {
 	
-	private static InstanceList instanceList = null; 
+	INSTANCE;
 	
 	// Map of all player instances
 	Map<UUID, Instance> instanceMap;
@@ -19,18 +19,6 @@ public class InstanceList {
 	private InstanceList() {
 		instanceMap = new HashMap<UUID, Instance>();
 	}
-	
-	/**
-	 * Gets the single InstanceList
-	 * @return InstanceList
-	 */
-	public static InstanceList get() 
-    { 
-        if (instanceList == null) 
-        	instanceList = new InstanceList(); 
-  
-        return instanceList; 
-    } 
 	
 	/**
 	 * Gets an ArrayList of every instance that has an associated pair

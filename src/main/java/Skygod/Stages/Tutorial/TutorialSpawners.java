@@ -16,7 +16,7 @@ public class TutorialSpawners {
 
 	
 	protected void tick() {
-		Player player = InstanceList.get().getInstancesPlayer(instance);
+		Player player = InstanceList.INSTANCE.getInstancesPlayer(instance);
 		
 		if (instance.getCreatures().size() < Integer.valueOf((String) Settings.get().getSetting("EntityLimit")) && player instanceof Player) {
 			new Minion(instance, player.getPosition(), 1);

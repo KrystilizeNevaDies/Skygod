@@ -48,7 +48,7 @@ public class Schematic {
 	
 	public void load(Instance instance, BlockPosition pos) {
 		blockList.forEach(block -> {
-				instance.setBlock((int) block[0] + pos.getX(), (int) block[1] + pos.getY(), (int) block[2] + pos.getZ(), BlockMappings.get().getBlock((String) block[3]));
+				instance.setBlock((int) block[0] + pos.getX(), (int) block[1] + pos.getY(), (int) block[2] + pos.getZ(), BlockMappings.INSTANCE.getBlock((String) block[3]));
 		});
 	}
 }

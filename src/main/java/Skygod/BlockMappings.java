@@ -5,18 +5,14 @@ import java.util.Map;
 
 import net.minestom.server.instance.block.Block;
 
-public class BlockMappings {
-	
-	private static BlockMappings blockMappingsObject = null; 
+public enum BlockMappings {
+	INSTANCE;
 	
 	private Map<String, Block> blockStringMappings = new HashMap<String, Block>();
 	
 	public static BlockMappings get() 
     { 
-        if (blockMappingsObject == null)
-			blockMappingsObject = new BlockMappings();
-  
-        return blockMappingsObject; 
+        return INSTANCE; 
     }
 	
 	BlockMappings() {

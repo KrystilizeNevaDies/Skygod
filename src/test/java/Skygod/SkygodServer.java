@@ -3,14 +3,8 @@
  */
 package Skygod;
 
-import Skygod.Events.PlayerDisconnect;
-import Skygod.Events.PlayerLogin;
-import Skygod.Events.PlayerSpawn;
-import Skygod.Stages.InstanceList;
+import Skygod.Events.Events;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.event.player.PlayerDisconnectEvent;
-import net.minestom.server.event.player.PlayerLoginEvent;
-import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.network.ConnectionManager;
 
 public class SkygodServer {
@@ -21,17 +15,9 @@ public class SkygodServer {
         
         // Register events
         ConnectionManager connectionManager = MinecraftServer.getConnectionManager();
-        connectionManager.addPlayerInitialization(player -> {
-        	// Add event listeners
-            player.addEventCallback(PlayerLoginEvent.class, event -> {PlayerLogin.Event(event);});
-            player.addEventCallback(PlayerSpawnEvent.class, event -> {PlayerSpawn.Event(event);});
-            player.addEventCallback(PlayerDisconnectEvent.class, event -> {PlayerDisconnect.Event(event);});
-            
-        });
+        connectionManager.addPlayerInitialization(player -> {Events.registerEvents(player);});
         
         // Do some pre-loading (not needed, mostly for speed)
-        BlockMappings.get();
-        InstanceList.get();
         
         // Testing Area
         // Do testing code here

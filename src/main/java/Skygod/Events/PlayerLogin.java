@@ -1,9 +1,7 @@
 package Skygod.Events;
 
-import Skygod.PlayerData;
 import Skygod.Stages.InstanceList;
 import Skygod.Stages.Blank.BlankInstance;
-import Skygod.Stages.Tutorial.TutorialInstance;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerLoginEvent;
@@ -16,21 +14,9 @@ public class PlayerLogin {
         
         Instance spawningInstance = null;
         
-        // Find player's current world and load it.
-        switch (PlayerData.get(player).getStage()) {
-        case NONE: {
-        	spawningInstance = BlankInstance.create(player);
-        	InstanceList.get().registerPlayerInstance(player, spawningInstance);
-        	break;
-        }
-		case TUTORIAL: {
-			spawningInstance = TutorialInstance.create(player);
-			InstanceList.get().registerPlayerInstance(player, spawningInstance);
-			break;
-		}
-		default:
-			break;
-        }
+        // Load hub instance for player
+    	spawningInstance = BlankInstance.create(player);
+    	InstanceList.INSTANCE.registerPlayerInstance(player, spawningInstance);
         
 		// Spawn instance
 		event.setSpawningInstance(spawningInstance);
