@@ -5,6 +5,8 @@ import java.util.Arrays;
 import Skygod.Gradient;
 import Skygod.Gradients;
 import net.minestom.server.attribute.Attribute;
+import net.minestom.server.attribute.AttributeModifier;
+import net.minestom.server.attribute.AttributeOperation;
 import net.minestom.server.entity.EntityCreature;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.Player;
@@ -17,9 +19,9 @@ public class Minion extends EntityCreature{
 		super(EntityType.ZOMBIE, spawnPosition);
 		this.setInstance(instance);
 		// Set speed
-		this.setAttribute(Attribute.MOVEMENT_SPEED, (float) (this.getAttributeValue(Attribute.MOVEMENT_SPEED) + (0.05 * (double) level)));
+		this.getAttribute(Attribute.fromKey("MOVEMENT_SPEED")).addModifier(new AttributeModifier("SpeedFromLevel", (float) (0.05 * (float) level), AttributeOperation.ADDITION));
 		// Set attack
-		this.setAttribute(Attribute.ATTACK_DAMAGE, level);
+		this.getAttribute(Attribute.fromKey("ATTACK")).addModifier(new AttributeModifier("SpeedFromLevel", (float) (0.05 * (float) level), AttributeOperation.ADDITION));
 		this.setCustomName(Gradient.of(Gradients.MINION, "Minion lv. " + level));
 		this.setCustomNameVisible(true);
 	}
@@ -28,7 +30,7 @@ public class Minion extends EntityCreature{
 		super(EntityType.ZOMBIE, new Position(0, 0, 0));
 		this.setCustomName(Gradient.of(Gradients.MINION, "Minion lv. " + 0));
 	}
-
+	
 	@Override
 	public void spawn() {
 		this.setGlowing(true);
@@ -56,8 +58,10 @@ public class Minion extends EntityCreature{
 					this.setPathTo(playerPosition);
 			
 			if (this.getPosition().getDistance(playerPosition) < 2)
-				this.moveTowards(playerPosition, this.getAttributeValue(Attribute.MOVEMENT_SPEED));
+				this.moveTowards(playerPosition, this.getAttributeValue(Attribute.fromKey("MOVEMENT_SPEED")));
 		}
+		
+		// Do regular entitycreature updates
 		super.update(time);
 	}
 }

@@ -17,7 +17,7 @@ public class PlayerDisconnect {
         Instance playerInstance = InstanceList.INSTANCE.getPlayerInstance(player);
         
         switch(PlayerData.get(player).getStage()) {
-		case NONE:
+		case BLANK:
 			BlankInstance.playerLeave(playerInstance, player);
 			break;
 		case TUTORIAL:

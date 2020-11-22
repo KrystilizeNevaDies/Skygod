@@ -9,13 +9,29 @@ public class PlayerData {
 	
 	private static Map<Player, PlayerData> players = new HashMap<Player, PlayerData>();
 	
+	// Saved playing stage
+	private StageType playerStage;
+	
+	// Actual current stage
+	private StageType playerCurrentStage;
+	
 	private PlayerData(Player player) {
-		
+		playerStage = StageType.TUTORIAL;
+		playerCurrentStage = StageType.BLANK;
 	}
 	
 	public StageType getStage() {
-		return StageType.NONE;
+		return playerStage;
 	}
+	
+	public StageType getCurrentStage() {
+		return playerCurrentStage;
+	}
+	
+	public void setCurrentStage(StageType stage) {
+		playerCurrentStage = stage;
+	}
+	
 	/**
 	 * Gets a player's player data. Creates it if it doesnt exist.
 	 * @param player

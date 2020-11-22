@@ -12,10 +12,8 @@ public class PlayerLogin {
 		
         Player player = (Player) event.getPlayer();
         
-        Instance spawningInstance = null;
-        
         // Load hub instance for player
-    	spawningInstance = BlankInstance.create(player);
+    	Instance spawningInstance = BlankInstance.create(player);
     	InstanceList.INSTANCE.registerPlayerInstance(player, spawningInstance);
         
 		// Spawn instance

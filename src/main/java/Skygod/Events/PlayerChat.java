@@ -14,10 +14,12 @@ public class PlayerChat {
         
         Instance playerInstance = InstanceList.INSTANCE.getPlayerInstance(player);
         
-        switch(PlayerData.get(player).getStage()) {
+        switch(PlayerData.get(player).getCurrentStage()) {
         
-		case NONE:
-			BlankInstance.playerChat(playerInstance, player, event);
+		case BLANK:
+			if (BlankInstance.playerChat(playerInstance, player, event)) {
+				event.setCancelled(true);
+			};
 			break;
 		case TUTORIAL:
 			TutorialInstance.playerChat(playerInstance, player, event);

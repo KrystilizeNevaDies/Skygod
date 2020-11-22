@@ -41,7 +41,6 @@ public class TutorialInstance {
 
 	public static void playerSpawn(Instance instance, Player player) {
 		player.teleport(new Position(0, 256, 0));
-		System.out.println(player.getUsername());
 	}
 
 	public static void playerLeave(Instance instance, Player player) {

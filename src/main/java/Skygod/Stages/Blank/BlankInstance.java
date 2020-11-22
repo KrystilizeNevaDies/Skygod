@@ -4,6 +4,7 @@ import Skygod.Books;
 import Skygod.Gradient;
 import Skygod.Gradients;
 import Skygod.PlayerData;
+import Skygod.StageType;
 import Skygod.Stages.BlankGenerator;
 import Skygod.Stages.InstanceList;
 import Skygod.Stages.Tutorial.TutorialInstance;
@@ -40,6 +41,7 @@ public class BlankInstance {
 	}
 	
 	public static void playerSpawn(Instance instance, Player player) {
+		
 		player.teleport(new Position(0, 1, 0));
 		
 		player.getInventory().clear();
@@ -47,8 +49,6 @@ public class BlankInstance {
 		ItemStack item = new ItemStack(Material.WRITTEN_BOOK, (byte) 1);
 		
 		WrittenBookMeta meta = (WrittenBookMeta) item.getItemMeta();
-		
-		
 		
 		Books.addPages(meta, Books.serverSelect);
 		
@@ -58,7 +58,7 @@ public class BlankInstance {
 		
 		meta.setResolved(false);
 		
-		meta.setTitle("A Book");
+		meta.setTitle("A book");
 		
 		player.getInventory().addItemStack(item);		
 		
@@ -90,41 +90,37 @@ public class BlankInstance {
 		
 	}
 
-	public static void playerChat(Instance playerInstance, Player player, PlayerChatEvent event) {
+	public static Boolean playerChat(Instance playerInstance, Player player, PlayerChatEvent event) {
 		// TODO Auto-generated method stub
 		switch (event.getMessage()) {
 			case "home": {
-				switch (PlayerData.get(player).getStage()) {
-					case NONE:
-						break;
-					case TUTORIAL:
-						InstanceList.INSTANCE.removePlayerInstance(player);
-						Instance instance = TutorialInstance.create(player);
-						InstanceList.INSTANCE.registerPlayerInstance(player, instance);
-						player.setInstance(instance);
-						break;
-					case WORLDONE:
-						break;
-					default:
-						break;
-					
-				}
+				PlayerData.get(player).setCurrentStage(StageType.TUTORIAL);
 				
-				break;
+				InstanceList.INSTANCE.removePlayerInstance(player);
+				Instance instance = TutorialInstance.create(player);
+				InstanceList.INSTANCE.registerPlayerInstance(player, instance);
+				
+				player.getInventory().clear();
+				
+				player.setInstance(instance);
+				
+				
+				return true;
 			}
 			
 			case "settings": {
 				playerSettings(playerInstance, player);
-				break;
+				return true;
 			}
 			
 			case "exit": {
 				player.kick(Gradient.of(Gradients.MINION, "Goodbye, thanks for playing!"));
-				break;
+				return true;
 			}
 			
 			default:
 				break;
 		}
+		return false;
 	}
 }

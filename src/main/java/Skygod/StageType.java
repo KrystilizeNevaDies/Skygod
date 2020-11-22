@@ -1,7 +1,7 @@
 package Skygod;
 
 public enum StageType {
-	NONE,
+	BLANK,
 	TUTORIAL,
 	WORLDONE, 
 }

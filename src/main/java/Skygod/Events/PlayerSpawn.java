@@ -10,12 +10,12 @@ public class PlayerSpawn {
 	public static void Event(PlayerSpawnEvent event) {
 		
 		Player player = (Player) event.getEntity();
-		switch(PlayerData.get(player).getStage()) {
-		case NONE: {BlankInstance.playerSpawn(event.getSpawnInstance(), player); break;}
-		case TUTORIAL: {TutorialInstance.playerSpawn(event.getSpawnInstance(), player); break;}
-		case WORLDONE: break;
-		default:
-			break;
+		switch(PlayerData.get(player).getCurrentStage()) {
+			case BLANK: {BlankInstance.playerSpawn(event.getSpawnInstance(), player); break;}
+			case TUTORIAL: {TutorialInstance.playerSpawn(event.getSpawnInstance(), player); break;}
+			case WORLDONE: break;
+			default:
+				break;
 		}
 	}
 }
