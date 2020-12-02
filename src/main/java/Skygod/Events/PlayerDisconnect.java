@@ -1,14 +1,14 @@
-package Skygod.Events;
+package skygod.events;
 
-import Skygod.PlayerData;
-import Skygod.Stages.InstanceList;
-import Skygod.Stages.Blank.BlankInstance;
-import Skygod.Stages.Tutorial.TutorialInstance;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.utils.time.TimeUnit;
+import skygod.PlayerData;
+import skygod.stages.InstanceList;
+import skygod.stages.blank.BlankInstance;
+import skygod.stages.tutorial.TutorialInstance;
 
 public class PlayerDisconnect {
 	public static void Event(PlayerDisconnectEvent event) {
@@ -18,10 +18,10 @@ public class PlayerDisconnect {
         
         switch(PlayerData.get(player).getStage()) {
 		case BLANK:
-			BlankInstance.playerLeave(playerInstance, player);
+			BlankInstance.INSTANCE.playerLeave(playerInstance, player);
 			break;
 		case TUTORIAL:
-			TutorialInstance.playerLeave(playerInstance, player);
+			TutorialInstance.INSTANCE.playerLeave(playerInstance, player);
 			break;
 		case WORLDONE:
 			break;

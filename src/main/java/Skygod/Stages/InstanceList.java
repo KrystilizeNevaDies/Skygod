@@ -1,4 +1,4 @@
-package Skygod.Stages;
+package skygod.stages;
 
 import java.util.ArrayList;
 import java.util.HashMap;

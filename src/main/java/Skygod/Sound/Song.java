@@ -1,4 +1,4 @@
-package Skygod.Sound;
+package skygod.sound;
 
 import java.io.File;
 import java.io.FileNotFoundException;

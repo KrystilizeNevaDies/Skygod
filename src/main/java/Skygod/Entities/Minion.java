@@ -1,9 +1,7 @@
-package Skygod.Entities;
+package skygod.entities;
 
 import java.util.Arrays;
 
-import Skygod.Gradient;
-import Skygod.Gradients;
 import net.minestom.server.attribute.Attribute;
 import net.minestom.server.attribute.AttributeModifier;
 import net.minestom.server.attribute.AttributeOperation;
@@ -12,6 +10,8 @@ import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.utils.Position;
+import skygod.Gradient;
+import skygod.Gradients;
 
 public class Minion extends EntityCreature{
 	

@@ -1,4 +1,4 @@
-package Skygod;
+package skygod;
 
 import java.util.ArrayList;
 

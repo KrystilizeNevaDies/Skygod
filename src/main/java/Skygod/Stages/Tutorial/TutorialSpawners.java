@@ -1,10 +1,10 @@
-package Skygod.Stages.Tutorial;
+package skygod.stages.tutorial;
 
-import Skygod.Settings;
-import Skygod.Entities.Minion;
-import Skygod.Stages.InstanceList;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Instance;
+import skygod.Settings;
+import skygod.entities.Minion;
+import skygod.stages.InstanceList;
 
 public class TutorialSpawners {
 	

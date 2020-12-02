@@ -1,18 +1,18 @@
-package Skygod.Events;
+package skygod.events;
 
-import Skygod.PlayerData;
-import Skygod.Stages.Blank.BlankInstance;
-import Skygod.Stages.Tutorial.TutorialInstance;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerSpawnEvent;
+import skygod.PlayerData;
+import skygod.stages.blank.BlankInstance;
+import skygod.stages.tutorial.TutorialInstance;
 
 public class PlayerSpawn {
 	public static void Event(PlayerSpawnEvent event) {
 		
 		Player player = (Player) event.getEntity();
 		switch(PlayerData.get(player).getCurrentStage()) {
-			case BLANK: {BlankInstance.playerSpawn(event.getSpawnInstance(), player); break;}
-			case TUTORIAL: {TutorialInstance.playerSpawn(event.getSpawnInstance(), player); break;}
+			case BLANK: {BlankInstance.INSTANCE.playerSpawn(event.getSpawnInstance(), player); break;}
+			case TUTORIAL: {TutorialInstance.INSTANCE.playerSpawn(event.getSpawnInstance(), player); break;}
 			case WORLDONE: break;
 			default:
 				break;

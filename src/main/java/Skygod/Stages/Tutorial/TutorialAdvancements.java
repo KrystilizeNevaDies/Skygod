@@ -1,7 +1,5 @@
-package Skygod.Stages.Tutorial;
+package skygod.stages.tutorial;
 
-import Skygod.Gradient;
-import Skygod.Gradients;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.advancements.AdvancementRoot;
 import net.minestom.server.advancements.AdvancementTab;
@@ -9,6 +7,8 @@ import net.minestom.server.advancements.FrameType;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
+import skygod.Gradient;
+import skygod.Gradients;
 
 public class TutorialAdvancements{
 	

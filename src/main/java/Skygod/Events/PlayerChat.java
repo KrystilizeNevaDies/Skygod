@@ -1,12 +1,12 @@
-package Skygod.Events;
+package skygod.events;
 
-import Skygod.PlayerData;
-import Skygod.Stages.InstanceList;
-import Skygod.Stages.Blank.BlankInstance;
-import Skygod.Stages.Tutorial.TutorialInstance;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.instance.Instance;
+import skygod.PlayerData;
+import skygod.stages.InstanceList;
+import skygod.stages.blank.BlankInstance;
+import skygod.stages.tutorial.TutorialInstance;
 
 public class PlayerChat {
 	public static void Event(PlayerChatEvent event) {
@@ -17,12 +17,10 @@ public class PlayerChat {
         switch(PlayerData.get(player).getCurrentStage()) {
         
 		case BLANK:
-			if (BlankInstance.playerChat(playerInstance, player, event)) {
-				event.setCancelled(true);
-			};
+			BlankInstance.INSTANCE.playerChat(playerInstance, player, event);
 			break;
 		case TUTORIAL:
-			TutorialInstance.playerChat(playerInstance, player, event);
+			TutorialInstance.INSTANCE.playerChat(playerInstance, player, event);
 			break;
 		case WORLDONE:
 			break;

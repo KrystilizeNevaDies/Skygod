@@ -1,4 +1,4 @@
-package Skygod.Events;
+package skygod.events;
 
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;

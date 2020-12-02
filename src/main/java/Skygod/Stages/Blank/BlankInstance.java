@@ -1,13 +1,5 @@
-package Skygod.Stages.Blank;
+package skygod.stages.blank;
 
-import Skygod.Books;
-import Skygod.Gradient;
-import Skygod.Gradients;
-import Skygod.PlayerData;
-import Skygod.StageType;
-import Skygod.Stages.BlankGenerator;
-import Skygod.Stages.InstanceList;
-import Skygod.Stages.Tutorial.TutorialInstance;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;
@@ -19,10 +11,22 @@ import net.minestom.server.item.metadata.WrittenBookMeta.WrittenBookGeneration;
 import net.minestom.server.network.packet.server.play.OpenBookPacket;
 import net.minestom.server.utils.Position;
 import net.minestom.server.utils.time.TimeUnit;
+import skygod.Books;
+import skygod.Gradient;
+import skygod.Gradients;
+import skygod.PlayerData;
+import skygod.StageType;
+import skygod.stages.BlankGenerator;
+import skygod.stages.InstanceList;
+import skygod.stages.SkygodInstance;
+import skygod.stages.tutorial.TutorialInstance;
 
-public class BlankInstance {
-	public static Instance create(Player player) {
+public class BlankInstance implements SkygodInstance {
 
+	public static BlankInstance INSTANCE = new BlankInstance();
+	
+	@Override
+	public Instance create(Player player) {
 		System.out.println("Creating new blank instance for " + player.getUsername());
 		
 		// Create the instance
@@ -40,7 +44,12 @@ public class BlankInstance {
 		return instance;
 	}
 	
-	public static void playerSpawn(Instance instance, Player player) {
+	@Override
+	public String getName() {
+		return "Blank";
+	}
+	
+	public void playerSpawn(Instance instance, Player player) {
 		
 		player.teleport(new Position(0, 1, 0));
 		
@@ -52,7 +61,7 @@ public class BlankInstance {
 		
 		Books.addPages(meta, Books.serverSelect);
 		
-		meta.setAuthor("Kry");
+		meta.setAuthor("Krystilize");
 		
 		meta.setGeneration(WrittenBookGeneration.ORIGINAL);
 		
@@ -61,6 +70,7 @@ public class BlankInstance {
 		meta.setTitle("A book");
 		
 		player.getInventory().addItemStack(item);		
+		
 		
 		MinecraftServer.getSchedulerManager().buildTask(new Runnable() {
 
@@ -71,56 +81,46 @@ public class BlankInstance {
 				
 				bookPacket.hand = Player.Hand.MAIN;
 				
-				player.sendPacketToViewersAndSelf(bookPacket);
+				player.sendPacketToSelf(bookPacket);
 			}
 			
 		}).delay((long) 1, TimeUnit.TICK).schedule();
-		
-		
-		
 	}
-	
-	public static void playerSettings(Instance playerInstance, Player player) {
-		
+
+	public void playerLeave(Instance playerInstance, Player player) {
 		
 	}
 
-	public static void playerLeave(Instance playerInstance, Player player) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public static Boolean playerChat(Instance playerInstance, Player player, PlayerChatEvent event) {
-		// TODO Auto-generated method stub
+	public void playerChat(Instance playerInstance, Player player, PlayerChatEvent event) {
 		switch (event.getMessage()) {
 			case "home": {
 				PlayerData.get(player).setCurrentStage(StageType.TUTORIAL);
 				
 				InstanceList.INSTANCE.removePlayerInstance(player);
-				Instance instance = TutorialInstance.create(player);
+				Instance instance = TutorialInstance.INSTANCE.create(player);
 				InstanceList.INSTANCE.registerPlayerInstance(player, instance);
 				
 				player.getInventory().clear();
 				
 				player.setInstance(instance);
-				
-				
-				return true;
+				break;
 			}
 			
 			case "settings": {
 				playerSettings(playerInstance, player);
-				return true;
+				break;
 			}
 			
 			case "exit": {
 				player.kick(Gradient.of(Gradients.MINION, "Goodbye, thanks for playing!"));
-				return true;
+				break;
 			}
 			
 			default:
 				break;
 		}
-		return false;
+		event.setCancelled(true);
 	}
+
+
 }

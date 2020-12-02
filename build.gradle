@@ -17,12 +17,11 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    // WARNING: outdated version, replace it to the latest
     // Reminder: can be found at https://jitpack.io/#Minestom/Minestom
-    compile 'com.github.Minestom:Minestom:a8c1c73'
+    compile 'com.github.Minestom:Minestom:936f7b9'
     
-    // LuaJava Library
-    implementation 'com.github.luaj:luaj:daf3da9'
+    // Java NBT Library
+    implementation 'com.github.piegamesde:nbt:3.0.1'
 }
 
 jar {
