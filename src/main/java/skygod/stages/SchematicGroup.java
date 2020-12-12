@@ -2,7 +2,7 @@ package skygod.stages;
 
 import java.util.Map;
 
-import net.minestom.server.instance.Instance;
+import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.utils.BlockPosition;
 import skygod.Schematic;
 
@@ -16,9 +16,9 @@ public interface SchematicGroup {
 		return this;
 	}
 	
-	public default void load(Instance instance, BlockPosition position) {
+	public default void load(InstanceContainer instance, BlockPosition position) {
 		getGroup().forEach((schematic, schematicPos) -> {
-			schematic.load(instance, position.copy().add(schematicPos));
+			schematic.load(instance, position.clone().add(schematicPos));
 		});
 	}
 }

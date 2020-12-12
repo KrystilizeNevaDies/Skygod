@@ -94,15 +94,29 @@ public class BlankInstance implements SkygodInstance {
 	public void playerChat(Instance playerInstance, Player player, PlayerChatEvent event) {
 		switch (event.getMessage()) {
 			case "home": {
-				PlayerData.get(player).setCurrentStage(StageType.TUTORIAL);
+				player.sendTitleMessage(Gradient.of(Gradients.MINION, "Generating your domain"));
 				
-				InstanceList.INSTANCE.removePlayerInstance(player);
-				Instance instance = TutorialInstance.INSTANCE.create(player);
-				InstanceList.INSTANCE.registerPlayerInstance(player, instance);
-				
-				player.getInventory().clear();
-				
-				player.setInstance(instance);
+				// Schedule
+				MinecraftServer.getSchedulerManager().buildTask(new Runnable() {
+					@Override
+					public void run() {
+						InstanceList.INSTANCE.removePlayerInstance(player);
+						
+						Instance newInstance = TutorialInstance.INSTANCE.create(player);
+						
+						// Offload to new instance's tick
+						newInstance.scheduleNextTick((thisInstance) -> {
+							PlayerData.get(player).setCurrentStage(StageType.TUTORIAL);
+							
+							InstanceList.INSTANCE.registerPlayerInstance(player, thisInstance);
+							
+							player.getInventory().clear();
+							
+							player.setInstance(thisInstance);
+						});
+						
+					}
+				}).delay(1, TimeUnit.TICK).schedule();
 				break;
 			}
 			

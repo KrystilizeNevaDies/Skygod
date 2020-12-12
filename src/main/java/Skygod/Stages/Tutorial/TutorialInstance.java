@@ -1,16 +1,15 @@
 package skygod.stages.tutorial;
 
+import java.io.File;
+
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.instance.Instance;
-import net.minestom.server.network.packet.server.play.EntitySoundEffect;
-import net.minestom.server.sound.Sound;
-import net.minestom.server.sound.SoundCategory;
+import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.utils.Position;
-import skygod.sound.PlayerSound;
-import skygod.sound.Songs;
+import skygod.sound.MidiSong;
 import skygod.stages.SkygodInstance;
 
 public class TutorialInstance implements SkygodInstance {
@@ -22,13 +21,14 @@ public class TutorialInstance implements SkygodInstance {
 		System.out.println("Creating new tutorial instance for " + player.getUsername());
 		
 		// Create new Instance
-		Instance instance = MinecraftServer.getInstanceManager().createInstanceContainer();
+		InstanceContainer instance = MinecraftServer.getInstanceManager().createInstanceContainer();
 		
 		// Create Generator
 		TutorialGenerator generator = new TutorialGenerator(player, instance);
 		
 		// Set Chunk Generator
 		instance.setChunkGenerator(generator.chunkGenerator);
+		instance.enableAutoChunkLoad(false);
 		
 		// Load chunks
 		for (int x = -10; x < 10; x++) {
@@ -38,9 +38,10 @@ public class TutorialInstance implements SkygodInstance {
 		}
 		
 		
+		
 		// Do finishers
 		generator.finisher.applyFinishers();
-		
+			
 		// Set Entity Spawner
 		new TutorialSpawners(instance);
 		
@@ -57,7 +58,15 @@ public class TutorialInstance implements SkygodInstance {
 	public void playerSpawn(Instance instance, Player player) {
 		player.teleport(new Position(0, 256, 0));
 		player.setGameMode(GameMode.CREATIVE);
-		PlayerSound.playSong(player, Songs.INTRO);
+		
+		MidiSong song = new MidiSong();
+		
+		song.addPlayer(player);
+		
+		song.setMidiFile(new File("Songs/ZZZ.mid"));
+		
+		song.play();
+		
 	}
 
 	public void playerLeave(Instance instance, Player player) {

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 import de.piegames.nbt.CompoundTag;
 import de.piegames.nbt.stream.NBTInputStream;
-import net.minestom.server.instance.Instance;
+import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.batch.BlockBatch;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.utils.BlockPosition;
@@ -79,7 +79,7 @@ public class Schematic {
             	        	newBlock[1] = Y;
             	        	newBlock[2] = Z;
             	        	
-            	        	newBlock[3] = BlockMappings.INSTANCE.getNamespace(namespace).getBlockId();
+            	        	newBlock[3] = BlockMappings.INSTANCE.getNamespace(namespace);
                 			blockList.add(newBlock);
             			}
             			
@@ -145,7 +145,7 @@ public class Schematic {
             	        	newBlock[0] = X; 
             	        	newBlock[1] = Y;
             	        	newBlock[2] = Z;
-            	        	newBlock[3] = BlockMappings.INSTANCE.getLegacyBlock(blocks[i], blockData[i]).getBlockId();
+            	        	newBlock[3] = BlockMappings.INSTANCE.getLegacyBlock(blocks[i], blockData[i]);
                 			blockList.add(newBlock);
             			}
             			
@@ -189,14 +189,18 @@ public class Schematic {
         }
 	}
 	
-	public void load(Instance instance, BlockPosition pos) {
+	public void load(InstanceContainer instance, BlockPosition pos) {
+		
+		BlockBatch batch = new BlockBatch(instance);
+		
 		blockList.forEach(block -> {
-				instance.setBlock(
+			batch.setBlock(
 					block[0] + pos.getX(),
 					block[1] + pos.getY(),
 					block[2] + pos.getZ(),
 					Block.fromStateId((short) block[3])
 				);
 		});
+		batch.flush(null);
 	}
 }

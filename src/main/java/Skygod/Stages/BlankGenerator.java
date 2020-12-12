@@ -13,7 +13,7 @@ import net.minestom.server.instance.batch.ChunkBatch;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.world.biomes.Biome;
 
-public  class BlankGenerator implements ChunkGenerator {
+public class BlankGenerator implements ChunkGenerator {
 
     @Override
     public void generateChunkData(ChunkBatch batch, int chunkX, int chunkZ) {

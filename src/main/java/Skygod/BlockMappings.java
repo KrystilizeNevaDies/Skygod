@@ -10,10 +10,6 @@ public enum BlockMappings {
 
     private Map <String, Block> blockStringMappings = new HashMap <String, Block> ();
 
-    public static BlockMappings get() {
-        return INSTANCE;
-    }
-
     BlockMappings() {
         Block[] blocks = Block.values();
         for (int i = 0; i < blocks.length; i++) {
@@ -30,7 +26,7 @@ public enum BlockMappings {
         }
     }
     
-	Block getNamespace(String namespace) {
+    short getNamespace(String namespace) {
 		/**
 		 * Examples:
 		 * 
@@ -49,1696 +45,1707 @@ public enum BlockMappings {
 		
 		// 0 | grass_block
 		// 1 | [snowy=false]
-		
-		return Block.valueOf(split[0].toUpperCase());
+		if (split.length > 1) {
+			String state = split[1];
+			
+			state = state.replace("[", "");
+			state = state.replace("]", "");
+			
+			String[] propertiesSplit = state.split(",");
+			
+			Block target = Block.valueOf(split[0].toUpperCase());
+			return target.withProperties(propertiesSplit);
+		} else {
+			return Block.valueOf(split[0].toUpperCase()).getBlockId();
+		}
 	}
 
-    public Block getLegacyBlock(int id, int data) {
+    public short getLegacyBlock(int id, int data) {
     	switch (id + ":" + data) {
-	    	case "0:0": return Block.AIR;
-	    	case "1:0": return Block.STONE;
-	    	case "1:1": return Block.GRANITE;
-	    	case "1:2": return Block.POLISHED_GRANITE;
-	    	case "1:3": return Block.DIORITE;
-	    	case "1:4": return Block.POLISHED_DIORITE;
-	    	case "1:5": return Block.ANDESITE;
-	    	case "1:6": return Block.POLISHED_ANDESITE;
-	    	case "2:0": return Block.GRASS_BLOCK; // [SNOWY=FALSE]
-	    	case "3:0": return Block.DIRT;
-	    	case "3:1": return Block.COARSE_DIRT;
-	    	case "3:2": return Block.PODZOL; // [SNOWY=FALSE]
-	    	case "4:0": return Block.COBBLESTONE;
-	    	case "5:0": return Block.OAK_PLANKS;
-	    	case "5:1": return Block.SPRUCE_PLANKS;
-	    	case "5:2": return Block.BIRCH_PLANKS;
-	    	case "5:3": return Block.JUNGLE_PLANKS;
-	    	case "5:4": return Block.ACACIA_PLANKS;
-	    	case "5:5": return Block.DARK_OAK_PLANKS;
-	    	case "6:0": return Block.OAK_SAPLING; // [STAGE=0]
-	    	case "6:1": return Block.SPRUCE_SAPLING; // [STAGE=0]
-	    	case "6:2": return Block.BIRCH_SAPLING; // [STAGE=0]
-	    	case "6:3": return Block.JUNGLE_SAPLING; // [STAGE=0]
-	    	case "6:4": return Block.ACACIA_SAPLING; // [STAGE=0]
-	    	case "6:5": return Block.DARK_OAK_SAPLING; // [STAGE=0]
-	    	case "6:8": return Block.fromStateId((short) (Block.OAK_SAPLING.getBlockId() + 1)); // [STAGE=1]
-	    	case "6:9": return Block.SPRUCE_SAPLING; // [STAGE=1]
-	    	case "6:10": return Block.BIRCH_SAPLING; // [STAGE=1]
-	    	case "6:11": return Block.JUNGLE_SAPLING; // [STAGE=1]
-	    	case "6:12": return Block.ACACIA_SAPLING; // [STAGE=1]
-	    	case "6:13": return Block.DARK_OAK_SAPLING; // [STAGE=1]
-	    	case "7:0": return Block.BEDROCK;
-	    	case "8:0": return Block.WATER; // [LEVEL=0]
-	    	case "8:1": return Block.WATER; // [LEVEL=1]
-	    	case "8:2": return Block.WATER; // [LEVEL=2]
-	    	case "8:3": return Block.WATER; // [LEVEL=3]
-	    	case "8:4": return Block.WATER; // [LEVEL=4]
-	    	case "8:5": return Block.WATER; // [LEVEL=5]
-	    	case "8:6": return Block.WATER; // [LEVEL=6]
-	    	case "8:7": return Block.WATER; // [LEVEL=7]
-	    	case "8:8": return Block.WATER; // [LEVEL=8]
-	    	case "8:9": return Block.WATER; // [LEVEL=9]
-	    	case "8:10": return Block.WATER; // [LEVEL=10]
-	    	case "8:11": return Block.WATER; // [LEVEL=11]
-	    	case "8:12": return Block.WATER; // [LEVEL=12]
-	    	case "8:13": return Block.WATER; // [LEVEL=13]
-	    	case "8:14": return Block.WATER; // [LEVEL=14]
-	    	case "8:15": return Block.WATER; // [LEVEL=15]
-	    	case "9:0": return Block.WATER; // [LEVEL=0]
-	    	case "9:1": return Block.WATER; // [LEVEL=1]
-	    	case "9:2": return Block.WATER; // [LEVEL=2]
-	    	case "9:3": return Block.WATER; // [LEVEL=3]
-	    	case "9:4": return Block.WATER; // [LEVEL=4]
-	    	case "9:5": return Block.WATER; // [LEVEL=5]
-	    	case "9:6": return Block.WATER; // [LEVEL=6]
-	    	case "9:7": return Block.WATER; // [LEVEL=7]
-	    	case "9:8": return Block.WATER; // [LEVEL=8]
-	    	case "9:9": return Block.WATER; // [LEVEL=9]
-	    	case "9:10": return Block.WATER; // [LEVEL=10]
-	    	case "9:11": return Block.WATER; // [LEVEL=11]
-	    	case "9:12": return Block.WATER; // [LEVEL=12]
-	    	case "9:13": return Block.WATER; // [LEVEL=13]
-	    	case "9:14": return Block.WATER; // [LEVEL=14]
-	    	case "9:15": return Block.WATER; // [LEVEL=15]
-	    	case "10:0": return Block.LAVA; // [LEVEL=0]
-	    	case "10:1": return Block.LAVA; // [LEVEL=1]
-	    	case "10:2": return Block.LAVA; // [LEVEL=2]
-	    	case "10:3": return Block.LAVA; // [LEVEL=3]
-	    	case "10:4": return Block.LAVA; // [LEVEL=4]
-	    	case "10:5": return Block.LAVA; // [LEVEL=5]
-	    	case "10:6": return Block.LAVA; // [LEVEL=6]
-	    	case "10:7": return Block.LAVA; // [LEVEL=7]
-	    	case "10:8": return Block.LAVA; // [LEVEL=8]
-	    	case "10:9": return Block.LAVA; // [LEVEL=9]
-	    	case "10:10": return Block.LAVA; // [LEVEL=10]
-	    	case "10:11": return Block.LAVA; // [LEVEL=11]
-	    	case "10:12": return Block.LAVA; // [LEVEL=12]
-	    	case "10:13": return Block.LAVA; // [LEVEL=13]
-	    	case "10:14": return Block.LAVA; // [LEVEL=14]
-	    	case "10:15": return Block.LAVA; // [LEVEL=15]
-	    	case "11:0": return Block.LAVA; // [LEVEL=0]
-	    	case "11:1": return Block.LAVA; // [LEVEL=1]
-	    	case "11:2": return Block.LAVA; // [LEVEL=2]
-	    	case "11:3": return Block.LAVA; // [LEVEL=3]
-	    	case "11:4": return Block.LAVA; // [LEVEL=4]
-	    	case "11:5": return Block.LAVA; // [LEVEL=5]
-	    	case "11:6": return Block.LAVA; // [LEVEL=6]
-	    	case "11:7": return Block.LAVA; // [LEVEL=7]
-	    	case "11:8": return Block.LAVA; // [LEVEL=8]
-	    	case "11:9": return Block.LAVA; // [LEVEL=9]
-	    	case "11:10": return Block.LAVA; // [LEVEL=10]
-	    	case "11:11": return Block.LAVA; // [LEVEL=11]
-	    	case "11:12": return Block.LAVA; // [LEVEL=12]
-	    	case "11:13": return Block.LAVA; // [LEVEL=13]
-	    	case "11:14": return Block.LAVA; // [LEVEL=14]
-	    	case "11:15": return Block.LAVA; // [LEVEL=15]
-	    	case "12:0": return Block.SAND;
-	    	case "12:1": return Block.RED_SAND;
-	    	case "13:0": return Block.GRAVEL;
-	    	case "14:0": return Block.GOLD_ORE;
-	    	case "15:0": return Block.IRON_ORE;
-	    	case "16:0": return Block.COAL_ORE;
-	    	case "17:0": return Block.OAK_LOG; // [AXIS=Y]
-	    	case "17:1": return Block.SPRUCE_LOG; // [AXIS=Y]
-	    	case "17:2": return Block.BIRCH_LOG; // [AXIS=Y]
-	    	case "17:3": return Block.JUNGLE_LOG; // [AXIS=Y]
-	    	case "17:4": return Block.OAK_LOG; // [AXIS=X]
-	    	case "17:5": return Block.SPRUCE_LOG; // [AXIS=X]
-	    	case "17:6": return Block.BIRCH_LOG; // [AXIS=X]
-	    	case "17:7": return Block.JUNGLE_LOG; // [AXIS=X]
-	    	case "17:8": return Block.OAK_LOG; // [AXIS=Z]
-	    	case "17:9": return Block.SPRUCE_LOG; // [AXIS=Z]
-	    	case "17:10": return Block.BIRCH_LOG; // [AXIS=Z]
-	    	case "17:11": return Block.JUNGLE_LOG; // [AXIS=Z]
-	    	case "17:12": return Block.OAK_WOOD;
-	    	case "17:13": return Block.SPRUCE_WOOD;
-	    	case "17:14": return Block.BIRCH_WOOD;
-	    	case "17:15": return Block.JUNGLE_WOOD;
-	    	case "18:0": return Block.OAK_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "18:1": return Block.SPRUCE_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "18:2": return Block.BIRCH_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "18:3": return Block.JUNGLE_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "18:4": return Block.OAK_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "18:5": return Block.SPRUCE_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "18:6": return Block.BIRCH_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "18:7": return Block.JUNGLE_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "18:8": return Block.OAK_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "18:9": return Block.SPRUCE_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "18:10": return Block.BIRCH_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "18:11": return Block.JUNGLE_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "18:12": return Block.OAK_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "18:13": return Block.SPRUCE_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "18:14": return Block.BIRCH_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "18:15": return Block.JUNGLE_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "19:0": return Block.SPONGE;
-	    	case "19:1": return Block.WET_SPONGE;
-	    	case "20:0": return Block.GLASS;
-	    	case "21:0": return Block.LAPIS_ORE;
-	    	case "22:0": return Block.LAPIS_BLOCK;
-	    	case "23:0": return Block.DISPENSER; // [TRIGGERED=FALSE,FACING=DOWN]
-	    	case "23:1": return Block.DISPENSER; // [TRIGGERED=FALSE,FACING=UP]
-	    	case "23:2": return Block.DISPENSER; // [TRIGGERED=FALSE,FACING=NORTH]
-	    	case "23:3": return Block.DISPENSER; // [TRIGGERED=FALSE,FACING=SOUTH]
-	    	case "23:4": return Block.DISPENSER; // [TRIGGERED=FALSE,FACING=WEST]
-	    	case "23:5": return Block.DISPENSER; // [TRIGGERED=FALSE,FACING=EAST]
-	    	case "23:8": return Block.DISPENSER; // [TRIGGERED=TRUE,FACING=DOWN]
-	    	case "23:9": return Block.DISPENSER; // [TRIGGERED=TRUE,FACING=UP]
-	    	case "23:10": return Block.DISPENSER; // [TRIGGERED=TRUE,FACING=NORTH]
-	    	case "23:11": return Block.DISPENSER; // [TRIGGERED=TRUE,FACING=SOUTH]
-	    	case "23:12": return Block.DISPENSER; // [TRIGGERED=TRUE,FACING=WEST]
-	    	case "23:13": return Block.DISPENSER; // [TRIGGERED=TRUE,FACING=EAST]
-	    	case "24:0": return Block.SANDSTONE;
-	    	case "24:1": return Block.CHISELED_SANDSTONE;
-	    	case "24:2": return Block.CUT_SANDSTONE;
-	    	case "25:0": return Block.NOTE_BLOCK;
-	    	case "26:0": return Block.RED_BED; // [PART=FOOT,FACING=SOUTH,OCCUPIED=FALSE]
-	    	case "26:1": return Block.RED_BED; // [PART=FOOT,FACING=WEST,OCCUPIED=FALSE]
-	    	case "26:2": return Block.RED_BED; // [PART=FOOT,FACING=NORTH,OCCUPIED=FALSE]
-	    	case "26:3": return Block.RED_BED; // [PART=FOOT,FACING=EAST,OCCUPIED=FALSE]
-	    	case "26:4": return Block.RED_BED; // [PART=FOOT,FACING=SOUTH,OCCUPIED=TRUE]
-	    	case "26:5": return Block.RED_BED; // [PART=FOOT,FACING=WEST,OCCUPIED=TRUE]
-	    	case "26:6": return Block.RED_BED; // [PART=FOOT,FACING=NORTH,OCCUPIED=TRUE]
-	    	case "26:7": return Block.RED_BED; // [PART=FOOT,FACING=EAST,OCCUPIED=TRUE]
-	    	case "26:8": return Block.RED_BED; // [PART=HEAD,FACING=SOUTH,OCCUPIED=FALSE]
-	    	case "26:9": return Block.RED_BED; // [PART=HEAD,FACING=WEST,OCCUPIED=FALSE]
-	    	case "26:10": return Block.RED_BED; // [PART=HEAD,FACING=NORTH,OCCUPIED=FALSE]
-	    	case "26:11": return Block.RED_BED; // [PART=HEAD,FACING=EAST,OCCUPIED=FALSE]
-	    	case "26:12": return Block.RED_BED; // [PART=HEAD,FACING=SOUTH,OCCUPIED=TRUE]
-	    	case "26:13": return Block.RED_BED; // [PART=HEAD,FACING=WEST,OCCUPIED=TRUE]
-	    	case "26:14": return Block.RED_BED; // [PART=HEAD,FACING=NORTH,OCCUPIED=TRUE]
-	    	case "26:15": return Block.RED_BED; // [PART=HEAD,FACING=EAST,OCCUPIED=TRUE]
-	    	case "27:0": return Block.POWERED_RAIL; // [SHAPE=NORTH_SOUTH,POWERED=FALSE]
-	    	case "27:1": return Block.POWERED_RAIL; // [SHAPE=EAST_WEST,POWERED=FALSE]
-	    	case "27:2": return Block.POWERED_RAIL; // [SHAPE=ASCENDING_EAST,POWERED=FALSE]
-	    	case "27:3": return Block.POWERED_RAIL; // [SHAPE=ASCENDING_WEST,POWERED=FALSE]
-	    	case "27:4": return Block.POWERED_RAIL; // [SHAPE=ASCENDING_NORTH,POWERED=FALSE]
-	    	case "27:5": return Block.POWERED_RAIL; // [SHAPE=ASCENDING_SOUTH,POWERED=FALSE]
-	    	case "27:8": return Block.POWERED_RAIL; // [SHAPE=NORTH_SOUTH,POWERED=TRUE]
-	    	case "27:9": return Block.POWERED_RAIL; // [SHAPE=EAST_WEST,POWERED=TRUE]
-	    	case "27:10": return Block.POWERED_RAIL; // [SHAPE=ASCENDING_EAST,POWERED=TRUE]
-	    	case "27:11": return Block.POWERED_RAIL; // [SHAPE=ASCENDING_WEST,POWERED=TRUE]
-	    	case "27:12": return Block.POWERED_RAIL; // [SHAPE=ASCENDING_NORTH,POWERED=TRUE]
-	    	case "27:13": return Block.POWERED_RAIL; // [SHAPE=ASCENDING_SOUTH,POWERED=TRUE]
-	    	case "28:0": return Block.DETECTOR_RAIL; // [SHAPE=NORTH_SOUTH,POWERED=FALSE]
-	    	case "28:1": return Block.DETECTOR_RAIL; // [SHAPE=EAST_WEST,POWERED=FALSE]
-	    	case "28:2": return Block.DETECTOR_RAIL; // [SHAPE=ASCENDING_EAST,POWERED=FALSE]
-	    	case "28:3": return Block.DETECTOR_RAIL; // [SHAPE=ASCENDING_WEST,POWERED=FALSE]
-	    	case "28:4": return Block.DETECTOR_RAIL; // [SHAPE=ASCENDING_NORTH,POWERED=FALSE]
-	    	case "28:5": return Block.DETECTOR_RAIL; // [SHAPE=ASCENDING_SOUTH,POWERED=FALSE]
-	    	case "28:8": return Block.DETECTOR_RAIL; // [SHAPE=NORTH_SOUTH,POWERED=TRUE]
-	    	case "28:9": return Block.DETECTOR_RAIL; // [SHAPE=EAST_WEST,POWERED=TRUE]
-	    	case "28:10": return Block.DETECTOR_RAIL; // [SHAPE=ASCENDING_EAST,POWERED=TRUE]
-	    	case "28:11": return Block.DETECTOR_RAIL; // [SHAPE=ASCENDING_WEST,POWERED=TRUE]
-	    	case "28:12": return Block.DETECTOR_RAIL; // [SHAPE=ASCENDING_NORTH,POWERED=TRUE]
-	    	case "28:13": return Block.DETECTOR_RAIL; // [SHAPE=ASCENDING_SOUTH,POWERED=TRUE]
-	    	case "29:0": return Block.STICKY_PISTON; // [FACING=DOWN,EXTENDED=FALSE]
-	    	case "29:1": return Block.STICKY_PISTON; // [FACING=UP,EXTENDED=FALSE]
-	    	case "29:2": return Block.STICKY_PISTON; // [FACING=NORTH,EXTENDED=FALSE]
-	    	case "29:3": return Block.STICKY_PISTON; // [FACING=SOUTH,EXTENDED=FALSE]
-	    	case "29:4": return Block.STICKY_PISTON; // [FACING=WEST,EXTENDED=FALSE]
-	    	case "29:5": return Block.STICKY_PISTON; // [FACING=EAST,EXTENDED=FALSE]
-	    	case "29:8": return Block.STICKY_PISTON; // [FACING=DOWN,EXTENDED=TRUE]
-	    	case "29:9": return Block.STICKY_PISTON; // [FACING=UP,EXTENDED=TRUE]
-	    	case "29:10": return Block.STICKY_PISTON; // [FACING=NORTH,EXTENDED=TRUE]
-	    	case "29:11": return Block.STICKY_PISTON; // [FACING=SOUTH,EXTENDED=TRUE]
-	    	case "29:12": return Block.STICKY_PISTON; // [FACING=WEST,EXTENDED=TRUE]
-	    	case "29:13": return Block.STICKY_PISTON; // [FACING=EAST,EXTENDED=TRUE]
-	    	case "30:0": return Block.COBWEB;
-	    	case "31:0": return Block.DEAD_BUSH;
-	    	case "31:1": return Block.GRASS;
-	    	case "31:2": return Block.FERN;
-	    	case "32:0": return Block.DEAD_BUSH;
-	    	case "33:0": return Block.PISTON; // [FACING=DOWN,EXTENDED=FALSE]
-	    	case "33:1": return Block.PISTON; // [FACING=UP,EXTENDED=FALSE]
-	    	case "33:2": return Block.PISTON; // [FACING=NORTH,EXTENDED=FALSE]
-	    	case "33:3": return Block.PISTON; // [FACING=SOUTH,EXTENDED=FALSE]
-	    	case "33:4": return Block.PISTON; // [FACING=WEST,EXTENDED=FALSE]
-	    	case "33:5": return Block.PISTON; // [FACING=EAST,EXTENDED=FALSE]
-	    	case "33:8": return Block.PISTON; // [FACING=DOWN,EXTENDED=TRUE]
-	    	case "33:9": return Block.PISTON; // [FACING=UP,EXTENDED=TRUE]
-	    	case "33:10": return Block.PISTON; // [FACING=NORTH,EXTENDED=TRUE]
-	    	case "33:11": return Block.PISTON; // [FACING=SOUTH,EXTENDED=TRUE]
-	    	case "33:12": return Block.PISTON; // [FACING=WEST,EXTENDED=TRUE]
-	    	case "33:13": return Block.PISTON; // [FACING=EAST,EXTENDED=TRUE]
-	    	case "34:0": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=DOWN,TYPE=NORMAL]
-	    	case "34:1": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=UP,TYPE=NORMAL]
-	    	case "34:2": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=NORTH,TYPE=NORMAL]
-	    	case "34:3": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=SOUTH,TYPE=NORMAL]
-	    	case "34:4": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=WEST,TYPE=NORMAL]
-	    	case "34:5": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=EAST,TYPE=NORMAL]
-	    	case "34:8": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=DOWN,TYPE=STICKY]
-	    	case "34:9": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=UP,TYPE=STICKY]
-	    	case "34:10": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=NORTH,TYPE=STICKY]
-	    	case "34:11": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=SOUTH,TYPE=STICKY]
-	    	case "34:12": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=WEST,TYPE=STICKY]
-	    	case "34:13": return Block.PISTON_HEAD; // [SHORT=FALSE,FACING=EAST,TYPE=STICKY]
-	    	case "35:0": return Block.WHITE_WOOL;
-	    	case "35:1": return Block.ORANGE_WOOL;
-	    	case "35:2": return Block.MAGENTA_WOOL;
-	    	case "35:3": return Block.LIGHT_BLUE_WOOL;
-	    	case "35:4": return Block.YELLOW_WOOL;
-	    	case "35:5": return Block.LIME_WOOL;
-	    	case "35:6": return Block.PINK_WOOL;
-	    	case "35:7": return Block.GRAY_WOOL;
-	    	case "35:8": return Block.LIGHT_GRAY_WOOL;
-	    	case "35:9": return Block.CYAN_WOOL;
-	    	case "35:10": return Block.PURPLE_WOOL;
-	    	case "35:11": return Block.BLUE_WOOL;
-	    	case "35:12": return Block.BROWN_WOOL;
-	    	case "35:13": return Block.GREEN_WOOL;
-	    	case "35:14": return Block.RED_WOOL;
-	    	case "35:15": return Block.BLACK_WOOL;
-	    	case "36:0": return Block.MOVING_PISTON; // [FACING=DOWN,TYPE=NORMAL]
-	    	case "36:1": return Block.MOVING_PISTON; // [FACING=UP,TYPE=NORMAL]
-	    	case "36:2": return Block.MOVING_PISTON; // [FACING=NORTH,TYPE=NORMAL]
-	    	case "36:3": return Block.MOVING_PISTON; // [FACING=SOUTH,TYPE=NORMAL]
-	    	case "36:4": return Block.MOVING_PISTON; // [FACING=WEST,TYPE=NORMAL]
-	    	case "36:5": return Block.MOVING_PISTON; // [FACING=EAST,TYPE=NORMAL]
-	    	case "36:8": return Block.MOVING_PISTON; // [FACING=DOWN,TYPE=STICKY]
-	    	case "36:9": return Block.MOVING_PISTON; // [FACING=UP,TYPE=STICKY]
-	    	case "36:10": return Block.MOVING_PISTON; // [FACING=NORTH,TYPE=STICKY]
-	    	case "36:11": return Block.MOVING_PISTON; // [FACING=SOUTH,TYPE=STICKY]
-	    	case "36:12": return Block.MOVING_PISTON; // [FACING=WEST,TYPE=STICKY]
-	    	case "36:13": return Block.MOVING_PISTON; // [FACING=EAST,TYPE=STICKY]
-	    	case "37:0": return Block.DANDELION;
-	    	case "38:0": return Block.POPPY;
-	    	case "38:1": return Block.BLUE_ORCHID;
-	    	case "38:2": return Block.ALLIUM;
-	    	case "38:3": return Block.AZURE_BLUET;
-	    	case "38:4": return Block.RED_TULIP;
-	    	case "38:5": return Block.ORANGE_TULIP;
-	    	case "38:6": return Block.WHITE_TULIP;
-	    	case "38:7": return Block.PINK_TULIP;
-	    	case "38:8": return Block.OXEYE_DAISY;
-	    	case "39:0": return Block.BROWN_MUSHROOM;
-	    	case "40:0": return Block.RED_MUSHROOM;
-	    	case "41:0": return Block.GOLD_BLOCK;
-	    	case "42:0": return Block.IRON_BLOCK;
-	    	case "43:0": return Block.STONE_SLAB; // [TYPE=DOUBLE]
-	    	case "43:1": return Block.SANDSTONE_SLAB; // [TYPE=DOUBLE]
-	    	case "43:2": return Block.PETRIFIED_OAK_SLAB; // [TYPE=DOUBLE]
-	    	case "43:3": return Block.COBBLESTONE_SLAB; // [TYPE=DOUBLE]
-	    	case "43:4": return Block.BRICK_SLAB; // [TYPE=DOUBLE]
-	    	case "43:5": return Block.STONE_BRICK_SLAB; // [TYPE=DOUBLE]
-	    	case "43:6": return Block.NETHER_BRICK_SLAB; // [TYPE=DOUBLE]
-	    	case "43:7": return Block.QUARTZ_SLAB; // [TYPE=DOUBLE]
-	    	case "43:8": return Block.SMOOTH_STONE;
-	    	case "43:9": return Block.SMOOTH_SANDSTONE;
-	    	case "43:10": return Block.PETRIFIED_OAK_SLAB; // [TYPE=DOUBLE]
-	    	case "43:11": return Block.COBBLESTONE_SLAB; // [TYPE=DOUBLE]
-	    	case "43:12": return Block.BRICK_SLAB; // [TYPE=DOUBLE]
-	    	case "43:13": return Block.STONE_BRICK_SLAB; // [TYPE=DOUBLE]
-	    	case "43:14": return Block.NETHER_BRICK_SLAB; // [TYPE=DOUBLE]
-	    	case "43:15": return Block.SMOOTH_QUARTZ;
-	    	case "44:0": return Block.STONE_SLAB; // [TYPE=BOTTOM]
-	    	case "44:1": return Block.SANDSTONE_SLAB; // [TYPE=BOTTOM]
-	    	case "44:2": return Block.PETRIFIED_OAK_SLAB; // [TYPE=BOTTOM]
-	    	case "44:3": return Block.COBBLESTONE_SLAB; // [TYPE=BOTTOM]
-	    	case "44:4": return Block.BRICK_SLAB; // [TYPE=BOTTOM]
-	    	case "44:5": return Block.STONE_BRICK_SLAB; // [TYPE=BOTTOM]
-	    	case "44:6": return Block.NETHER_BRICK_SLAB; // [TYPE=BOTTOM]
-	    	case "44:7": return Block.QUARTZ_SLAB; // [TYPE=BOTTOM]
-	    	case "44:8": return Block.STONE_SLAB; // [TYPE=TOP]
-	    	case "44:9": return Block.SANDSTONE_SLAB; // [TYPE=TOP]
-	    	case "44:10": return Block.PETRIFIED_OAK_SLAB; // [TYPE=TOP]
-	    	case "44:11": return Block.COBBLESTONE_SLAB; // [TYPE=TOP]
-	    	case "44:12": return Block.BRICK_SLAB; // [TYPE=TOP]
-	    	case "44:13": return Block.STONE_BRICK_SLAB; // [TYPE=TOP]
-	    	case "44:14": return Block.NETHER_BRICK_SLAB; // [TYPE=TOP]
-	    	case "44:15": return Block.QUARTZ_SLAB; // [TYPE=TOP]
-	    	case "45:0": return Block.BRICKS;
-	    	case "46:0": return Block.TNT; // [UNSTABLE=FALSE]
-	    	case "46:1": return Block.TNT; // [UNSTABLE=TRUE]
-	    	case "47:0": return Block.BOOKSHELF;
-	    	case "48:0": return Block.MOSSY_COBBLESTONE;
-	    	case "49:0": return Block.OBSIDIAN;
-	    	case "50:1": return Block.WALL_TORCH; // [FACING=EAST]
-	    	case "50:2": return Block.WALL_TORCH; // [FACING=WEST]
-	    	case "50:3": return Block.WALL_TORCH; // [FACING=SOUTH]
-	    	case "50:4": return Block.WALL_TORCH; // [FACING=NORTH]
-	    	case "50:5": return Block.TORCH;
-	    	case "51:0": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=0]
-	    	case "51:1": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=1]
-	    	case "51:2": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=2]
-	    	case "51:3": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=3]
-	    	case "51:4": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=4]
-	    	case "51:5": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=5]
-	    	case "51:6": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=6]
-	    	case "51:7": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=7]
-	    	case "51:8": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=8]
-	    	case "51:9": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=9]
-	    	case "51:10": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=10]
-	    	case "51:11": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=11]
-	    	case "51:12": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=12]
-	    	case "51:13": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=13]
-	    	case "51:14": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=14]
-	    	case "51:15": return Block.FIRE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,AGE=15]
-	    	case "52:0": return Block.SPAWNER;
-	    	case "53:0": return Block.OAK_STAIRS; // [HALF=BOTTOM,SHAPE=OUTER_RIGHT,FACING=EAST]
-	    	case "53:1": return Block.OAK_STAIRS; // [HALF=BOTTOM,SHAPE=OUTER_RIGHT,FACING=WEST]
-	    	case "53:2": return Block.OAK_STAIRS; // [HALF=BOTTOM,SHAPE=OUTER_RIGHT,FACING=SOUTH]
-	    	case "53:3": return Block.OAK_STAIRS; // [HALF=BOTTOM,SHAPE=OUTER_RIGHT,FACING=NORTH]
-	    	case "53:4": return Block.OAK_STAIRS; // [HALF=TOP,SHAPE=OUTER_RIGHT,FACING=EAST]
-	    	case "53:5": return Block.OAK_STAIRS; // [HALF=TOP,SHAPE=OUTER_RIGHT,FACING=WEST]
-	    	case "53:6": return Block.OAK_STAIRS; // [HALF=TOP,SHAPE=OUTER_RIGHT,FACING=SOUTH]
-	    	case "53:7": return Block.OAK_STAIRS; // [HALF=TOP,SHAPE=OUTER_RIGHT,FACING=NORTH]
-	    	case "54:2": return Block.CHEST; // [FACING=NORTH,TYPE=SINGLE]
-	    	case "54:3": return Block.CHEST; // [FACING=SOUTH,TYPE=SINGLE]
-	    	case "54:4": return Block.CHEST; // [FACING=WEST,TYPE=SINGLE]
-	    	case "54:5": return Block.CHEST; // [FACING=EAST,TYPE=SINGLE]
-	    	case "55:0": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=0]
-	    	case "55:1": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=1]
-	    	case "55:2": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=2]
-	    	case "55:3": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=3]
-	    	case "55:4": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=4]
-	    	case "55:5": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=5]
-	    	case "55:6": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=6]
-	    	case "55:7": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=7]
-	    	case "55:8": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=8]
-	    	case "55:9": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=9]
-	    	case "55:10": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=10]
-	    	case "55:11": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=11]
-	    	case "55:12": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=12]
-	    	case "55:13": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=13]
-	    	case "55:14": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=14]
-	    	case "55:15": return Block.REDSTONE_WIRE; // [EAST=NONE,SOUTH=NONE,NORTH=NONE,WEST=NONE,POWER=15]
-	    	case "56:0": return Block.DIAMOND_ORE;
-	    	case "57:0": return Block.DIAMOND_BLOCK;
-	    	case "58:0": return Block.CRAFTING_TABLE;
-	    	case "59:0": return Block.WHEAT; // [AGE=0]
-	    	case "59:1": return Block.WHEAT; // [AGE=1]
-	    	case "59:2": return Block.WHEAT; // [AGE=2]
-	    	case "59:3": return Block.WHEAT; // [AGE=3]
-	    	case "59:4": return Block.WHEAT; // [AGE=4]
-	    	case "59:5": return Block.WHEAT; // [AGE=5]
-	    	case "59:6": return Block.WHEAT; // [AGE=6]
-	    	case "59:7": return Block.WHEAT; // [AGE=7]
-	    	case "60:0": return Block.FARMLAND; // [MOISTURE=0]
-	    	case "60:1": return Block.FARMLAND; // [MOISTURE=1]
-	    	case "60:2": return Block.FARMLAND; // [MOISTURE=2]
-	    	case "60:3": return Block.FARMLAND; // [MOISTURE=3]
-	    	case "60:4": return Block.FARMLAND; // [MOISTURE=4]
-	    	case "60:5": return Block.FARMLAND; // [MOISTURE=5]
-	    	case "60:6": return Block.FARMLAND; // [MOISTURE=6]
-	    	case "60:7": return Block.FARMLAND; // [MOISTURE=7]
-	    	case "61:2": return Block.FURNACE; // [FACING=NORTH,LIT=FALSE]
-	    	case "61:3": return Block.FURNACE; // [FACING=SOUTH,LIT=FALSE]
-	    	case "61:4": return Block.FURNACE; // [FACING=WEST,LIT=FALSE]
-	    	case "61:5": return Block.FURNACE; // [FACING=EAST,LIT=FALSE]
-	    	case "62:2": return Block.FURNACE; // [FACING=NORTH,LIT=TRUE]
-	    	case "62:3": return Block.FURNACE; // [FACING=SOUTH,LIT=TRUE]
-	    	case "62:4": return Block.FURNACE; // [FACING=WEST,LIT=TRUE]
-	    	case "62:5": return Block.FURNACE; // [FACING=EAST,LIT=TRUE]
-	    	case "63:0": return Block.OAK_SIGN; // [ROTATION=0]
-	    	case "63:1": return Block.OAK_SIGN; // [ROTATION=1]
-	    	case "63:2": return Block.OAK_SIGN; // [ROTATION=2]
-	    	case "63:3": return Block.OAK_SIGN; // [ROTATION=3]
-	    	case "63:4": return Block.OAK_SIGN; // [ROTATION=4]
-	    	case "63:5": return Block.OAK_SIGN; // [ROTATION=5]
-	    	case "63:6": return Block.OAK_SIGN; // [ROTATION=6]
-	    	case "63:7": return Block.OAK_SIGN; // [ROTATION=7]
-	    	case "63:8": return Block.OAK_SIGN; // [ROTATION=8]
-	    	case "63:9": return Block.OAK_SIGN; // [ROTATION=9]
-	    	case "63:10": return Block.OAK_SIGN; // [ROTATION=10]
-	    	case "63:11": return Block.OAK_SIGN; // [ROTATION=11]
-	    	case "63:12": return Block.OAK_SIGN; // [ROTATION=12]
-	    	case "63:13": return Block.OAK_SIGN; // [ROTATION=13]
-	    	case "63:14": return Block.OAK_SIGN; // [ROTATION=14]
-	    	case "63:15": return Block.OAK_SIGN; // [ROTATION=15]
-	    	case "64:0": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "64:1": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "64:2": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "64:3": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "64:4": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "64:5": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "64:6": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "64:7": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "64:8": return Block.OAK_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "64:9": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "64:10": return Block.OAK_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "64:11": return Block.OAK_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "65:2": return Block.LADDER; // [FACING=NORTH]
-	    	case "65:3": return Block.LADDER; // [FACING=SOUTH]
-	    	case "65:4": return Block.LADDER; // [FACING=WEST]
-	    	case "65:5": return Block.LADDER; // [FACING=EAST]
-	    	case "66:0": return Block.RAIL; // [SHAPE=NORTH_SOUTH]
-	    	case "66:1": return Block.RAIL; // [SHAPE=EAST_WEST]
-	    	case "66:2": return Block.RAIL; // [SHAPE=ASCENDING_EAST]
-	    	case "66:3": return Block.RAIL; // [SHAPE=ASCENDING_WEST]
-	    	case "66:4": return Block.RAIL; // [SHAPE=ASCENDING_NORTH]
-	    	case "66:5": return Block.RAIL; // [SHAPE=ASCENDING_SOUTH]
-	    	case "66:6": return Block.RAIL; // [SHAPE=SOUTH_EAST]
-	    	case "66:7": return Block.RAIL; // [SHAPE=SOUTH_WEST]
-	    	case "66:8": return Block.RAIL; // [SHAPE=NORTH_WEST]
-	    	case "66:9": return Block.RAIL; // [SHAPE=NORTH_EAST]
-	    	case "67:0": return Block.COBBLESTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "67:1": return Block.COBBLESTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "67:2": return Block.COBBLESTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "67:3": return Block.COBBLESTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "67:4": return Block.COBBLESTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "67:5": return Block.COBBLESTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "67:6": return Block.COBBLESTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "67:7": return Block.COBBLESTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "68:2": return Block.OAK_SIGN; // [FACING=NORTH]
-	    	case "68:3": return Block.OAK_SIGN; // [FACING=SOUTH]
-	    	case "68:4": return Block.OAK_SIGN; // [FACING=WEST]
-	    	case "68:5": return Block.OAK_SIGN; // [FACING=EAST]
-	    	case "69:0": return Block.LEVER; // [POWERED=FALSE,FACING=NORTH,FACE=CEILING]
-	    	case "69:1": return Block.LEVER; // [POWERED=FALSE,FACING=EAST,FACE=WALL]
-	    	case "69:2": return Block.LEVER; // [POWERED=FALSE,FACING=WEST,FACE=WALL]
-	    	case "69:3": return Block.LEVER; // [POWERED=FALSE,FACING=SOUTH,FACE=WALL]
-	    	case "69:4": return Block.LEVER; // [POWERED=FALSE,FACING=NORTH,FACE=WALL]
-	    	case "69:5": return Block.LEVER; // [POWERED=FALSE,FACING=EAST,FACE=FLOOR]
-	    	case "69:6": return Block.LEVER; // [POWERED=FALSE,FACING=NORTH,FACE=FLOOR]
-	    	case "69:7": return Block.LEVER; // [POWERED=FALSE,FACING=EAST,FACE=CEILING]
-	    	case "69:8": return Block.LEVER; // [POWERED=TRUE,FACING=NORTH,FACE=CEILING]
-	    	case "69:9": return Block.LEVER; // [POWERED=TRUE,FACING=EAST,FACE=WALL]
-	    	case "69:10": return Block.LEVER; // [POWERED=TRUE,FACING=WEST,FACE=WALL]
-	    	case "69:11": return Block.LEVER; // [POWERED=TRUE,FACING=SOUTH,FACE=WALL]
-	    	case "69:12": return Block.LEVER; // [POWERED=TRUE,FACING=NORTH,FACE=WALL]
-	    	case "69:13": return Block.LEVER; // [POWERED=TRUE,FACING=EAST,FACE=FLOOR]
-	    	case "69:14": return Block.LEVER; // [POWERED=TRUE,FACING=NORTH,FACE=FLOOR]
-	    	case "69:15": return Block.LEVER; // [POWERED=TRUE,FACING=EAST,FACE=CEILING]
-	    	case "70:0": return Block.STONE_PRESSURE_PLATE; // [POWERED=FALSE]
-	    	case "70:1": return Block.STONE_PRESSURE_PLATE; // [POWERED=TRUE]
-	    	case "71:0": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "71:1": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "71:2": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "71:3": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "71:4": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "71:5": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "71:6": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "71:7": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "71:8": return Block.IRON_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "71:9": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "71:10": return Block.IRON_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "71:11": return Block.IRON_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "72:0": return Block.OAK_PRESSURE_PLATE; // [POWERED=FALSE]
-	    	case "72:1": return Block.OAK_PRESSURE_PLATE; // [POWERED=TRUE]
-	    	case "73:0": return Block.REDSTONE_ORE; // [LIT=FALSE]
-	    	case "74:0": return Block.REDSTONE_ORE; // [LIT=TRUE]
-	    	case "75:1": return Block.REDSTONE_WALL_TORCH; // [FACING=EAST,LIT=FALSE]
-	    	case "75:2": return Block.REDSTONE_WALL_TORCH; // [FACING=WEST,LIT=FALSE]
-	    	case "75:3": return Block.REDSTONE_WALL_TORCH; // [FACING=SOUTH,LIT=FALSE]
-	    	case "75:4": return Block.REDSTONE_WALL_TORCH; // [FACING=NORTH,LIT=FALSE]
-	    	case "75:5": return Block.REDSTONE_TORCH; // [LIT=FALSE]
-	    	case "76:1": return Block.REDSTONE_WALL_TORCH; // [FACING=EAST,LIT=TRUE]
-	    	case "76:2": return Block.REDSTONE_WALL_TORCH; // [FACING=WEST,LIT=TRUE]
-	    	case "76:3": return Block.REDSTONE_WALL_TORCH; // [FACING=SOUTH,LIT=TRUE]
-	    	case "76:4": return Block.REDSTONE_WALL_TORCH; // [FACING=NORTH,LIT=TRUE]
-	    	case "76:5": return Block.REDSTONE_TORCH; // [LIT=TRUE]
-	    	case "77:0": return Block.STONE_BUTTON; // [POWERED=FALSE,FACING=EAST,FACE=CEILING]
-	    	case "77:1": return Block.STONE_BUTTON; // [POWERED=FALSE,FACING=EAST,FACE=WALL]
-	    	case "77:2": return Block.STONE_BUTTON; // [POWERED=FALSE,FACING=WEST,FACE=WALL]
-	    	case "77:3": return Block.STONE_BUTTON; // [POWERED=FALSE,FACING=SOUTH,FACE=WALL]
-	    	case "77:4": return Block.STONE_BUTTON; // [POWERED=FALSE,FACING=NORTH,FACE=WALL]
-	    	case "77:5": return Block.STONE_BUTTON; // [POWERED=FALSE,FACING=EAST,FACE=FLOOR]
-	    	case "77:8": return Block.STONE_BUTTON; // [POWERED=TRUE,FACING=SOUTH,FACE=CEILING]
-	    	case "77:9": return Block.STONE_BUTTON; // [POWERED=TRUE,FACING=EAST,FACE=WALL]
-	    	case "77:10": return Block.STONE_BUTTON; // [POWERED=TRUE,FACING=WEST,FACE=WALL]
-	    	case "77:11": return Block.STONE_BUTTON; // [POWERED=TRUE,FACING=SOUTH,FACE=WALL]
-	    	case "77:12": return Block.STONE_BUTTON; // [POWERED=TRUE,FACING=NORTH,FACE=WALL]
-	    	case "77:13": return Block.STONE_BUTTON; // [POWERED=TRUE,FACING=SOUTH,FACE=FLOOR]
-	    	case "78:0": return Block.SNOW; // [LAYERS=1]
-	    	case "78:1": return Block.SNOW; // [LAYERS=2]
-	    	case "78:2": return Block.SNOW; // [LAYERS=3]
-	    	case "78:3": return Block.SNOW; // [LAYERS=4]
-	    	case "78:4": return Block.SNOW; // [LAYERS=5]
-	    	case "78:5": return Block.SNOW; // [LAYERS=6]
-	    	case "78:6": return Block.SNOW; // [LAYERS=7]
-	    	case "78:7": return Block.SNOW; // [LAYERS=8]
-	    	case "79:0": return Block.ICE;
-	    	case "80:0": return Block.SNOW_BLOCK;
-	    	case "81:0": return Block.CACTUS; // [AGE=0]
-	    	case "81:1": return Block.CACTUS; // [AGE=1]
-	    	case "81:2": return Block.CACTUS; // [AGE=2]
-	    	case "81:3": return Block.CACTUS; // [AGE=3]
-	    	case "81:4": return Block.CACTUS; // [AGE=4]
-	    	case "81:5": return Block.CACTUS; // [AGE=5]
-	    	case "81:6": return Block.CACTUS; // [AGE=6]
-	    	case "81:7": return Block.CACTUS; // [AGE=7]
-	    	case "81:8": return Block.CACTUS; // [AGE=8]
-	    	case "81:9": return Block.CACTUS; // [AGE=9]
-	    	case "81:10": return Block.CACTUS; // [AGE=10]
-	    	case "81:11": return Block.CACTUS; // [AGE=11]
-	    	case "81:12": return Block.CACTUS; // [AGE=12]
-	    	case "81:13": return Block.CACTUS; // [AGE=13]
-	    	case "81:14": return Block.CACTUS; // [AGE=14]
-	    	case "81:15": return Block.CACTUS; // [AGE=15]
-	    	case "82:0": return Block.CLAY;
-	    	case "83:0": return Block.SUGAR_CANE; // [AGE=0]
-	    	case "83:1": return Block.SUGAR_CANE; // [AGE=1]
-	    	case "83:2": return Block.SUGAR_CANE; // [AGE=2]
-	    	case "83:3": return Block.SUGAR_CANE; // [AGE=3]
-	    	case "83:4": return Block.SUGAR_CANE; // [AGE=4]
-	    	case "83:5": return Block.SUGAR_CANE; // [AGE=5]
-	    	case "83:6": return Block.SUGAR_CANE; // [AGE=6]
-	    	case "83:7": return Block.SUGAR_CANE; // [AGE=7]
-	    	case "83:8": return Block.SUGAR_CANE; // [AGE=8]
-	    	case "83:9": return Block.SUGAR_CANE; // [AGE=9]
-	    	case "83:10": return Block.SUGAR_CANE; // [AGE=10]
-	    	case "83:11": return Block.SUGAR_CANE; // [AGE=11]
-	    	case "83:12": return Block.SUGAR_CANE; // [AGE=12]
-	    	case "83:13": return Block.SUGAR_CANE; // [AGE=13]
-	    	case "83:14": return Block.SUGAR_CANE; // [AGE=14]
-	    	case "83:15": return Block.SUGAR_CANE; // [AGE=15]
-	    	case "84:0": return Block.JUKEBOX; // [HAS_RECORD=FALSE]
-	    	case "84:1": return Block.JUKEBOX; // [HAS_RECORD=TRUE]
-	    	case "85:0": return Block.OAK_FENCE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "86:0": return Block.CARVED_PUMPKIN; // [FACING=SOUTH]
-	    	case "86:1": return Block.CARVED_PUMPKIN; // [FACING=WEST]
-	    	case "86:2": return Block.CARVED_PUMPKIN; // [FACING=NORTH]
-	    	case "86:3": return Block.CARVED_PUMPKIN; // [FACING=EAST]
-	    	case "87:0": return Block.NETHERRACK;
-	    	case "88:0": return Block.SOUL_SAND;
-	    	case "89:0": return Block.GLOWSTONE;
-	    	case "90:1": return Block.NETHER_PORTAL; // [AXIS=X]
-	    	case "90:2": return Block.NETHER_PORTAL; // [AXIS=Z]
-	    	case "91:0": return Block.JACK_O_LANTERN; // [FACING=SOUTH]
-	    	case "91:1": return Block.JACK_O_LANTERN; // [FACING=WEST]
-	    	case "91:2": return Block.JACK_O_LANTERN; // [FACING=NORTH]
-	    	case "91:3": return Block.JACK_O_LANTERN; // [FACING=EAST]
-	    	case "92:0": return Block.CAKE; // [BITES=0]
-	    	case "92:1": return Block.CAKE; // [BITES=1]
-	    	case "92:2": return Block.CAKE; // [BITES=2]
-	    	case "92:3": return Block.CAKE; // [BITES=3]
-	    	case "92:4": return Block.CAKE; // [BITES=4]
-	    	case "92:5": return Block.CAKE; // [BITES=5]
-	    	case "92:6": return Block.CAKE; // [BITES=6]
-	    	case "93:0": return Block.REPEATER; // [DELAY=1,FACING=SOUTH,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:1": return Block.REPEATER; // [DELAY=1,FACING=WEST,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:2": return Block.REPEATER; // [DELAY=1,FACING=NORTH,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:3": return Block.REPEATER; // [DELAY=1,FACING=EAST,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:4": return Block.REPEATER; // [DELAY=2,FACING=SOUTH,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:5": return Block.REPEATER; // [DELAY=2,FACING=WEST,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:6": return Block.REPEATER; // [DELAY=2,FACING=NORTH,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:7": return Block.REPEATER; // [DELAY=2,FACING=EAST,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:8": return Block.REPEATER; // [DELAY=3,FACING=SOUTH,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:9": return Block.REPEATER; // [DELAY=3,FACING=WEST,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:10": return Block.REPEATER; // [DELAY=3,FACING=NORTH,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:11": return Block.REPEATER; // [DELAY=3,FACING=EAST,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:12": return Block.REPEATER; // [DELAY=4,FACING=SOUTH,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:13": return Block.REPEATER; // [DELAY=4,FACING=WEST,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:14": return Block.REPEATER; // [DELAY=4,FACING=NORTH,LOCKED=FALSE,POWERED=FALSE]
-	    	case "93:15": return Block.REPEATER; // [DELAY=4,FACING=EAST,LOCKED=FALSE,POWERED=FALSE]
-	    	case "94:0": return Block.REPEATER; // [DELAY=1,FACING=SOUTH,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:1": return Block.REPEATER; // [DELAY=1,FACING=WEST,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:2": return Block.REPEATER; // [DELAY=1,FACING=NORTH,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:3": return Block.REPEATER; // [DELAY=1,FACING=EAST,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:4": return Block.REPEATER; // [DELAY=2,FACING=SOUTH,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:5": return Block.REPEATER; // [DELAY=2,FACING=WEST,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:6": return Block.REPEATER; // [DELAY=2,FACING=NORTH,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:7": return Block.REPEATER; // [DELAY=2,FACING=EAST,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:8": return Block.REPEATER; // [DELAY=3,FACING=SOUTH,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:9": return Block.REPEATER; // [DELAY=3,FACING=WEST,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:10": return Block.REPEATER; // [DELAY=3,FACING=NORTH,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:11": return Block.REPEATER; // [DELAY=3,FACING=EAST,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:12": return Block.REPEATER; // [DELAY=4,FACING=SOUTH,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:13": return Block.REPEATER; // [DELAY=4,FACING=WEST,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:14": return Block.REPEATER; // [DELAY=4,FACING=NORTH,LOCKED=FALSE,POWERED=TRUE]
-	    	case "94:15": return Block.REPEATER; // [DELAY=4,FACING=EAST,LOCKED=FALSE,POWERED=TRUE]
-	    	case "95:0": return Block.WHITE_STAINED_GLASS;
-	    	case "95:1": return Block.ORANGE_STAINED_GLASS;
-	    	case "95:2": return Block.MAGENTA_STAINED_GLASS;
-	    	case "95:3": return Block.LIGHT_BLUE_STAINED_GLASS;
-	    	case "95:4": return Block.YELLOW_STAINED_GLASS;
-	    	case "95:5": return Block.LIME_STAINED_GLASS;
-	    	case "95:6": return Block.PINK_STAINED_GLASS;
-	    	case "95:7": return Block.GRAY_STAINED_GLASS;
-	    	case "95:8": return Block.LIGHT_GRAY_STAINED_GLASS;
-	    	case "95:9": return Block.CYAN_STAINED_GLASS;
-	    	case "95:10": return Block.PURPLE_STAINED_GLASS;
-	    	case "95:11": return Block.BLUE_STAINED_GLASS;
-	    	case "95:12": return Block.BROWN_STAINED_GLASS;
-	    	case "95:13": return Block.GREEN_STAINED_GLASS;
-	    	case "95:14": return Block.RED_STAINED_GLASS;
-	    	case "95:15": return Block.BLACK_STAINED_GLASS;
-	    	case "96:0": return Block.OAK_TRAPDOOR; // [HALF=BOTTOM,FACING=NORTH,OPEN=FALSE,POWERED=FALSE]
-	    	case "96:1": return Block.OAK_TRAPDOOR; // [HALF=BOTTOM,FACING=SOUTH,OPEN=FALSE,POWERED=FALSE]
-	    	case "96:2": return Block.OAK_TRAPDOOR; // [HALF=BOTTOM,FACING=WEST,OPEN=FALSE,POWERED=FALSE]
-	    	case "96:3": return Block.OAK_TRAPDOOR; // [HALF=BOTTOM,FACING=EAST,OPEN=FALSE,POWERED=FALSE]
-	    	case "96:4": return Block.OAK_TRAPDOOR; // [HALF=BOTTOM,FACING=NORTH,OPEN=TRUE,POWERED=TRUE]
-	    	case "96:5": return Block.OAK_TRAPDOOR; // [HALF=BOTTOM,FACING=SOUTH,OPEN=TRUE,POWERED=TRUE]
-	    	case "96:6": return Block.OAK_TRAPDOOR; // [HALF=BOTTOM,FACING=WEST,OPEN=TRUE,POWERED=TRUE]
-	    	case "96:7": return Block.OAK_TRAPDOOR; // [HALF=BOTTOM,FACING=EAST,OPEN=TRUE,POWERED=TRUE]
-	    	case "96:8": return Block.OAK_TRAPDOOR; // [HALF=TOP,FACING=NORTH,OPEN=FALSE,POWERED=FALSE]
-	    	case "96:9": return Block.OAK_TRAPDOOR; // [HALF=TOP,FACING=SOUTH,OPEN=FALSE,POWERED=FALSE]
-	    	case "96:10": return Block.OAK_TRAPDOOR; // [HALF=TOP,FACING=WEST,OPEN=FALSE,POWERED=FALSE]
-	    	case "96:11": return Block.OAK_TRAPDOOR; // [HALF=TOP,FACING=EAST,OPEN=FALSE,POWERED=FALSE]
-	    	case "96:12": return Block.OAK_TRAPDOOR; // [HALF=TOP,FACING=NORTH,OPEN=TRUE,POWERED=TRUE]
-	    	case "96:13": return Block.OAK_TRAPDOOR; // [HALF=TOP,FACING=SOUTH,OPEN=TRUE,POWERED=TRUE]
-	    	case "96:14": return Block.OAK_TRAPDOOR; // [HALF=TOP,FACING=WEST,OPEN=TRUE,POWERED=TRUE]
-	    	case "96:15": return Block.OAK_TRAPDOOR; // [HALF=TOP,FACING=EAST,OPEN=TRUE,POWERED=TRUE]
-	    	case "97:0": return Block.INFESTED_STONE;
-	    	case "97:1": return Block.INFESTED_COBBLESTONE;
-	    	case "97:2": return Block.INFESTED_STONE_BRICKS;
-	    	case "97:3": return Block.INFESTED_MOSSY_STONE_BRICKS;
-	    	case "97:4": return Block.INFESTED_CRACKED_STONE_BRICKS;
-	    	case "97:5": return Block.INFESTED_CHISELED_STONE_BRICKS;
-	    	case "98:0": return Block.STONE_BRICKS;
-	    	case "98:1": return Block.MOSSY_STONE_BRICKS;
-	    	case "98:2": return Block.CRACKED_STONE_BRICKS;
-	    	case "98:3": return Block.CHISELED_STONE_BRICKS;
-	    	case "99:0": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=FALSE,WEST=FALSE,UP=FALSE,DOWN=FALSE]
-	    	case "99:1": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=TRUE,EAST=FALSE,SOUTH=FALSE,WEST=TRUE,UP=TRUE,DOWN=FALSE]
-	    	case "99:2": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=TRUE,EAST=FALSE,SOUTH=FALSE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "99:3": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=TRUE,EAST=TRUE,SOUTH=FALSE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "99:4": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=FALSE,WEST=TRUE,UP=TRUE,DOWN=FALSE]
-	    	case "99:5": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=FALSE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "99:6": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=TRUE,SOUTH=FALSE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "99:7": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=TRUE,WEST=TRUE,UP=TRUE,DOWN=FALSE]
-	    	case "99:8": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=TRUE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "99:9": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=TRUE,SOUTH=TRUE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "99:10": return Block.MUSHROOM_STEM; // [NORTH=TRUE,EAST=TRUE,SOUTH=TRUE,WEST=TRUE,UP=FALSE,DOWN=FALSE]
-	    	case "99:14": return Block.BROWN_MUSHROOM_BLOCK; // [NORTH=TRUE,EAST=TRUE,SOUTH=TRUE,WEST=TRUE,UP=TRUE,DOWN=TRUE]
-	    	case "99:15": return Block.MUSHROOM_STEM; // [NORTH=TRUE,EAST=TRUE,SOUTH=TRUE,WEST=TRUE,UP=TRUE,DOWN=TRUE]
-	    	case "100:0": return Block.RED_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=FALSE,WEST=FALSE,UP=FALSE,DOWN=FALSE]
-	    	case "100:1": return Block.RED_MUSHROOM_BLOCK; // [NORTH=TRUE,EAST=FALSE,SOUTH=FALSE,WEST=TRUE,UP=TRUE,DOWN=FALSE]
-	    	case "100:2": return Block.RED_MUSHROOM_BLOCK; // [NORTH=TRUE,EAST=FALSE,SOUTH=FALSE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "100:3": return Block.RED_MUSHROOM_BLOCK; // [NORTH=TRUE,EAST=TRUE,SOUTH=FALSE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "100:4": return Block.RED_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=FALSE,WEST=TRUE,UP=TRUE,DOWN=FALSE]
-	    	case "100:5": return Block.RED_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=FALSE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "100:6": return Block.RED_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=TRUE,SOUTH=FALSE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "100:7": return Block.RED_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=TRUE,WEST=TRUE,UP=TRUE,DOWN=FALSE]
-	    	case "100:8": return Block.RED_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=FALSE,SOUTH=TRUE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "100:9": return Block.RED_MUSHROOM_BLOCK; // [NORTH=FALSE,EAST=TRUE,SOUTH=TRUE,WEST=FALSE,UP=TRUE,DOWN=FALSE]
-	    	case "100:10": return Block.MUSHROOM_STEM; // [NORTH=TRUE,EAST=TRUE,SOUTH=TRUE,WEST=TRUE,UP=FALSE,DOWN=FALSE]
-	    	case "100:14": return Block.RED_MUSHROOM_BLOCK; // [NORTH=TRUE,EAST=TRUE,SOUTH=TRUE,WEST=TRUE,UP=TRUE,DOWN=TRUE]
-	    	case "100:15": return Block.MUSHROOM_STEM; // [NORTH=TRUE,EAST=TRUE,SOUTH=TRUE,WEST=TRUE,UP=TRUE,DOWN=TRUE]
-	    	case "101:0": return Block.IRON_BARS; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "102:0": return Block.GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "103:0": return Block.MELON;
-	    	case "104:0": return Block.PUMPKIN_STEM; // [AGE=0]
-	    	case "104:1": return Block.PUMPKIN_STEM; // [AGE=1]
-	    	case "104:2": return Block.PUMPKIN_STEM; // [AGE=2]
-	    	case "104:3": return Block.PUMPKIN_STEM; // [AGE=3]
-	    	case "104:4": return Block.PUMPKIN_STEM; // [AGE=4]
-	    	case "104:5": return Block.PUMPKIN_STEM; // [AGE=5]
-	    	case "104:6": return Block.PUMPKIN_STEM; // [AGE=6]
-	    	case "104:7": return Block.PUMPKIN_STEM; // [AGE=7]
-	    	case "105:0": return Block.MELON_STEM; // [AGE=0]
-	    	case "105:1": return Block.MELON_STEM; // [AGE=1]
-	    	case "105:2": return Block.MELON_STEM; // [AGE=2]
-	    	case "105:3": return Block.MELON_STEM; // [AGE=3]
-	    	case "105:4": return Block.MELON_STEM; // [AGE=4]
-	    	case "105:5": return Block.MELON_STEM; // [AGE=5]
-	    	case "105:6": return Block.MELON_STEM; // [AGE=6]
-	    	case "105:7": return Block.MELON_STEM; // [AGE=7]
-	    	case "106:0": return Block.VINE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE]
-	    	case "106:1": return Block.VINE; // [EAST=FALSE,SOUTH=TRUE,NORTH=FALSE,WEST=FALSE,UP=FALSE]
-	    	case "106:2": return Block.VINE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=TRUE,UP=FALSE]
-	    	case "106:3": return Block.VINE; // [EAST=FALSE,SOUTH=TRUE,NORTH=FALSE,WEST=TRUE,UP=FALSE]
-	    	case "106:4": return Block.VINE; // [EAST=FALSE,SOUTH=FALSE,NORTH=TRUE,WEST=FALSE,UP=FALSE]
-	    	case "106:5": return Block.VINE; // [EAST=FALSE,SOUTH=TRUE,NORTH=TRUE,WEST=FALSE,UP=FALSE]
-	    	case "106:6": return Block.VINE; // [EAST=FALSE,SOUTH=FALSE,NORTH=TRUE,WEST=TRUE,UP=FALSE]
-	    	case "106:7": return Block.VINE; // [EAST=FALSE,SOUTH=TRUE,NORTH=TRUE,WEST=TRUE,UP=FALSE]
-	    	case "106:8": return Block.VINE; // [EAST=TRUE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE]
-	    	case "106:9": return Block.VINE; // [EAST=TRUE,SOUTH=TRUE,NORTH=FALSE,WEST=FALSE,UP=FALSE]
-	    	case "106:10": return Block.VINE; // [EAST=TRUE,SOUTH=FALSE,NORTH=FALSE,WEST=TRUE,UP=FALSE]
-	    	case "106:11": return Block.VINE; // [EAST=TRUE,SOUTH=TRUE,NORTH=FALSE,WEST=TRUE,UP=FALSE]
-	    	case "106:12": return Block.VINE; // [EAST=TRUE,SOUTH=FALSE,NORTH=TRUE,WEST=FALSE,UP=FALSE]
-	    	case "106:13": return Block.VINE; // [EAST=TRUE,SOUTH=TRUE,NORTH=TRUE,WEST=FALSE,UP=FALSE]
-	    	case "106:14": return Block.VINE; // [EAST=TRUE,SOUTH=FALSE,NORTH=TRUE,WEST=TRUE,UP=FALSE]
-	    	case "106:15": return Block.VINE; // [EAST=TRUE,SOUTH=TRUE,NORTH=TRUE,WEST=TRUE,UP=FALSE]
-	    	case "107:0": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "107:1": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "107:2": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "107:3": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "107:4": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "107:5": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "107:6": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "107:7": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "107:8": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=FALSE]
-	    	case "107:9": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=FALSE]
-	    	case "107:10": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=FALSE]
-	    	case "107:11": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "107:12": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=TRUE]
-	    	case "107:13": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=TRUE]
-	    	case "107:14": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=TRUE]
-	    	case "107:15": return Block.OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=TRUE]
-	    	case "108:0": return Block.BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "108:1": return Block.BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "108:2": return Block.BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "108:3": return Block.BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "108:4": return Block.BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "108:5": return Block.BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "108:6": return Block.BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "108:7": return Block.BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "109:0": return Block.STONE_BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "109:1": return Block.STONE_BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "109:2": return Block.STONE_BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "109:3": return Block.STONE_BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "109:4": return Block.STONE_BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "109:5": return Block.STONE_BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "109:6": return Block.STONE_BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "109:7": return Block.STONE_BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "110:0": return Block.MYCELIUM; // [SNOWY=FALSE]
-	    	case "111:0": return Block.LILY_PAD;
-	    	case "112:0": return Block.NETHER_BRICKS;
-	    	case "113:0": return Block.NETHER_BRICK_FENCE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "114:0": return Block.NETHER_BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "114:1": return Block.NETHER_BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "114:2": return Block.NETHER_BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "114:3": return Block.NETHER_BRICK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "114:4": return Block.NETHER_BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "114:5": return Block.NETHER_BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "114:6": return Block.NETHER_BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "114:7": return Block.NETHER_BRICK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "115:0": return Block.NETHER_WART; // [AGE=0]
-	    	case "115:1": return Block.NETHER_WART; // [AGE=1]
-	    	case "115:2": return Block.NETHER_WART; // [AGE=2]
-	    	case "115:3": return Block.NETHER_WART; // [AGE=3]
-	    	case "116:0": return Block.ENCHANTING_TABLE;
-	    	case "117:0": return Block.BREWING_STAND; // [HAS_BOTTLE_0=FALSE,HAS_BOTTLE_1=FALSE,HAS_BOTTLE_2=FALSE]
-	    	case "117:1": return Block.BREWING_STAND; // [HAS_BOTTLE_0=TRUE,HAS_BOTTLE_1=FALSE,HAS_BOTTLE_2=FALSE]
-	    	case "117:2": return Block.BREWING_STAND; // [HAS_BOTTLE_0=FALSE,HAS_BOTTLE_1=TRUE,HAS_BOTTLE_2=FALSE]
-	    	case "117:3": return Block.BREWING_STAND; // [HAS_BOTTLE_0=TRUE,HAS_BOTTLE_1=TRUE,HAS_BOTTLE_2=FALSE]
-	    	case "117:4": return Block.BREWING_STAND; // [HAS_BOTTLE_0=FALSE,HAS_BOTTLE_1=FALSE,HAS_BOTTLE_2=TRUE]
-	    	case "117:5": return Block.BREWING_STAND; // [HAS_BOTTLE_0=TRUE,HAS_BOTTLE_1=FALSE,HAS_BOTTLE_2=TRUE]
-	    	case "117:6": return Block.BREWING_STAND; // [HAS_BOTTLE_0=FALSE,HAS_BOTTLE_1=TRUE,HAS_BOTTLE_2=TRUE]
-	    	case "117:7": return Block.BREWING_STAND; // [HAS_BOTTLE_0=TRUE,HAS_BOTTLE_1=TRUE,HAS_BOTTLE_2=TRUE]
-	    	case "118:0": return Block.CAULDRON; // [LEVEL=0]
-	    	case "118:1": return Block.CAULDRON; // [LEVEL=1]
-	    	case "118:2": return Block.CAULDRON; // [LEVEL=2]
-	    	case "118:3": return Block.CAULDRON; // [LEVEL=3]
-	    	case "119:0": return Block.END_PORTAL;
-	    	case "120:0": return Block.END_PORTAL_FRAME; // [EYE=FALSE,FACING=SOUTH]
-	    	case "120:1": return Block.END_PORTAL_FRAME; // [EYE=FALSE,FACING=WEST]
-	    	case "120:2": return Block.END_PORTAL_FRAME; // [EYE=FALSE,FACING=NORTH]
-	    	case "120:3": return Block.END_PORTAL_FRAME; // [EYE=FALSE,FACING=EAST]
-	    	case "120:4": return Block.END_PORTAL_FRAME; // [EYE=TRUE,FACING=SOUTH]
-	    	case "120:5": return Block.END_PORTAL_FRAME; // [EYE=TRUE,FACING=WEST]
-	    	case "120:6": return Block.END_PORTAL_FRAME; // [EYE=TRUE,FACING=NORTH]
-	    	case "120:7": return Block.END_PORTAL_FRAME; // [EYE=TRUE,FACING=EAST]
-	    	case "121:0": return Block.END_STONE;
-	    	case "122:0": return Block.DRAGON_EGG;
-	    	case "123:0": return Block.REDSTONE_LAMP; // [LIT=FALSE]
-	    	case "124:0": return Block.REDSTONE_LAMP; // [LIT=TRUE]
-	    	case "125:0": return Block.OAK_SLAB; // [TYPE=DOUBLE]
-	    	case "125:1": return Block.SPRUCE_SLAB; // [TYPE=DOUBLE]
-	    	case "125:2": return Block.BIRCH_SLAB; // [TYPE=DOUBLE]
-	    	case "125:3": return Block.JUNGLE_SLAB; // [TYPE=DOUBLE]
-	    	case "125:4": return Block.ACACIA_SLAB; // [TYPE=DOUBLE]
-	    	case "125:5": return Block.DARK_OAK_SLAB; // [TYPE=DOUBLE]
-	    	case "126:0": return Block.OAK_SLAB; // [TYPE=BOTTOM]
-	    	case "126:1": return Block.SPRUCE_SLAB; // [TYPE=BOTTOM]
-	    	case "126:2": return Block.BIRCH_SLAB; // [TYPE=BOTTOM]
-	    	case "126:3": return Block.JUNGLE_SLAB; // [TYPE=BOTTOM]
-	    	case "126:4": return Block.ACACIA_SLAB; // [TYPE=BOTTOM]
-	    	case "126:5": return Block.DARK_OAK_SLAB; // [TYPE=BOTTOM]
-	    	case "126:8": return Block.OAK_SLAB; // [TYPE=TOP]
-	    	case "126:9": return Block.SPRUCE_SLAB; // [TYPE=TOP]
-	    	case "126:10": return Block.BIRCH_SLAB; // [TYPE=TOP]
-	    	case "126:11": return Block.JUNGLE_SLAB; // [TYPE=TOP]
-	    	case "126:12": return Block.ACACIA_SLAB; // [TYPE=TOP]
-	    	case "126:13": return Block.DARK_OAK_SLAB; // [TYPE=TOP]
-	    	case "127:0": return Block.COCOA; // [FACING=SOUTH,AGE=0]
-	    	case "127:1": return Block.COCOA; // [FACING=WEST,AGE=0]
-	    	case "127:2": return Block.COCOA; // [FACING=NORTH,AGE=0]
-	    	case "127:3": return Block.COCOA; // [FACING=EAST,AGE=0]
-	    	case "127:4": return Block.COCOA; // [FACING=SOUTH,AGE=1]
-	    	case "127:5": return Block.COCOA; // [FACING=WEST,AGE=1]
-	    	case "127:6": return Block.COCOA; // [FACING=NORTH,AGE=1]
-	    	case "127:7": return Block.COCOA; // [FACING=EAST,AGE=1]
-	    	case "127:8": return Block.COCOA; // [FACING=SOUTH,AGE=2]
-	    	case "127:9": return Block.COCOA; // [FACING=WEST,AGE=2]
-	    	case "127:10": return Block.COCOA; // [FACING=NORTH,AGE=2]
-	    	case "127:11": return Block.COCOA; // [FACING=EAST,AGE=2]
-	    	case "128:0": return Block.SANDSTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "128:1": return Block.SANDSTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "128:2": return Block.SANDSTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "128:3": return Block.SANDSTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "128:4": return Block.SANDSTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "128:5": return Block.SANDSTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "128:6": return Block.SANDSTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "128:7": return Block.SANDSTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "129:0": return Block.EMERALD_ORE;
-	    	case "130:2": return Block.ENDER_CHEST; // [FACING=NORTH]
-	    	case "130:3": return Block.ENDER_CHEST; // [FACING=SOUTH]
-	    	case "130:4": return Block.ENDER_CHEST; // [FACING=WEST]
-	    	case "130:5": return Block.ENDER_CHEST; // [FACING=EAST]
-	    	case "131:0": return Block.TRIPWIRE_HOOK; // [POWERED=FALSE,ATTACHED=FALSE,FACING=SOUTH]
-	    	case "131:1": return Block.TRIPWIRE_HOOK; // [POWERED=FALSE,ATTACHED=FALSE,FACING=WEST]
-	    	case "131:2": return Block.TRIPWIRE_HOOK; // [POWERED=FALSE,ATTACHED=FALSE,FACING=NORTH]
-	    	case "131:3": return Block.TRIPWIRE_HOOK; // [POWERED=FALSE,ATTACHED=FALSE,FACING=EAST]
-	    	case "131:4": return Block.TRIPWIRE_HOOK; // [POWERED=FALSE,ATTACHED=TRUE,FACING=SOUTH]
-	    	case "131:5": return Block.TRIPWIRE_HOOK; // [POWERED=FALSE,ATTACHED=TRUE,FACING=WEST]
-	    	case "131:6": return Block.TRIPWIRE_HOOK; // [POWERED=FALSE,ATTACHED=TRUE,FACING=NORTH]
-	    	case "131:7": return Block.TRIPWIRE_HOOK; // [POWERED=FALSE,ATTACHED=TRUE,FACING=EAST]
-	    	case "131:8": return Block.TRIPWIRE_HOOK; // [POWERED=TRUE,ATTACHED=FALSE,FACING=SOUTH]
-	    	case "131:9": return Block.TRIPWIRE_HOOK; // [POWERED=TRUE,ATTACHED=FALSE,FACING=WEST]
-	    	case "131:10": return Block.TRIPWIRE_HOOK; // [POWERED=TRUE,ATTACHED=FALSE,FACING=NORTH]
-	    	case "131:11": return Block.TRIPWIRE_HOOK; // [POWERED=TRUE,ATTACHED=FALSE,FACING=EAST]
-	    	case "131:12": return Block.TRIPWIRE_HOOK; // [POWERED=TRUE,ATTACHED=TRUE,FACING=SOUTH]
-	    	case "131:13": return Block.TRIPWIRE_HOOK; // [POWERED=TRUE,ATTACHED=TRUE,FACING=WEST]
-	    	case "131:14": return Block.TRIPWIRE_HOOK; // [POWERED=TRUE,ATTACHED=TRUE,FACING=NORTH]
-	    	case "131:15": return Block.TRIPWIRE_HOOK; // [POWERED=TRUE,ATTACHED=TRUE,FACING=EAST]
-	    	case "132:0": return Block.TRIPWIRE; // [DISARMED=FALSE,EAST=FALSE,POWERED=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,ATTACHED=FALSE]
-	    	case "132:1": return Block.TRIPWIRE; // [DISARMED=FALSE,EAST=FALSE,POWERED=TRUE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,ATTACHED=FALSE]
-	    	case "132:4": return Block.TRIPWIRE; // [DISARMED=FALSE,EAST=FALSE,POWERED=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,ATTACHED=TRUE]
-	    	case "132:5": return Block.TRIPWIRE; // [DISARMED=FALSE,EAST=FALSE,POWERED=TRUE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,ATTACHED=TRUE]
-	    	case "132:8": return Block.TRIPWIRE; // [DISARMED=TRUE,EAST=FALSE,POWERED=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,ATTACHED=FALSE]
-	    	case "132:9": return Block.TRIPWIRE; // [DISARMED=TRUE,EAST=FALSE,POWERED=TRUE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,ATTACHED=FALSE]
-	    	case "132:12": return Block.TRIPWIRE; // [DISARMED=TRUE,EAST=FALSE,POWERED=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,ATTACHED=TRUE]
-	    	case "132:13": return Block.TRIPWIRE; // [DISARMED=TRUE,EAST=FALSE,POWERED=TRUE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,ATTACHED=TRUE]
-	    	case "133:0": return Block.EMERALD_BLOCK;
-	    	case "134:0": return Block.SPRUCE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "134:1": return Block.SPRUCE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "134:2": return Block.SPRUCE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "134:3": return Block.SPRUCE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "134:4": return Block.SPRUCE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "134:5": return Block.SPRUCE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "134:6": return Block.SPRUCE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "134:7": return Block.SPRUCE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "135:0": return Block.BIRCH_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "135:1": return Block.BIRCH_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "135:2": return Block.BIRCH_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "135:3": return Block.BIRCH_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "135:4": return Block.BIRCH_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "135:5": return Block.BIRCH_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "135:6": return Block.BIRCH_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "135:7": return Block.BIRCH_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "136:0": return Block.JUNGLE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "136:1": return Block.JUNGLE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "136:2": return Block.JUNGLE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "136:3": return Block.JUNGLE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "136:4": return Block.JUNGLE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "136:5": return Block.JUNGLE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "136:6": return Block.JUNGLE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "136:7": return Block.JUNGLE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "137:0": return Block.COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=DOWN]
-	    	case "137:1": return Block.COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=UP]
-	    	case "137:2": return Block.COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=NORTH]
-	    	case "137:3": return Block.COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=SOUTH]
-	    	case "137:4": return Block.COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=WEST]
-	    	case "137:5": return Block.COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=EAST]
-	    	case "137:8": return Block.COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=DOWN]
-	    	case "137:9": return Block.COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=UP]
-	    	case "137:10": return Block.COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=NORTH]
-	    	case "137:11": return Block.COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=SOUTH]
-	    	case "137:12": return Block.COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=WEST]
-	    	case "137:13": return Block.COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=EAST]
-	    	case "138:0": return Block.BEACON;
-	    	case "139:0": return Block.COBBLESTONE_WALL; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE]
-	    	case "139:1": return Block.MOSSY_COBBLESTONE_WALL; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE]
-	    	case "140:0": return Block.FLOWER_POT;
-	    	case "140:1": return Block.POTTED_POPPY;
-	    	case "140:2": return Block.POTTED_DANDELION;
-	    	case "140:3": return Block.POTTED_OAK_SAPLING;
-	    	case "140:4": return Block.POTTED_SPRUCE_SAPLING;
-	    	case "140:5": return Block.POTTED_BIRCH_SAPLING;
-	    	case "140:6": return Block.POTTED_JUNGLE_SAPLING;
-	    	case "140:7": return Block.POTTED_RED_MUSHROOM;
-	    	case "140:8": return Block.POTTED_BROWN_MUSHROOM;
-	    	case "140:9": return Block.POTTED_CACTUS;
-	    	case "140:10": return Block.POTTED_DEAD_BUSH;
-	    	case "140:11": return Block.POTTED_FERN;
-	    	case "140:12": return Block.POTTED_ACACIA_SAPLING;
-	    	case "140:13": return Block.POTTED_DARK_OAK_SAPLING;
-	    	case "140:14": return Block.POTTED_BLUE_ORCHID;
-	    	case "140:15": return Block.POTTED_ALLIUM;
-	    	case "141:0": return Block.CARROTS; // [AGE=0]
-	    	case "141:1": return Block.CARROTS; // [AGE=1]
-	    	case "141:2": return Block.CARROTS; // [AGE=2]
-	    	case "141:3": return Block.CARROTS; // [AGE=3]
-	    	case "141:4": return Block.CARROTS; // [AGE=4]
-	    	case "141:5": return Block.CARROTS; // [AGE=5]
-	    	case "141:6": return Block.CARROTS; // [AGE=6]
-	    	case "141:7": return Block.CARROTS; // [AGE=7]
-	    	case "142:0": return Block.POTATOES; // [AGE=0]
-	    	case "142:1": return Block.POTATOES; // [AGE=1]
-	    	case "142:2": return Block.POTATOES; // [AGE=2]
-	    	case "142:3": return Block.POTATOES; // [AGE=3]
-	    	case "142:4": return Block.POTATOES; // [AGE=4]
-	    	case "142:5": return Block.POTATOES; // [AGE=5]
-	    	case "142:6": return Block.POTATOES; // [AGE=6]
-	    	case "142:7": return Block.POTATOES; // [AGE=7]
-	    	case "143:0": return Block.OAK_BUTTON; // [POWERED=FALSE,FACING=EAST,FACE=CEILING]
-	    	case "143:1": return Block.OAK_BUTTON; // [POWERED=FALSE,FACING=EAST,FACE=WALL]
-	    	case "143:2": return Block.OAK_BUTTON; // [POWERED=FALSE,FACING=WEST,FACE=WALL]
-	    	case "143:3": return Block.OAK_BUTTON; // [POWERED=FALSE,FACING=SOUTH,FACE=WALL]
-	    	case "143:4": return Block.OAK_BUTTON; // [POWERED=FALSE,FACING=NORTH,FACE=WALL]
-	    	case "143:5": return Block.OAK_BUTTON; // [POWERED=FALSE,FACING=EAST,FACE=FLOOR]
-	    	case "143:8": return Block.OAK_BUTTON; // [POWERED=TRUE,FACING=SOUTH,FACE=CEILING]
-	    	case "143:9": return Block.OAK_BUTTON; // [POWERED=TRUE,FACING=EAST,FACE=WALL]
-	    	case "143:10": return Block.OAK_BUTTON; // [POWERED=TRUE,FACING=WEST,FACE=WALL]
-	    	case "143:11": return Block.OAK_BUTTON; // [POWERED=TRUE,FACING=SOUTH,FACE=WALL]
-	    	case "143:12": return Block.OAK_BUTTON; // [POWERED=TRUE,FACING=NORTH,FACE=WALL]
-	    	case "143:13": return Block.OAK_BUTTON; // [POWERED=TRUE,FACING=SOUTH,FACE=FLOOR]
-	    	case "144:0": return Block.SKELETON_SKULL; // [ROTATION=0]
-	    	case "144:1": return Block.SKELETON_SKULL; // [ROTATION=4]
-	    	case "144:2": return Block.SKELETON_WALL_SKULL; // [FACING=NORTH]
-	    	case "144:3": return Block.SKELETON_WALL_SKULL; // [FACING=SOUTH]
-	    	case "144:4": return Block.SKELETON_WALL_SKULL; // [FACING=WEST]
-	    	case "144:5": return Block.SKELETON_WALL_SKULL; // [FACING=EAST]
-	    	case "144:8": return Block.SKELETON_SKULL; // [ROTATION=8]
-	    	case "144:9": return Block.SKELETON_SKULL; // [ROTATION=12]
-	    	case "144:10": return Block.SKELETON_WALL_SKULL; // [FACING=NORTH]
-	    	case "144:11": return Block.SKELETON_WALL_SKULL; // [FACING=SOUTH]
-	    	case "144:12": return Block.SKELETON_WALL_SKULL; // [FACING=WEST]
-	    	case "144:13": return Block.SKELETON_WALL_SKULL; // [FACING=EAST]
-	    	case "145:0": return Block.ANVIL; // [FACING=SOUTH]
-	    	case "145:1": return Block.ANVIL; // [FACING=WEST]
-	    	case "145:2": return Block.ANVIL; // [FACING=NORTH]
-	    	case "145:3": return Block.ANVIL; // [FACING=EAST]
-	    	case "145:4": return Block.CHIPPED_ANVIL; // [FACING=SOUTH]
-	    	case "145:5": return Block.CHIPPED_ANVIL; // [FACING=WEST]
-	    	case "145:6": return Block.CHIPPED_ANVIL; // [FACING=NORTH]
-	    	case "145:7": return Block.CHIPPED_ANVIL; // [FACING=EAST]
-	    	case "145:8": return Block.DAMAGED_ANVIL; // [FACING=SOUTH]
-	    	case "145:9": return Block.DAMAGED_ANVIL; // [FACING=WEST]
-	    	case "145:10": return Block.DAMAGED_ANVIL; // [FACING=NORTH]
-	    	case "145:11": return Block.DAMAGED_ANVIL; // [FACING=EAST]
-	    	case "146:2": return Block.TRAPPED_CHEST; // [FACING=NORTH,TYPE=SINGLE]
-	    	case "146:3": return Block.TRAPPED_CHEST; // [FACING=SOUTH,TYPE=SINGLE]
-	    	case "146:4": return Block.TRAPPED_CHEST; // [FACING=WEST,TYPE=SINGLE]
-	    	case "146:5": return Block.TRAPPED_CHEST; // [FACING=EAST,TYPE=SINGLE]
-	    	case "147:0": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=0]
-	    	case "147:1": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=1]
-	    	case "147:2": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=2]
-	    	case "147:3": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=3]
-	    	case "147:4": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=4]
-	    	case "147:5": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=5]
-	    	case "147:6": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=6]
-	    	case "147:7": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=7]
-	    	case "147:8": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=8]
-	    	case "147:9": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=9]
-	    	case "147:10": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=10]
-	    	case "147:11": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=11]
-	    	case "147:12": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=12]
-	    	case "147:13": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=13]
-	    	case "147:14": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=14]
-	    	case "147:15": return Block.LIGHT_WEIGHTED_PRESSURE_PLATE; // [POWER=15]
-	    	case "148:0": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=0]
-	    	case "148:1": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=1]
-	    	case "148:2": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=2]
-	    	case "148:3": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=3]
-	    	case "148:4": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=4]
-	    	case "148:5": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=5]
-	    	case "148:6": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=6]
-	    	case "148:7": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=7]
-	    	case "148:8": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=8]
-	    	case "148:9": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=9]
-	    	case "148:10": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=10]
-	    	case "148:11": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=11]
-	    	case "148:12": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=12]
-	    	case "148:13": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=13]
-	    	case "148:14": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=14]
-	    	case "148:15": return Block.HEAVY_WEIGHTED_PRESSURE_PLATE; // [POWER=15]
-	    	case "149:0": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=FALSE,FACING=SOUTH]
-	    	case "149:1": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=FALSE,FACING=WEST]
-	    	case "149:2": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=FALSE,FACING=NORTH]
-	    	case "149:3": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=FALSE,FACING=EAST]
-	    	case "149:4": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=FALSE,FACING=SOUTH]
-	    	case "149:5": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=FALSE,FACING=WEST]
-	    	case "149:6": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=FALSE,FACING=NORTH]
-	    	case "149:7": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=FALSE,FACING=EAST]
-	    	case "149:8": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=FALSE,FACING=SOUTH]
-	    	case "149:9": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=FALSE,FACING=WEST]
-	    	case "149:10": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=FALSE,FACING=NORTH]
-	    	case "149:11": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=FALSE,FACING=EAST]
-	    	case "149:12": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=FALSE,FACING=SOUTH]
-	    	case "149:13": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=FALSE,FACING=WEST]
-	    	case "149:14": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=FALSE,FACING=NORTH]
-	    	case "149:15": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=FALSE,FACING=EAST]
-	    	case "150:0": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=TRUE,FACING=SOUTH]
-	    	case "150:1": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=TRUE,FACING=WEST]
-	    	case "150:2": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=TRUE,FACING=NORTH]
-	    	case "150:3": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=TRUE,FACING=EAST]
-	    	case "150:4": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=TRUE,FACING=SOUTH]
-	    	case "150:5": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=TRUE,FACING=WEST]
-	    	case "150:6": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=TRUE,FACING=NORTH]
-	    	case "150:7": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=TRUE,FACING=EAST]
-	    	case "150:8": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=TRUE,FACING=SOUTH]
-	    	case "150:9": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=TRUE,FACING=WEST]
-	    	case "150:10": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=TRUE,FACING=NORTH]
-	    	case "150:11": return Block.COMPARATOR; // [MODE=COMPARE,POWERED=TRUE,FACING=EAST]
-	    	case "150:12": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=TRUE,FACING=SOUTH]
-	    	case "150:13": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=TRUE,FACING=WEST]
-	    	case "150:14": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=TRUE,FACING=NORTH]
-	    	case "150:15": return Block.COMPARATOR; // [MODE=SUBTRACT,POWERED=TRUE,FACING=EAST]
-	    	case "151:0": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=0]
-	    	case "151:1": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=1]
-	    	case "151:2": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=2]
-	    	case "151:3": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=3]
-	    	case "151:4": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=4]
-	    	case "151:5": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=5]
-	    	case "151:6": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=6]
-	    	case "151:7": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=7]
-	    	case "151:8": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=8]
-	    	case "151:9": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=9]
-	    	case "151:10": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=10]
-	    	case "151:11": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=11]
-	    	case "151:12": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=12]
-	    	case "151:13": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=13]
-	    	case "151:14": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=14]
-	    	case "151:15": return Block.DAYLIGHT_DETECTOR; // [INVERTED=FALSE,POWER=15]
-	    	case "152:0": return Block.REDSTONE_BLOCK;
-	    	case "153:0": return Block.NETHER_QUARTZ_ORE;
-	    	case "154:0": return Block.HOPPER; // [FACING=DOWN,ENABLED=TRUE]
-	    	case "154:2": return Block.HOPPER; // [FACING=NORTH,ENABLED=TRUE]
-	    	case "154:3": return Block.HOPPER; // [FACING=SOUTH,ENABLED=TRUE]
-	    	case "154:4": return Block.HOPPER; // [FACING=WEST,ENABLED=TRUE]
-	    	case "154:5": return Block.HOPPER; // [FACING=EAST,ENABLED=TRUE]
-	    	case "154:8": return Block.HOPPER; // [FACING=DOWN,ENABLED=FALSE]
-	    	case "154:10": return Block.HOPPER; // [FACING=NORTH,ENABLED=FALSE]
-	    	case "154:11": return Block.HOPPER; // [FACING=SOUTH,ENABLED=FALSE]
-	    	case "154:12": return Block.HOPPER; // [FACING=WEST,ENABLED=FALSE]
-	    	case "154:13": return Block.HOPPER; // [FACING=EAST,ENABLED=FALSE]
-	    	case "155:0": return Block.QUARTZ_BLOCK;
-	    	case "155:1": return Block.CHISELED_QUARTZ_BLOCK;
-	    	case "155:2": return Block.QUARTZ_PILLAR; // [AXIS=Y]
-	    	case "155:3": return Block.QUARTZ_PILLAR; // [AXIS=X]
-	    	case "155:4": return Block.QUARTZ_PILLAR; // [AXIS=Z]
-	    	case "155:6": return Block.QUARTZ_PILLAR; // [AXIS=X]
-	    	case "155:10": return Block.QUARTZ_PILLAR; // [AXIS=Z]
-	    	case "156:0": return Block.QUARTZ_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "156:1": return Block.QUARTZ_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "156:2": return Block.QUARTZ_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "156:3": return Block.QUARTZ_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "156:4": return Block.QUARTZ_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "156:5": return Block.QUARTZ_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "156:6": return Block.QUARTZ_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "156:7": return Block.QUARTZ_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "157:0": return Block.ACTIVATOR_RAIL; // [SHAPE=NORTH_SOUTH,POWERED=FALSE]
-	    	case "157:1": return Block.ACTIVATOR_RAIL; // [SHAPE=EAST_WEST,POWERED=FALSE]
-	    	case "157:2": return Block.ACTIVATOR_RAIL; // [SHAPE=ASCENDING_EAST,POWERED=FALSE]
-	    	case "157:3": return Block.ACTIVATOR_RAIL; // [SHAPE=ASCENDING_WEST,POWERED=FALSE]
-	    	case "157:4": return Block.ACTIVATOR_RAIL; // [SHAPE=ASCENDING_NORTH,POWERED=FALSE]
-	    	case "157:5": return Block.ACTIVATOR_RAIL; // [SHAPE=ASCENDING_SOUTH,POWERED=FALSE]
-	    	case "157:8": return Block.ACTIVATOR_RAIL; // [SHAPE=NORTH_SOUTH,POWERED=TRUE]
-	    	case "157:9": return Block.ACTIVATOR_RAIL; // [SHAPE=EAST_WEST,POWERED=TRUE]
-	    	case "157:10": return Block.ACTIVATOR_RAIL; // [SHAPE=ASCENDING_EAST,POWERED=TRUE]
-	    	case "157:11": return Block.ACTIVATOR_RAIL; // [SHAPE=ASCENDING_WEST,POWERED=TRUE]
-	    	case "157:12": return Block.ACTIVATOR_RAIL; // [SHAPE=ASCENDING_NORTH,POWERED=TRUE]
-	    	case "157:13": return Block.ACTIVATOR_RAIL; // [SHAPE=ASCENDING_SOUTH,POWERED=TRUE]
-	    	case "158:0": return Block.DROPPER; // [TRIGGERED=FALSE,FACING=DOWN]
-	    	case "158:1": return Block.DROPPER; // [TRIGGERED=FALSE,FACING=UP]
-	    	case "158:2": return Block.DROPPER; // [TRIGGERED=FALSE,FACING=NORTH]
-	    	case "158:3": return Block.DROPPER; // [TRIGGERED=FALSE,FACING=SOUTH]
-	    	case "158:4": return Block.DROPPER; // [TRIGGERED=FALSE,FACING=WEST]
-	    	case "158:5": return Block.DROPPER; // [TRIGGERED=FALSE,FACING=EAST]
-	    	case "158:8": return Block.DROPPER; // [TRIGGERED=TRUE,FACING=DOWN]
-	    	case "158:9": return Block.DROPPER; // [TRIGGERED=TRUE,FACING=UP]
-	    	case "158:10": return Block.DROPPER; // [TRIGGERED=TRUE,FACING=NORTH]
-	    	case "158:11": return Block.DROPPER; // [TRIGGERED=TRUE,FACING=SOUTH]
-	    	case "158:12": return Block.DROPPER; // [TRIGGERED=TRUE,FACING=WEST]
-	    	case "158:13": return Block.DROPPER; // [TRIGGERED=TRUE,FACING=EAST]
-	    	case "159:0": return Block.WHITE_TERRACOTTA;
-	    	case "159:1": return Block.ORANGE_TERRACOTTA;
-	    	case "159:2": return Block.MAGENTA_TERRACOTTA;
-	    	case "159:3": return Block.LIGHT_BLUE_TERRACOTTA;
-	    	case "159:4": return Block.YELLOW_TERRACOTTA;
-	    	case "159:5": return Block.LIME_TERRACOTTA;
-	    	case "159:6": return Block.PINK_TERRACOTTA;
-	    	case "159:7": return Block.GRAY_TERRACOTTA;
-	    	case "159:8": return Block.LIGHT_GRAY_TERRACOTTA;
-	    	case "159:9": return Block.CYAN_TERRACOTTA;
-	    	case "159:10": return Block.PURPLE_TERRACOTTA;
-	    	case "159:11": return Block.BLUE_TERRACOTTA;
-	    	case "159:12": return Block.BROWN_TERRACOTTA;
-	    	case "159:13": return Block.GREEN_TERRACOTTA;
-	    	case "159:14": return Block.RED_TERRACOTTA;
-	    	case "159:15": return Block.BLACK_TERRACOTTA;
-	    	case "160:0": return Block.WHITE_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:1": return Block.ORANGE_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:2": return Block.MAGENTA_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:3": return Block.LIGHT_BLUE_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:4": return Block.YELLOW_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:5": return Block.LIME_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:6": return Block.PINK_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:7": return Block.GRAY_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:8": return Block.LIGHT_GRAY_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:9": return Block.CYAN_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:10": return Block.PURPLE_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:11": return Block.BLUE_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:12": return Block.BROWN_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:13": return Block.GREEN_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:14": return Block.RED_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "160:15": return Block.BLACK_STAINED_GLASS_PANE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "161:0": return Block.ACACIA_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "161:1": return Block.DARK_OAK_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "161:4": return Block.ACACIA_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "161:5": return Block.DARK_OAK_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "161:8": return Block.ACACIA_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "161:9": return Block.DARK_OAK_LEAVES; // [PERSISTENT=FALSE,DISTANCE=1]
-	    	case "161:12": return Block.ACACIA_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "161:13": return Block.DARK_OAK_LEAVES; // [PERSISTENT=TRUE,DISTANCE=1]
-	    	case "162:0": return Block.ACACIA_LOG; // [AXIS=Y]
-	    	case "162:1": return Block.DARK_OAK_LOG; // [AXIS=Y]
-	    	case "162:4": return Block.ACACIA_LOG; // [AXIS=X]
-	    	case "162:5": return Block.DARK_OAK_LOG; // [AXIS=X]
-	    	case "162:8": return Block.ACACIA_LOG; // [AXIS=Z]
-	    	case "162:9": return Block.DARK_OAK_LOG; // [AXIS=Z]
-	    	case "162:12": return Block.ACACIA_WOOD;
-	    	case "162:13": return Block.DARK_OAK_WOOD;
-	    	case "163:0": return Block.ACACIA_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "163:1": return Block.ACACIA_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "163:2": return Block.ACACIA_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "163:3": return Block.ACACIA_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "163:4": return Block.ACACIA_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "163:5": return Block.ACACIA_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "163:6": return Block.ACACIA_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "163:7": return Block.ACACIA_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "164:0": return Block.DARK_OAK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "164:1": return Block.DARK_OAK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "164:2": return Block.DARK_OAK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "164:3": return Block.DARK_OAK_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "164:4": return Block.DARK_OAK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "164:5": return Block.DARK_OAK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "164:6": return Block.DARK_OAK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "164:7": return Block.DARK_OAK_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "165:0": return Block.SLIME_BLOCK;
-	    	case "166:0": return Block.BARRIER;
-	    	case "167:0": return Block.IRON_TRAPDOOR; // [HALF=BOTTOM,FACING=NORTH,OPEN=FALSE]
-	    	case "167:1": return Block.IRON_TRAPDOOR; // [HALF=BOTTOM,FACING=SOUTH,OPEN=FALSE]
-	    	case "167:2": return Block.IRON_TRAPDOOR; // [HALF=BOTTOM,FACING=WEST,OPEN=FALSE]
-	    	case "167:3": return Block.IRON_TRAPDOOR; // [HALF=BOTTOM,FACING=EAST,OPEN=FALSE]
-	    	case "167:4": return Block.IRON_TRAPDOOR; // [HALF=BOTTOM,FACING=NORTH,OPEN=TRUE]
-	    	case "167:5": return Block.IRON_TRAPDOOR; // [HALF=BOTTOM,FACING=SOUTH,OPEN=TRUE]
-	    	case "167:6": return Block.IRON_TRAPDOOR; // [HALF=BOTTOM,FACING=WEST,OPEN=TRUE]
-	    	case "167:7": return Block.IRON_TRAPDOOR; // [HALF=BOTTOM,FACING=EAST,OPEN=TRUE]
-	    	case "167:8": return Block.IRON_TRAPDOOR; // [HALF=TOP,FACING=NORTH,OPEN=FALSE]
-	    	case "167:9": return Block.IRON_TRAPDOOR; // [HALF=TOP,FACING=SOUTH,OPEN=FALSE]
-	    	case "167:10": return Block.IRON_TRAPDOOR; // [HALF=TOP,FACING=WEST,OPEN=FALSE]
-	    	case "167:11": return Block.IRON_TRAPDOOR; // [HALF=TOP,FACING=EAST,OPEN=FALSE]
-	    	case "167:12": return Block.IRON_TRAPDOOR; // [HALF=TOP,FACING=NORTH,OPEN=TRUE]
-	    	case "167:13": return Block.IRON_TRAPDOOR; // [HALF=TOP,FACING=SOUTH,OPEN=TRUE]
-	    	case "167:14": return Block.IRON_TRAPDOOR; // [HALF=TOP,FACING=WEST,OPEN=TRUE]
-	    	case "167:15": return Block.IRON_TRAPDOOR; // [HALF=TOP,FACING=EAST,OPEN=TRUE]
-	    	case "168:0": return Block.PRISMARINE;
-	    	case "168:1": return Block.PRISMARINE_BRICKS;
-	    	case "168:2": return Block.DARK_PRISMARINE;
-	    	case "169:0": return Block.SEA_LANTERN;
-	    	case "170:0": return Block.HAY_BLOCK; // [AXIS=Y]
-	    	case "170:4": return Block.HAY_BLOCK; // [AXIS=X]
-	    	case "170:8": return Block.HAY_BLOCK; // [AXIS=Z]
-	    	case "171:0": return Block.WHITE_CARPET;
-	    	case "171:1": return Block.ORANGE_CARPET;
-	    	case "171:2": return Block.MAGENTA_CARPET;
-	    	case "171:3": return Block.LIGHT_BLUE_CARPET;
-	    	case "171:4": return Block.YELLOW_CARPET;
-	    	case "171:5": return Block.LIME_CARPET;
-	    	case "171:6": return Block.PINK_CARPET;
-	    	case "171:7": return Block.GRAY_CARPET;
-	    	case "171:8": return Block.LIGHT_GRAY_CARPET;
-	    	case "171:9": return Block.CYAN_CARPET;
-	    	case "171:10": return Block.PURPLE_CARPET;
-	    	case "171:11": return Block.BLUE_CARPET;
-	    	case "171:12": return Block.BROWN_CARPET;
-	    	case "171:13": return Block.GREEN_CARPET;
-	    	case "171:14": return Block.RED_CARPET;
-	    	case "171:15": return Block.BLACK_CARPET;
-	    	case "172:0": return Block.TERRACOTTA;
-	    	case "173:0": return Block.COAL_BLOCK;
-	    	case "174:0": return Block.PACKED_ICE;
-	    	case "175:0": return Block.SUNFLOWER; // [HALF=LOWER]
-	    	case "175:1": return Block.LILAC; // [HALF=LOWER]
-	    	case "175:2": return Block.TALL_GRASS; // [HALF=LOWER]
-	    	case "175:3": return Block.LARGE_FERN; // [HALF=LOWER]
-	    	case "175:4": return Block.ROSE_BUSH; // [HALF=LOWER]
-	    	case "175:5": return Block.PEONY; // [HALF=LOWER]
-	    	case "175:8": return Block.SUNFLOWER; // [HALF=UPPER]
-	    	case "175:9": return Block.LILAC; // [HALF=UPPER]
-	    	case "175:10": return Block.TALL_GRASS; // [HALF=UPPER]
-	    	case "175:11": return Block.LARGE_FERN; // [HALF=UPPER]
-	    	case "175:12": return Block.ROSE_BUSH; // [HALF=UPPER]
-	    	case "175:13": return Block.PEONY; // [HALF=UPPER]
-	    	case "176:0": return Block.WHITE_BANNER; // [ROTATION=0]
-	    	case "176:1": return Block.WHITE_BANNER; // [ROTATION=1]
-	    	case "176:2": return Block.WHITE_BANNER; // [ROTATION=2]
-	    	case "176:3": return Block.WHITE_BANNER; // [ROTATION=3]
-	    	case "176:4": return Block.WHITE_BANNER; // [ROTATION=4]
-	    	case "176:5": return Block.WHITE_BANNER; // [ROTATION=5]
-	    	case "176:6": return Block.WHITE_BANNER; // [ROTATION=6]
-	    	case "176:7": return Block.WHITE_BANNER; // [ROTATION=7]
-	    	case "176:8": return Block.WHITE_BANNER; // [ROTATION=8]
-	    	case "176:9": return Block.WHITE_BANNER; // [ROTATION=9]
-	    	case "176:10": return Block.WHITE_BANNER; // [ROTATION=10]
-	    	case "176:11": return Block.WHITE_BANNER; // [ROTATION=11]
-	    	case "176:12": return Block.WHITE_BANNER; // [ROTATION=12]
-	    	case "176:13": return Block.WHITE_BANNER; // [ROTATION=13]
-	    	case "176:14": return Block.WHITE_BANNER; // [ROTATION=14]
-	    	case "176:15": return Block.WHITE_BANNER; // [ROTATION=15]
-	    	case "177:2": return Block.WHITE_WALL_BANNER; // [FACING=NORTH]
-	    	case "177:3": return Block.WHITE_WALL_BANNER; // [FACING=SOUTH]
-	    	case "177:4": return Block.WHITE_WALL_BANNER; // [FACING=WEST]
-	    	case "177:5": return Block.WHITE_WALL_BANNER; // [FACING=EAST]
-	    	case "178:0": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=0]
-	    	case "178:1": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=1]
-	    	case "178:2": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=2]
-	    	case "178:3": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=3]
-	    	case "178:4": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=4]
-	    	case "178:5": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=5]
-	    	case "178:6": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=6]
-	    	case "178:7": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=7]
-	    	case "178:8": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=8]
-	    	case "178:9": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=9]
-	    	case "178:10": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=10]
-	    	case "178:11": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=11]
-	    	case "178:12": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=12]
-	    	case "178:13": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=13]
-	    	case "178:14": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=14]
-	    	case "178:15": return Block.DAYLIGHT_DETECTOR; // [INVERTED=TRUE,POWER=15]
-	    	case "179:0": return Block.RED_SANDSTONE;
-	    	case "179:1": return Block.CHISELED_RED_SANDSTONE;
-	    	case "179:2": return Block.CUT_RED_SANDSTONE;
-	    	case "180:0": return Block.RED_SANDSTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "180:1": return Block.RED_SANDSTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "180:2": return Block.RED_SANDSTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "180:3": return Block.RED_SANDSTONE_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "180:4": return Block.RED_SANDSTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "180:5": return Block.RED_SANDSTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "180:6": return Block.RED_SANDSTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "180:7": return Block.RED_SANDSTONE_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "181:0": return Block.RED_SANDSTONE_SLAB; // [TYPE=DOUBLE]
-	    	case "181:8": return Block.SMOOTH_RED_SANDSTONE;
-	    	case "182:0": return Block.RED_SANDSTONE_SLAB; // [TYPE=BOTTOM]
-	    	case "182:8": return Block.RED_SANDSTONE_SLAB; // [TYPE=TOP]
-	    	case "183:0": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "183:1": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "183:2": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "183:3": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "183:4": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "183:5": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "183:6": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "183:7": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "183:8": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=FALSE]
-	    	case "183:9": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=FALSE]
-	    	case "183:10": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=FALSE]
-	    	case "183:11": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "183:12": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=TRUE]
-	    	case "183:13": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=TRUE]
-	    	case "183:14": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=TRUE]
-	    	case "183:15": return Block.SPRUCE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=TRUE]
-	    	case "184:0": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "184:1": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "184:2": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "184:3": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "184:4": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "184:5": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "184:6": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "184:7": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "184:8": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=FALSE]
-	    	case "184:9": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=FALSE]
-	    	case "184:10": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=FALSE]
-	    	case "184:11": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "184:12": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=TRUE]
-	    	case "184:13": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=TRUE]
-	    	case "184:14": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=TRUE]
-	    	case "184:15": return Block.BIRCH_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=TRUE]
-	    	case "185:0": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "185:1": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "185:2": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "185:3": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "185:4": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "185:5": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "185:6": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "185:7": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "185:8": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=FALSE]
-	    	case "185:9": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=FALSE]
-	    	case "185:10": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=FALSE]
-	    	case "185:11": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "185:12": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=TRUE]
-	    	case "185:13": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=TRUE]
-	    	case "185:14": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=TRUE]
-	    	case "185:15": return Block.JUNGLE_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=TRUE]
-	    	case "186:0": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "186:1": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "186:2": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "186:3": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "186:4": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "186:5": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "186:6": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "186:7": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "186:8": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=FALSE]
-	    	case "186:9": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=FALSE]
-	    	case "186:10": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=FALSE]
-	    	case "186:11": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "186:12": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=TRUE]
-	    	case "186:13": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=TRUE]
-	    	case "186:14": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=TRUE]
-	    	case "186:15": return Block.DARK_OAK_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=TRUE]
-	    	case "187:0": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "187:1": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "187:2": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "187:3": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "187:4": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "187:5": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "187:6": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "187:7": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "187:8": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=FALSE]
-	    	case "187:9": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=FALSE]
-	    	case "187:10": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=FALSE]
-	    	case "187:11": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "187:12": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=SOUTH,OPEN=TRUE]
-	    	case "187:13": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=WEST,OPEN=TRUE]
-	    	case "187:14": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=NORTH,OPEN=TRUE]
-	    	case "187:15": return Block.ACACIA_FENCE_GATE; // [IN_WALL=FALSE,POWERED=TRUE,FACING=EAST,OPEN=TRUE]
-	    	case "188:0": return Block.SPRUCE_FENCE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "189:0": return Block.BIRCH_FENCE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "190:0": return Block.JUNGLE_FENCE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "191:0": return Block.DARK_OAK_FENCE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "192:0": return Block.ACACIA_FENCE; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE]
-	    	case "193:0": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "193:1": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "193:2": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "193:3": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "193:4": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "193:5": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "193:6": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "193:7": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "193:8": return Block.SPRUCE_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "193:9": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "193:10": return Block.SPRUCE_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "193:11": return Block.SPRUCE_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "194:0": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "194:1": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "194:2": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "194:3": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "194:4": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "194:5": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "194:6": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "194:7": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "194:8": return Block.BIRCH_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "194:9": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "194:10": return Block.BIRCH_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "194:11": return Block.BIRCH_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "195:0": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "195:1": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "195:2": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "195:3": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "195:4": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "195:5": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "195:6": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "195:7": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "195:8": return Block.JUNGLE_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "195:9": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "195:10": return Block.JUNGLE_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "195:11": return Block.JUNGLE_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "196:0": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "196:1": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "196:2": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "196:3": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "196:4": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "196:5": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "196:6": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "196:7": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "196:8": return Block.ACACIA_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "196:9": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "196:10": return Block.ACACIA_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "196:11": return Block.ACACIA_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "197:0": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "197:1": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=FALSE]
-	    	case "197:2": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=FALSE]
-	    	case "197:3": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=FALSE]
-	    	case "197:4": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=EAST,OPEN=TRUE]
-	    	case "197:5": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=SOUTH,OPEN=TRUE]
-	    	case "197:6": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=WEST,OPEN=TRUE]
-	    	case "197:7": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=LOWER,POWERED=FALSE,FACING=NORTH,OPEN=TRUE]
-	    	case "197:8": return Block.DARK_OAK_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "197:9": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=FALSE,FACING=EAST,OPEN=FALSE]
-	    	case "197:10": return Block.DARK_OAK_DOOR; // [HINGE=LEFT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "197:11": return Block.DARK_OAK_DOOR; // [HINGE=RIGHT,HALF=UPPER,POWERED=TRUE,FACING=EAST,OPEN=FALSE]
-	    	case "198:0": return Block.END_ROD; // [FACING=DOWN]
-	    	case "198:1": return Block.END_ROD; // [FACING=UP]
-	    	case "198:2": return Block.END_ROD; // [FACING=NORTH]
-	    	case "198:3": return Block.END_ROD; // [FACING=SOUTH]
-	    	case "198:4": return Block.END_ROD; // [FACING=WEST]
-	    	case "198:5": return Block.END_ROD; // [FACING=EAST]
-	    	case "199:0": return Block.CHORUS_PLANT; // [EAST=FALSE,SOUTH=FALSE,NORTH=FALSE,WEST=FALSE,UP=FALSE,DOWN=FALSE]
-	    	case "200:0": return Block.CHORUS_FLOWER; // [AGE=0]
-	    	case "200:1": return Block.CHORUS_FLOWER; // [AGE=1]
-	    	case "200:2": return Block.CHORUS_FLOWER; // [AGE=2]
-	    	case "200:3": return Block.CHORUS_FLOWER; // [AGE=3]
-	    	case "200:4": return Block.CHORUS_FLOWER; // [AGE=4]
-	    	case "200:5": return Block.CHORUS_FLOWER; // [AGE=5]
-	    	case "201:0": return Block.PURPUR_BLOCK;
-	    	case "202:0": return Block.PURPUR_PILLAR; // [AXIS=Y]
-	    	case "202:4": return Block.PURPUR_PILLAR; // [AXIS=X]
-	    	case "202:8": return Block.PURPUR_PILLAR; // [AXIS=Z]
-	    	case "203:0": return Block.PURPUR_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "203:1": return Block.PURPUR_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "203:2": return Block.PURPUR_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "203:3": return Block.PURPUR_STAIRS; // [HALF=BOTTOM,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "203:4": return Block.PURPUR_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=EAST]
-	    	case "203:5": return Block.PURPUR_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=WEST]
-	    	case "203:6": return Block.PURPUR_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=SOUTH]
-	    	case "203:7": return Block.PURPUR_STAIRS; // [HALF=TOP,SHAPE=STRAIGHT,FACING=NORTH]
-	    	case "204:0": return Block.PURPUR_SLAB; // [TYPE=DOUBLE]
-	    	case "205:0": return Block.PURPUR_SLAB; // [TYPE=BOTTOM]
-	    	case "205:8": return Block.PURPUR_SLAB; // [TYPE=TOP]
-	    	case "206:0": return Block.END_STONE_BRICKS;
-	    	case "207:0": return Block.BEETROOTS; // [AGE=0]
-	    	case "207:1": return Block.BEETROOTS; // [AGE=1]
-	    	case "207:2": return Block.BEETROOTS; // [AGE=2]
-	    	case "207:3": return Block.BEETROOTS; // [AGE=3]
-	    	case "208:0": return Block.GRASS_PATH;
-	    	case "209:0": return Block.END_GATEWAY;
-	    	case "210:0": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=DOWN]
-	    	case "210:1": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=UP]
-	    	case "210:2": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=NORTH]
-	    	case "210:3": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=SOUTH]
-	    	case "210:4": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=WEST]
-	    	case "210:5": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=EAST]
-	    	case "210:8": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=DOWN]
-	    	case "210:9": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=UP]
-	    	case "210:10": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=NORTH]
-	    	case "210:11": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=SOUTH]
-	    	case "210:12": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=WEST]
-	    	case "210:13": return Block.REPEATING_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=EAST]
-	    	case "211:0": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=DOWN]
-	    	case "211:1": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=UP]
-	    	case "211:2": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=NORTH]
-	    	case "211:3": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=SOUTH]
-	    	case "211:4": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=WEST]
-	    	case "211:5": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=FALSE,FACING=EAST]
-	    	case "211:8": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=DOWN]
-	    	case "211:9": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=UP]
-	    	case "211:10": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=NORTH]
-	    	case "211:11": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=SOUTH]
-	    	case "211:12": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=WEST]
-	    	case "211:13": return Block.CHAIN_COMMAND_BLOCK; // [CONDITIONAL=TRUE,FACING=EAST]
-	    	case "212:0": return Block.FROSTED_ICE; // [AGE=0]
-	    	case "212:1": return Block.FROSTED_ICE; // [AGE=1]
-	    	case "212:2": return Block.FROSTED_ICE; // [AGE=2]
-	    	case "212:3": return Block.FROSTED_ICE; // [AGE=3]
-	    	case "213:0": return Block.MAGMA_BLOCK;
-	    	case "214:0": return Block.NETHER_WART_BLOCK;
-	    	case "215:0": return Block.RED_NETHER_BRICKS;
-	    	case "216:0": return Block.BONE_BLOCK; // [AXIS=Y]
-	    	case "216:4": return Block.BONE_BLOCK; // [AXIS=X]
-	    	case "216:8": return Block.BONE_BLOCK; // [AXIS=Z]
-	    	case "217:0": return Block.STRUCTURE_VOID;
-	    	case "218:0": return Block.OBSERVER; // [POWERED=FALSE,FACING=DOWN]
-	    	case "218:1": return Block.OBSERVER; // [POWERED=FALSE,FACING=UP]
-	    	case "218:2": return Block.OBSERVER; // [POWERED=FALSE,FACING=NORTH]
-	    	case "218:3": return Block.OBSERVER; // [POWERED=FALSE,FACING=SOUTH]
-	    	case "218:4": return Block.OBSERVER; // [POWERED=FALSE,FACING=WEST]
-	    	case "218:5": return Block.OBSERVER; // [POWERED=FALSE,FACING=EAST]
-	    	case "218:8": return Block.OBSERVER; // [POWERED=TRUE,FACING=DOWN]
-	    	case "218:9": return Block.OBSERVER; // [POWERED=TRUE,FACING=UP]
-	    	case "218:10": return Block.OBSERVER; // [POWERED=TRUE,FACING=NORTH]
-	    	case "218:11": return Block.OBSERVER; // [POWERED=TRUE,FACING=SOUTH]
-	    	case "218:12": return Block.OBSERVER; // [POWERED=TRUE,FACING=WEST]
-	    	case "218:13": return Block.OBSERVER; // [POWERED=TRUE,FACING=EAST]
-	    	case "219:0": return Block.WHITE_SHULKER_BOX; // [FACING=DOWN]
-	    	case "219:1": return Block.WHITE_SHULKER_BOX; // [FACING=UP]
-	    	case "219:2": return Block.WHITE_SHULKER_BOX; // [FACING=NORTH]
-	    	case "219:3": return Block.WHITE_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "219:4": return Block.WHITE_SHULKER_BOX; // [FACING=WEST]
-	    	case "219:5": return Block.WHITE_SHULKER_BOX; // [FACING=EAST]
-	    	case "220:0": return Block.ORANGE_SHULKER_BOX; // [FACING=DOWN]
-	    	case "220:1": return Block.ORANGE_SHULKER_BOX; // [FACING=UP]
-	    	case "220:2": return Block.ORANGE_SHULKER_BOX; // [FACING=NORTH]
-	    	case "220:3": return Block.ORANGE_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "220:4": return Block.ORANGE_SHULKER_BOX; // [FACING=WEST]
-	    	case "220:5": return Block.ORANGE_SHULKER_BOX; // [FACING=EAST]
-	    	case "221:0": return Block.MAGENTA_SHULKER_BOX; // [FACING=DOWN]
-	    	case "221:1": return Block.MAGENTA_SHULKER_BOX; // [FACING=UP]
-	    	case "221:2": return Block.MAGENTA_SHULKER_BOX; // [FACING=NORTH]
-	    	case "221:3": return Block.MAGENTA_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "221:4": return Block.MAGENTA_SHULKER_BOX; // [FACING=WEST]
-	    	case "221:5": return Block.MAGENTA_SHULKER_BOX; // [FACING=EAST]
-	    	case "222:0": return Block.LIGHT_BLUE_SHULKER_BOX; // [FACING=DOWN]
-	    	case "222:1": return Block.LIGHT_BLUE_SHULKER_BOX; // [FACING=UP]
-	    	case "222:2": return Block.LIGHT_BLUE_SHULKER_BOX; // [FACING=NORTH]
-	    	case "222:3": return Block.LIGHT_BLUE_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "222:4": return Block.LIGHT_BLUE_SHULKER_BOX; // [FACING=WEST]
-	    	case "222:5": return Block.LIGHT_BLUE_SHULKER_BOX; // [FACING=EAST]
-	    	case "223:0": return Block.YELLOW_SHULKER_BOX; // [FACING=DOWN]
-	    	case "223:1": return Block.YELLOW_SHULKER_BOX; // [FACING=UP]
-	    	case "223:2": return Block.YELLOW_SHULKER_BOX; // [FACING=NORTH]
-	    	case "223:3": return Block.YELLOW_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "223:4": return Block.YELLOW_SHULKER_BOX; // [FACING=WEST]
-	    	case "223:5": return Block.YELLOW_SHULKER_BOX; // [FACING=EAST]
-	    	case "224:0": return Block.LIME_SHULKER_BOX; // [FACING=DOWN]
-	    	case "224:1": return Block.LIME_SHULKER_BOX; // [FACING=UP]
-	    	case "224:2": return Block.LIME_SHULKER_BOX; // [FACING=NORTH]
-	    	case "224:3": return Block.LIME_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "224:4": return Block.LIME_SHULKER_BOX; // [FACING=WEST]
-	    	case "224:5": return Block.LIME_SHULKER_BOX; // [FACING=EAST]
-	    	case "225:0": return Block.PINK_SHULKER_BOX; // [FACING=DOWN]
-	    	case "225:1": return Block.PINK_SHULKER_BOX; // [FACING=UP]
-	    	case "225:2": return Block.PINK_SHULKER_BOX; // [FACING=NORTH]
-	    	case "225:3": return Block.PINK_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "225:4": return Block.PINK_SHULKER_BOX; // [FACING=WEST]
-	    	case "225:5": return Block.PINK_SHULKER_BOX; // [FACING=EAST]
-	    	case "226:0": return Block.GRAY_SHULKER_BOX; // [FACING=DOWN]
-	    	case "226:1": return Block.GRAY_SHULKER_BOX; // [FACING=UP]
-	    	case "226:2": return Block.GRAY_SHULKER_BOX; // [FACING=NORTH]
-	    	case "226:3": return Block.GRAY_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "226:4": return Block.GRAY_SHULKER_BOX; // [FACING=WEST]
-	    	case "226:5": return Block.GRAY_SHULKER_BOX; // [FACING=EAST]
-	    	case "227:0": return Block.LIGHT_GRAY_SHULKER_BOX; // [FACING=DOWN]
-	    	case "227:1": return Block.LIGHT_GRAY_SHULKER_BOX; // [FACING=UP]
-	    	case "227:2": return Block.LIGHT_GRAY_SHULKER_BOX; // [FACING=NORTH]
-	    	case "227:3": return Block.LIGHT_GRAY_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "227:4": return Block.LIGHT_GRAY_SHULKER_BOX; // [FACING=WEST]
-	    	case "227:5": return Block.LIGHT_GRAY_SHULKER_BOX; // [FACING=EAST]
-	    	case "228:0": return Block.CYAN_SHULKER_BOX; // [FACING=DOWN]
-	    	case "228:1": return Block.CYAN_SHULKER_BOX; // [FACING=UP]
-	    	case "228:2": return Block.CYAN_SHULKER_BOX; // [FACING=NORTH]
-	    	case "228:3": return Block.CYAN_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "228:4": return Block.CYAN_SHULKER_BOX; // [FACING=WEST]
-	    	case "228:5": return Block.CYAN_SHULKER_BOX; // [FACING=EAST]
-	    	case "229:0": return Block.PURPLE_SHULKER_BOX; // [FACING=DOWN]
-	    	case "229:1": return Block.PURPLE_SHULKER_BOX; // [FACING=UP]
-	    	case "229:2": return Block.PURPLE_SHULKER_BOX; // [FACING=NORTH]
-	    	case "229:3": return Block.PURPLE_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "229:4": return Block.PURPLE_SHULKER_BOX; // [FACING=WEST]
-	    	case "229:5": return Block.PURPLE_SHULKER_BOX; // [FACING=EAST]
-	    	case "230:0": return Block.BLUE_SHULKER_BOX; // [FACING=DOWN]
-	    	case "230:1": return Block.BLUE_SHULKER_BOX; // [FACING=UP]
-	    	case "230:2": return Block.BLUE_SHULKER_BOX; // [FACING=NORTH]
-	    	case "230:3": return Block.BLUE_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "230:4": return Block.BLUE_SHULKER_BOX; // [FACING=WEST]
-	    	case "230:5": return Block.BLUE_SHULKER_BOX; // [FACING=EAST]
-	    	case "231:0": return Block.BROWN_SHULKER_BOX; // [FACING=DOWN]
-	    	case "231:1": return Block.BROWN_SHULKER_BOX; // [FACING=UP]
-	    	case "231:2": return Block.BROWN_SHULKER_BOX; // [FACING=NORTH]
-	    	case "231:3": return Block.BROWN_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "231:4": return Block.BROWN_SHULKER_BOX; // [FACING=WEST]
-	    	case "231:5": return Block.BROWN_SHULKER_BOX; // [FACING=EAST]
-	    	case "232:0": return Block.GREEN_SHULKER_BOX; // [FACING=DOWN]
-	    	case "232:1": return Block.GREEN_SHULKER_BOX; // [FACING=UP]
-	    	case "232:2": return Block.GREEN_SHULKER_BOX; // [FACING=NORTH]
-	    	case "232:3": return Block.GREEN_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "232:4": return Block.GREEN_SHULKER_BOX; // [FACING=WEST]
-	    	case "232:5": return Block.GREEN_SHULKER_BOX; // [FACING=EAST]
-	    	case "233:0": return Block.RED_SHULKER_BOX; // [FACING=DOWN]
-	    	case "233:1": return Block.RED_SHULKER_BOX; // [FACING=UP]
-	    	case "233:2": return Block.RED_SHULKER_BOX; // [FACING=NORTH]
-	    	case "233:3": return Block.RED_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "233:4": return Block.RED_SHULKER_BOX; // [FACING=WEST]
-	    	case "233:5": return Block.RED_SHULKER_BOX; // [FACING=EAST]
-	    	case "234:0": return Block.BLACK_SHULKER_BOX; // [FACING=DOWN]
-	    	case "234:1": return Block.BLACK_SHULKER_BOX; // [FACING=UP]
-	    	case "234:2": return Block.BLACK_SHULKER_BOX; // [FACING=NORTH]
-	    	case "234:3": return Block.BLACK_SHULKER_BOX; // [FACING=SOUTH]
-	    	case "234:4": return Block.BLACK_SHULKER_BOX; // [FACING=WEST]
-	    	case "234:5": return Block.BLACK_SHULKER_BOX; // [FACING=EAST]
-	    	case "235:0": return Block.WHITE_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "235:1": return Block.WHITE_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "235:2": return Block.WHITE_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "235:3": return Block.WHITE_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "236:0": return Block.ORANGE_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "236:1": return Block.ORANGE_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "236:2": return Block.ORANGE_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "236:3": return Block.ORANGE_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "237:0": return Block.MAGENTA_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "237:1": return Block.MAGENTA_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "237:2": return Block.MAGENTA_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "237:3": return Block.MAGENTA_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "238:0": return Block.LIGHT_BLUE_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "238:1": return Block.LIGHT_BLUE_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "238:2": return Block.LIGHT_BLUE_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "238:3": return Block.LIGHT_BLUE_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "239:0": return Block.YELLOW_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "239:1": return Block.YELLOW_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "239:2": return Block.YELLOW_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "239:3": return Block.YELLOW_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "240:0": return Block.LIME_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "240:1": return Block.LIME_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "240:2": return Block.LIME_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "240:3": return Block.LIME_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "241:0": return Block.PINK_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "241:1": return Block.PINK_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "241:2": return Block.PINK_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "241:3": return Block.PINK_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "242:0": return Block.GRAY_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "242:1": return Block.GRAY_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "242:2": return Block.GRAY_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "242:3": return Block.GRAY_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "243:0": return Block.LIGHT_GRAY_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "243:1": return Block.LIGHT_GRAY_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "243:2": return Block.LIGHT_GRAY_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "243:3": return Block.LIGHT_GRAY_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "244:0": return Block.CYAN_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "244:1": return Block.CYAN_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "244:2": return Block.CYAN_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "244:3": return Block.CYAN_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "245:0": return Block.PURPLE_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "245:1": return Block.PURPLE_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "245:2": return Block.PURPLE_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "245:3": return Block.PURPLE_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "246:0": return Block.BLUE_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "246:1": return Block.BLUE_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "246:2": return Block.BLUE_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "246:3": return Block.BLUE_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "247:0": return Block.BROWN_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "247:1": return Block.BROWN_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "247:2": return Block.BROWN_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "247:3": return Block.BROWN_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "248:0": return Block.GREEN_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "248:1": return Block.GREEN_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "248:2": return Block.GREEN_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "248:3": return Block.GREEN_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "249:0": return Block.RED_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "249:1": return Block.RED_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "249:2": return Block.RED_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "249:3": return Block.RED_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "250:0": return Block.BLACK_GLAZED_TERRACOTTA; // [FACING=SOUTH]
-	    	case "250:1": return Block.BLACK_GLAZED_TERRACOTTA; // [FACING=WEST]
-	    	case "250:2": return Block.BLACK_GLAZED_TERRACOTTA; // [FACING=NORTH]
-	    	case "250:3": return Block.BLACK_GLAZED_TERRACOTTA; // [FACING=EAST]
-	    	case "251:0": return Block.WHITE_CONCRETE;
-	    	case "251:1": return Block.ORANGE_CONCRETE;
-	    	case "251:2": return Block.MAGENTA_CONCRETE;
-	    	case "251:3": return Block.LIGHT_BLUE_CONCRETE;
-	    	case "251:4": return Block.YELLOW_CONCRETE;
-	    	case "251:5": return Block.LIME_CONCRETE;
-	    	case "251:6": return Block.PINK_CONCRETE;
-	    	case "251:7": return Block.GRAY_CONCRETE;
-	    	case "251:8": return Block.LIGHT_GRAY_CONCRETE;
-	    	case "251:9": return Block.CYAN_CONCRETE;
-	    	case "251:10": return Block.PURPLE_CONCRETE;
-	    	case "251:11": return Block.BLUE_CONCRETE;
-	    	case "251:12": return Block.BROWN_CONCRETE;
-	    	case "251:13": return Block.GREEN_CONCRETE;
-	    	case "251:14": return Block.RED_CONCRETE;
-	    	case "251:15": return Block.BLACK_CONCRETE;
-	    	case "252:0": return Block.WHITE_CONCRETE_POWDER;
-	    	case "252:1": return Block.ORANGE_CONCRETE_POWDER;
-	    	case "252:2": return Block.MAGENTA_CONCRETE_POWDER;
-	    	case "252:3": return Block.LIGHT_BLUE_CONCRETE_POWDER;
-	    	case "252:4": return Block.YELLOW_CONCRETE_POWDER;
-	    	case "252:5": return Block.LIME_CONCRETE_POWDER;
-	    	case "252:6": return Block.PINK_CONCRETE_POWDER;
-	    	case "252:7": return Block.GRAY_CONCRETE_POWDER;
-	    	case "252:8": return Block.LIGHT_GRAY_CONCRETE_POWDER;
-	    	case "252:9": return Block.CYAN_CONCRETE_POWDER;
-	    	case "252:10": return Block.PURPLE_CONCRETE_POWDER;
-	    	case "252:11": return Block.BLUE_CONCRETE_POWDER;
-	    	case "252:12": return Block.BROWN_CONCRETE_POWDER;
-	    	case "252:13": return Block.GREEN_CONCRETE_POWDER;
-	    	case "252:14": return Block.RED_CONCRETE_POWDER;
-	    	case "252:15": return Block.BLACK_CONCRETE_POWDER;
-	    	case "255:0": return Block.STRUCTURE_BLOCK; // [MODE=SAVE]
-	    	case "255:1": return Block.STRUCTURE_BLOCK; // [MODE=LOAD]
-	    	case "255:2": return Block.STRUCTURE_BLOCK; // [MODE=CORNER]
-	    	case "255:3": return Block.STRUCTURE_BLOCK; // [MODE=DATA]
+		case "0:0": return getNamespace("minecraft:AIR");
+    	case "1:0": return getNamespace("minecraft:STONE");
+    	case "1:1": return getNamespace("minecraft:GRANITE");
+    	case "1:2": return getNamespace("minecraft:POLISHED_GRANITE");
+    	case "1:3": return getNamespace("minecraft:DIORITE");
+    	case "1:4": return getNamespace("minecraft:POLISHED_DIORITE");
+    	case "1:5": return getNamespace("minecraft:ANDESITE");
+    	case "1:6": return getNamespace("minecraft:POLISHED_ANDESITE");
+    	case "2:0": return getNamespace("minecraft:GRASS_BLOCK[snowy=false]");
+    	case "3:0": return getNamespace("minecraft:DIRT");
+    	case "3:1": return getNamespace("minecraft:COARSE_DIRT");
+    	case "3:2": return getNamespace("minecraft:PODZOL[snowy=false]");
+    	case "4:0": return getNamespace("minecraft:COBBLESTONE");
+    	case "5:0": return getNamespace("minecraft:OAK_PLANKS");
+    	case "5:1": return getNamespace("minecraft:SPRUCE_PLANKS");
+    	case "5:2": return getNamespace("minecraft:BIRCH_PLANKS");
+    	case "5:3": return getNamespace("minecraft:JUNGLE_PLANKS");
+    	case "5:4": return getNamespace("minecraft:ACACIA_PLANKS");
+    	case "5:5": return getNamespace("minecraft:DARK_OAK_PLANKS");
+    	case "6:0": return getNamespace("minecraft:OAK_SAPLING[stage=0]");
+    	case "6:1": return getNamespace("minecraft:SPRUCE_SAPLING[stage=0]");
+    	case "6:2": return getNamespace("minecraft:BIRCH_SAPLING[stage=0]");
+    	case "6:3": return getNamespace("minecraft:JUNGLE_SAPLING[stage=0]");
+    	case "6:4": return getNamespace("minecraft:ACACIA_SAPLING[stage=0]");
+    	case "6:5": return getNamespace("minecraft:DARK_OAK_SAPLING[stage=0]");
+    	case "6:8": return getNamespace("minecraft:OAK_SAPLING[stage=1]");
+    	case "6:9": return getNamespace("minecraft:SPRUCE_SAPLING[stage=1]");
+    	case "6:10": return getNamespace("minecraft:BIRCH_SAPLING[stage=1]");
+    	case "6:11": return getNamespace("minecraft:JUNGLE_SAPLING[stage=1]");
+    	case "6:12": return getNamespace("minecraft:ACACIA_SAPLING[stage=1]");
+    	case "6:13": return getNamespace("minecraft:DARK_OAK_SAPLING[stage=1]");
+    	case "7:0": return getNamespace("minecraft:BEDROCK");
+    	case "8:0": return getNamespace("minecraft:WATER[level=0]");
+    	case "8:1": return getNamespace("minecraft:WATER[level=1]");
+    	case "8:2": return getNamespace("minecraft:WATER[level=2]");
+    	case "8:3": return getNamespace("minecraft:WATER[level=3]");
+    	case "8:4": return getNamespace("minecraft:WATER[level=4]");
+    	case "8:5": return getNamespace("minecraft:WATER[level=5]");
+    	case "8:6": return getNamespace("minecraft:WATER[level=6]");
+    	case "8:7": return getNamespace("minecraft:WATER[level=7]");
+    	case "8:8": return getNamespace("minecraft:WATER[level=8]");
+    	case "8:9": return getNamespace("minecraft:WATER[level=9]");
+    	case "8:10": return getNamespace("minecraft:WATER[level=10]");
+    	case "8:11": return getNamespace("minecraft:WATER[level=11]");
+    	case "8:12": return getNamespace("minecraft:WATER[level=12]");
+    	case "8:13": return getNamespace("minecraft:WATER[level=13]");
+    	case "8:14": return getNamespace("minecraft:WATER[level=14]");
+    	case "8:15": return getNamespace("minecraft:WATER[level=15]");
+    	case "9:0": return getNamespace("minecraft:WATER[level=0]");
+    	case "9:1": return getNamespace("minecraft:WATER[level=1]");
+    	case "9:2": return getNamespace("minecraft:WATER[level=2]");
+    	case "9:3": return getNamespace("minecraft:WATER[level=3]");
+    	case "9:4": return getNamespace("minecraft:WATER[level=4]");
+    	case "9:5": return getNamespace("minecraft:WATER[level=5]");
+    	case "9:6": return getNamespace("minecraft:WATER[level=6]");
+    	case "9:7": return getNamespace("minecraft:WATER[level=7]");
+    	case "9:8": return getNamespace("minecraft:WATER[level=8]");
+    	case "9:9": return getNamespace("minecraft:WATER[level=9]");
+    	case "9:10": return getNamespace("minecraft:WATER[level=10]");
+    	case "9:11": return getNamespace("minecraft:WATER[level=11]");
+    	case "9:12": return getNamespace("minecraft:WATER[level=12]");
+    	case "9:13": return getNamespace("minecraft:WATER[level=13]");
+    	case "9:14": return getNamespace("minecraft:WATER[level=14]");
+    	case "9:15": return getNamespace("minecraft:WATER[level=15]");
+    	case "10:0": return getNamespace("minecraft:LAVA[level=0]");
+    	case "10:1": return getNamespace("minecraft:LAVA[level=1]");
+    	case "10:2": return getNamespace("minecraft:LAVA[level=2]");
+    	case "10:3": return getNamespace("minecraft:LAVA[level=3]");
+    	case "10:4": return getNamespace("minecraft:LAVA[level=4]");
+    	case "10:5": return getNamespace("minecraft:LAVA[level=5]");
+    	case "10:6": return getNamespace("minecraft:LAVA[level=6]");
+    	case "10:7": return getNamespace("minecraft:LAVA[level=7]");
+    	case "10:8": return getNamespace("minecraft:LAVA[level=8]");
+    	case "10:9": return getNamespace("minecraft:LAVA[level=9]");
+    	case "10:10": return getNamespace("minecraft:LAVA[level=10]");
+    	case "10:11": return getNamespace("minecraft:LAVA[level=11]");
+    	case "10:12": return getNamespace("minecraft:LAVA[level=12]");
+    	case "10:13": return getNamespace("minecraft:LAVA[level=13]");
+    	case "10:14": return getNamespace("minecraft:LAVA[level=14]");
+    	case "10:15": return getNamespace("minecraft:LAVA[level=15]");
+    	case "11:0": return getNamespace("minecraft:LAVA[level=0]");
+    	case "11:1": return getNamespace("minecraft:LAVA[level=1]");
+    	case "11:2": return getNamespace("minecraft:LAVA[level=2]");
+    	case "11:3": return getNamespace("minecraft:LAVA[level=3]");
+    	case "11:4": return getNamespace("minecraft:LAVA[level=4]");
+    	case "11:5": return getNamespace("minecraft:LAVA[level=5]");
+    	case "11:6": return getNamespace("minecraft:LAVA[level=6]");
+    	case "11:7": return getNamespace("minecraft:LAVA[level=7]");
+    	case "11:8": return getNamespace("minecraft:LAVA[level=8]");
+    	case "11:9": return getNamespace("minecraft:LAVA[level=9]");
+    	case "11:10": return getNamespace("minecraft:LAVA[level=10]");
+    	case "11:11": return getNamespace("minecraft:LAVA[level=11]");
+    	case "11:12": return getNamespace("minecraft:LAVA[level=12]");
+    	case "11:13": return getNamespace("minecraft:LAVA[level=13]");
+    	case "11:14": return getNamespace("minecraft:LAVA[level=14]");
+    	case "11:15": return getNamespace("minecraft:LAVA[level=15]");
+    	case "12:0": return getNamespace("minecraft:SAND");
+    	case "12:1": return getNamespace("minecraft:RED_SAND");
+    	case "13:0": return getNamespace("minecraft:GRAVEL");
+    	case "14:0": return getNamespace("minecraft:GOLD_ORE");
+    	case "15:0": return getNamespace("minecraft:IRON_ORE");
+    	case "16:0": return getNamespace("minecraft:COAL_ORE");
+    	case "17:0": return getNamespace("minecraft:OAK_LOG[axis=y]");
+    	case "17:1": return getNamespace("minecraft:SPRUCE_LOG[axis=y]");
+    	case "17:2": return getNamespace("minecraft:BIRCH_LOG[axis=y]");
+    	case "17:3": return getNamespace("minecraft:JUNGLE_LOG[axis=y]");
+    	case "17:4": return getNamespace("minecraft:OAK_LOG[axis=x]");
+    	case "17:5": return getNamespace("minecraft:SPRUCE_LOG[axis=x]");
+    	case "17:6": return getNamespace("minecraft:BIRCH_LOG[axis=x]");
+    	case "17:7": return getNamespace("minecraft:JUNGLE_LOG[axis=x]");
+    	case "17:8": return getNamespace("minecraft:OAK_LOG[axis=z]");
+    	case "17:9": return getNamespace("minecraft:SPRUCE_LOG[axis=z]");
+    	case "17:10": return getNamespace("minecraft:BIRCH_LOG[axis=z]");
+    	case "17:11": return getNamespace("minecraft:JUNGLE_LOG[axis=z]");
+    	case "17:12": return getNamespace("minecraft:OAK_WOOD");
+    	case "17:13": return getNamespace("minecraft:SPRUCE_WOOD");
+    	case "17:14": return getNamespace("minecraft:BIRCH_WOOD");
+    	case "17:15": return getNamespace("minecraft:JUNGLE_WOOD");
+    	case "18:0": return getNamespace("minecraft:OAK_LEAVES[persistent=false,distance=1]");
+    	case "18:1": return getNamespace("minecraft:SPRUCE_LEAVES[persistent=false,distance=1]");
+    	case "18:2": return getNamespace("minecraft:BIRCH_LEAVES[persistent=false,distance=1]");
+    	case "18:3": return getNamespace("minecraft:JUNGLE_LEAVES[persistent=false,distance=1]");
+    	case "18:4": return getNamespace("minecraft:OAK_LEAVES[persistent=true,distance=1]");
+    	case "18:5": return getNamespace("minecraft:SPRUCE_LEAVES[persistent=true,distance=1]");
+    	case "18:6": return getNamespace("minecraft:BIRCH_LEAVES[persistent=true,distance=1]");
+    	case "18:7": return getNamespace("minecraft:JUNGLE_LEAVES[persistent=true,distance=1]");
+    	case "18:8": return getNamespace("minecraft:OAK_LEAVES[persistent=false,distance=1]");
+    	case "18:9": return getNamespace("minecraft:SPRUCE_LEAVES[persistent=false,distance=1]");
+    	case "18:10": return getNamespace("minecraft:BIRCH_LEAVES[persistent=false,distance=1]");
+    	case "18:11": return getNamespace("minecraft:JUNGLE_LEAVES[persistent=false,distance=1]");
+    	case "18:12": return getNamespace("minecraft:OAK_LEAVES[persistent=true,distance=1]");
+    	case "18:13": return getNamespace("minecraft:SPRUCE_LEAVES[persistent=true,distance=1]");
+    	case "18:14": return getNamespace("minecraft:BIRCH_LEAVES[persistent=true,distance=1]");
+    	case "18:15": return getNamespace("minecraft:JUNGLE_LEAVES[persistent=true,distance=1]");
+    	case "19:0": return getNamespace("minecraft:SPONGE");
+    	case "19:1": return getNamespace("minecraft:WET_SPONGE");
+    	case "20:0": return getNamespace("minecraft:GLASS");
+    	case "21:0": return getNamespace("minecraft:LAPIS_ORE");
+    	case "22:0": return getNamespace("minecraft:LAPIS_BLOCK");
+    	case "23:0": return getNamespace("minecraft:DISPENSER[triggered=false,facing=down]");
+    	case "23:1": return getNamespace("minecraft:DISPENSER[triggered=false,facing=up]");
+    	case "23:2": return getNamespace("minecraft:DISPENSER[triggered=false,facing=north]");
+    	case "23:3": return getNamespace("minecraft:DISPENSER[triggered=false,facing=south]");
+    	case "23:4": return getNamespace("minecraft:DISPENSER[triggered=false,facing=west]");
+    	case "23:5": return getNamespace("minecraft:DISPENSER[triggered=false,facing=east]");
+    	case "23:8": return getNamespace("minecraft:DISPENSER[triggered=true,facing=down]");
+    	case "23:9": return getNamespace("minecraft:DISPENSER[triggered=true,facing=up]");
+    	case "23:10": return getNamespace("minecraft:DISPENSER[triggered=true,facing=north]");
+    	case "23:11": return getNamespace("minecraft:DISPENSER[triggered=true,facing=south]");
+    	case "23:12": return getNamespace("minecraft:DISPENSER[triggered=true,facing=west]");
+    	case "23:13": return getNamespace("minecraft:DISPENSER[triggered=true,facing=east]");
+    	case "24:0": return getNamespace("minecraft:SANDSTONE");
+    	case "24:1": return getNamespace("minecraft:CHISELED_SANDSTONE");
+    	case "24:2": return getNamespace("minecraft:CUT_SANDSTONE");
+    	case "25:0": return getNamespace("minecraft:NOTE_BLOCK");
+    	case "26:0": return getNamespace("minecraft:RED_BED[part=foot,facing=south,occupied=false]");
+    	case "26:1": return getNamespace("minecraft:RED_BED[part=foot,facing=west,occupied=false]");
+    	case "26:2": return getNamespace("minecraft:RED_BED[part=foot,facing=north,occupied=false]");
+    	case "26:3": return getNamespace("minecraft:RED_BED[part=foot,facing=east,occupied=false]");
+    	case "26:4": return getNamespace("minecraft:RED_BED[part=foot,facing=south,occupied=true]");
+    	case "26:5": return getNamespace("minecraft:RED_BED[part=foot,facing=west,occupied=true]");
+    	case "26:6": return getNamespace("minecraft:RED_BED[part=foot,facing=north,occupied=true]");
+    	case "26:7": return getNamespace("minecraft:RED_BED[part=foot,facing=east,occupied=true]");
+    	case "26:8": return getNamespace("minecraft:RED_BED[part=head,facing=south,occupied=false]");
+    	case "26:9": return getNamespace("minecraft:RED_BED[part=head,facing=west,occupied=false]");
+    	case "26:10": return getNamespace("minecraft:RED_BED[part=head,facing=north,occupied=false]");
+    	case "26:11": return getNamespace("minecraft:RED_BED[part=head,facing=east,occupied=false]");
+    	case "26:12": return getNamespace("minecraft:RED_BED[part=head,facing=south,occupied=true]");
+    	case "26:13": return getNamespace("minecraft:RED_BED[part=head,facing=west,occupied=true]");
+    	case "26:14": return getNamespace("minecraft:RED_BED[part=head,facing=north,occupied=true]");
+    	case "26:15": return getNamespace("minecraft:RED_BED[part=head,facing=east,occupied=true]");
+    	case "27:0": return getNamespace("minecraft:POWERED_RAIL[shape=north_south,powered=false]");
+    	case "27:1": return getNamespace("minecraft:POWERED_RAIL[shape=east_west,powered=false]");
+    	case "27:2": return getNamespace("minecraft:POWERED_RAIL[shape=ascending_east,powered=false]");
+    	case "27:3": return getNamespace("minecraft:POWERED_RAIL[shape=ascending_west,powered=false]");
+    	case "27:4": return getNamespace("minecraft:POWERED_RAIL[shape=ascending_north,powered=false]");
+    	case "27:5": return getNamespace("minecraft:POWERED_RAIL[shape=ascending_south,powered=false]");
+    	case "27:8": return getNamespace("minecraft:POWERED_RAIL[shape=north_south,powered=true]");
+    	case "27:9": return getNamespace("minecraft:POWERED_RAIL[shape=east_west,powered=true]");
+    	case "27:10": return getNamespace("minecraft:POWERED_RAIL[shape=ascending_east,powered=true]");
+    	case "27:11": return getNamespace("minecraft:POWERED_RAIL[shape=ascending_west,powered=true]");
+    	case "27:12": return getNamespace("minecraft:POWERED_RAIL[shape=ascending_north,powered=true]");
+    	case "27:13": return getNamespace("minecraft:POWERED_RAIL[shape=ascending_south,powered=true]");
+    	case "28:0": return getNamespace("minecraft:DETECTOR_RAIL[shape=north_south,powered=false]");
+    	case "28:1": return getNamespace("minecraft:DETECTOR_RAIL[shape=east_west,powered=false]");
+    	case "28:2": return getNamespace("minecraft:DETECTOR_RAIL[shape=ascending_east,powered=false]");
+    	case "28:3": return getNamespace("minecraft:DETECTOR_RAIL[shape=ascending_west,powered=false]");
+    	case "28:4": return getNamespace("minecraft:DETECTOR_RAIL[shape=ascending_north,powered=false]");
+    	case "28:5": return getNamespace("minecraft:DETECTOR_RAIL[shape=ascending_south,powered=false]");
+    	case "28:8": return getNamespace("minecraft:DETECTOR_RAIL[shape=north_south,powered=true]");
+    	case "28:9": return getNamespace("minecraft:DETECTOR_RAIL[shape=east_west,powered=true]");
+    	case "28:10": return getNamespace("minecraft:DETECTOR_RAIL[shape=ascending_east,powered=true]");
+    	case "28:11": return getNamespace("minecraft:DETECTOR_RAIL[shape=ascending_west,powered=true]");
+    	case "28:12": return getNamespace("minecraft:DETECTOR_RAIL[shape=ascending_north,powered=true]");
+    	case "28:13": return getNamespace("minecraft:DETECTOR_RAIL[shape=ascending_south,powered=true]");
+    	case "29:0": return getNamespace("minecraft:STICKY_PISTON[facing=down,extended=false]");
+    	case "29:1": return getNamespace("minecraft:STICKY_PISTON[facing=up,extended=false]");
+    	case "29:2": return getNamespace("minecraft:STICKY_PISTON[facing=north,extended=false]");
+    	case "29:3": return getNamespace("minecraft:STICKY_PISTON[facing=south,extended=false]");
+    	case "29:4": return getNamespace("minecraft:STICKY_PISTON[facing=west,extended=false]");
+    	case "29:5": return getNamespace("minecraft:STICKY_PISTON[facing=east,extended=false]");
+    	case "29:8": return getNamespace("minecraft:STICKY_PISTON[facing=down,extended=true]");
+    	case "29:9": return getNamespace("minecraft:STICKY_PISTON[facing=up,extended=true]");
+    	case "29:10": return getNamespace("minecraft:STICKY_PISTON[facing=north,extended=true]");
+    	case "29:11": return getNamespace("minecraft:STICKY_PISTON[facing=south,extended=true]");
+    	case "29:12": return getNamespace("minecraft:STICKY_PISTON[facing=west,extended=true]");
+    	case "29:13": return getNamespace("minecraft:STICKY_PISTON[facing=east,extended=true]");
+    	case "30:0": return getNamespace("minecraft:COBWEB");
+    	case "31:0": return getNamespace("minecraft:DEAD_BUSH");
+    	case "31:1": return getNamespace("minecraft:GRASS");
+    	case "31:2": return getNamespace("minecraft:FERN");
+    	case "32:0": return getNamespace("minecraft:DEAD_BUSH");
+    	case "33:0": return getNamespace("minecraft:PISTON[facing=down,extended=false]");
+    	case "33:1": return getNamespace("minecraft:PISTON[facing=up,extended=false]");
+    	case "33:2": return getNamespace("minecraft:PISTON[facing=north,extended=false]");
+    	case "33:3": return getNamespace("minecraft:PISTON[facing=south,extended=false]");
+    	case "33:4": return getNamespace("minecraft:PISTON[facing=west,extended=false]");
+    	case "33:5": return getNamespace("minecraft:PISTON[facing=east,extended=false]");
+    	case "33:8": return getNamespace("minecraft:PISTON[facing=down,extended=true]");
+    	case "33:9": return getNamespace("minecraft:PISTON[facing=up,extended=true]");
+    	case "33:10": return getNamespace("minecraft:PISTON[facing=north,extended=true]");
+    	case "33:11": return getNamespace("minecraft:PISTON[facing=south,extended=true]");
+    	case "33:12": return getNamespace("minecraft:PISTON[facing=west,extended=true]");
+    	case "33:13": return getNamespace("minecraft:PISTON[facing=east,extended=true]");
+    	case "34:0": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=down,type=normal]");
+    	case "34:1": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=up,type=normal]");
+    	case "34:2": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=north,type=normal]");
+    	case "34:3": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=south,type=normal]");
+    	case "34:4": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=west,type=normal]");
+    	case "34:5": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=east,type=normal]");
+    	case "34:8": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=down,type=sticky]");
+    	case "34:9": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=up,type=sticky]");
+    	case "34:10": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=north,type=sticky]");
+    	case "34:11": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=south,type=sticky]");
+    	case "34:12": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=west,type=sticky]");
+    	case "34:13": return getNamespace("minecraft:PISTON_HEAD[short=false,facing=east,type=sticky]");
+    	case "35:0": return getNamespace("minecraft:WHITE_WOOL");
+    	case "35:1": return getNamespace("minecraft:ORANGE_WOOL");
+    	case "35:2": return getNamespace("minecraft:MAGENTA_WOOL");
+    	case "35:3": return getNamespace("minecraft:LIGHT_BLUE_WOOL");
+    	case "35:4": return getNamespace("minecraft:YELLOW_WOOL");
+    	case "35:5": return getNamespace("minecraft:LIME_WOOL");
+    	case "35:6": return getNamespace("minecraft:PINK_WOOL");
+    	case "35:7": return getNamespace("minecraft:GRAY_WOOL");
+    	case "35:8": return getNamespace("minecraft:LIGHT_GRAY_WOOL");
+    	case "35:9": return getNamespace("minecraft:CYAN_WOOL");
+    	case "35:10": return getNamespace("minecraft:PURPLE_WOOL");
+    	case "35:11": return getNamespace("minecraft:BLUE_WOOL");
+    	case "35:12": return getNamespace("minecraft:BROWN_WOOL");
+    	case "35:13": return getNamespace("minecraft:GREEN_WOOL");
+    	case "35:14": return getNamespace("minecraft:RED_WOOL");
+    	case "35:15": return getNamespace("minecraft:BLACK_WOOL");
+    	case "36:0": return getNamespace("minecraft:MOVING_PISTON[facing=down,type=normal]");
+    	case "36:1": return getNamespace("minecraft:MOVING_PISTON[facing=up,type=normal]");
+    	case "36:2": return getNamespace("minecraft:MOVING_PISTON[facing=north,type=normal]");
+    	case "36:3": return getNamespace("minecraft:MOVING_PISTON[facing=south,type=normal]");
+    	case "36:4": return getNamespace("minecraft:MOVING_PISTON[facing=west,type=normal]");
+    	case "36:5": return getNamespace("minecraft:MOVING_PISTON[facing=east,type=normal]");
+    	case "36:8": return getNamespace("minecraft:MOVING_PISTON[facing=down,type=sticky]");
+    	case "36:9": return getNamespace("minecraft:MOVING_PISTON[facing=up,type=sticky]");
+    	case "36:10": return getNamespace("minecraft:MOVING_PISTON[facing=north,type=sticky]");
+    	case "36:11": return getNamespace("minecraft:MOVING_PISTON[facing=south,type=sticky]");
+    	case "36:12": return getNamespace("minecraft:MOVING_PISTON[facing=west,type=sticky]");
+    	case "36:13": return getNamespace("minecraft:MOVING_PISTON[facing=east,type=sticky]");
+    	case "37:0": return getNamespace("minecraft:DANDELION");
+    	case "38:0": return getNamespace("minecraft:POPPY");
+    	case "38:1": return getNamespace("minecraft:BLUE_ORCHID");
+    	case "38:2": return getNamespace("minecraft:ALLIUM");
+    	case "38:3": return getNamespace("minecraft:AZURE_BLUET");
+    	case "38:4": return getNamespace("minecraft:RED_TULIP");
+    	case "38:5": return getNamespace("minecraft:ORANGE_TULIP");
+    	case "38:6": return getNamespace("minecraft:WHITE_TULIP");
+    	case "38:7": return getNamespace("minecraft:PINK_TULIP");
+    	case "38:8": return getNamespace("minecraft:OXEYE_DAISY");
+    	case "39:0": return getNamespace("minecraft:BROWN_MUSHROOM");
+    	case "40:0": return getNamespace("minecraft:RED_MUSHROOM");
+    	case "41:0": return getNamespace("minecraft:GOLD_BLOCK");
+    	case "42:0": return getNamespace("minecraft:IRON_BLOCK");
+    	case "43:0": return getNamespace("minecraft:STONE_SLAB[type=double]");
+    	case "43:1": return getNamespace("minecraft:SANDSTONE_SLAB[type=double]");
+    	case "43:2": return getNamespace("minecraft:PETRIFIED_OAK_SLAB[type=double]");
+    	case "43:3": return getNamespace("minecraft:COBBLESTONE_SLAB[type=double]");
+    	case "43:4": return getNamespace("minecraft:BRICK_SLAB[type=double]");
+    	case "43:5": return getNamespace("minecraft:STONE_BRICK_SLAB[type=double]");
+    	case "43:6": return getNamespace("minecraft:NETHER_BRICK_SLAB[type=double]");
+    	case "43:7": return getNamespace("minecraft:QUARTZ_SLAB[type=double]");
+    	case "43:8": return getNamespace("minecraft:SMOOTH_STONE");
+    	case "43:9": return getNamespace("minecraft:SMOOTH_SANDSTONE");
+    	case "43:10": return getNamespace("minecraft:PETRIFIED_OAK_SLAB[type=double]");
+    	case "43:11": return getNamespace("minecraft:COBBLESTONE_SLAB[type=double]");
+    	case "43:12": return getNamespace("minecraft:BRICK_SLAB[type=double]");
+    	case "43:13": return getNamespace("minecraft:STONE_BRICK_SLAB[type=double]");
+    	case "43:14": return getNamespace("minecraft:NETHER_BRICK_SLAB[type=double]");
+    	case "43:15": return getNamespace("minecraft:SMOOTH_QUARTZ");
+    	case "44:0": return getNamespace("minecraft:STONE_SLAB[type=bottom]");
+    	case "44:1": return getNamespace("minecraft:SANDSTONE_SLAB[type=bottom]");
+    	case "44:2": return getNamespace("minecraft:PETRIFIED_OAK_SLAB[type=bottom]");
+    	case "44:3": return getNamespace("minecraft:COBBLESTONE_SLAB[type=bottom]");
+    	case "44:4": return getNamespace("minecraft:BRICK_SLAB[type=bottom]");
+    	case "44:5": return getNamespace("minecraft:STONE_BRICK_SLAB[type=bottom]");
+    	case "44:6": return getNamespace("minecraft:NETHER_BRICK_SLAB[type=bottom]");
+    	case "44:7": return getNamespace("minecraft:QUARTZ_SLAB[type=bottom]");
+    	case "44:8": return getNamespace("minecraft:STONE_SLAB[type=top]");
+    	case "44:9": return getNamespace("minecraft:SANDSTONE_SLAB[type=top]");
+    	case "44:10": return getNamespace("minecraft:PETRIFIED_OAK_SLAB[type=top]");
+    	case "44:11": return getNamespace("minecraft:COBBLESTONE_SLAB[type=top]");
+    	case "44:12": return getNamespace("minecraft:BRICK_SLAB[type=top]");
+    	case "44:13": return getNamespace("minecraft:STONE_BRICK_SLAB[type=top]");
+    	case "44:14": return getNamespace("minecraft:NETHER_BRICK_SLAB[type=top]");
+    	case "44:15": return getNamespace("minecraft:QUARTZ_SLAB[type=top]");
+    	case "45:0": return getNamespace("minecraft:BRICKS");
+    	case "46:0": return getNamespace("minecraft:TNT[unstable=false]");
+    	case "46:1": return getNamespace("minecraft:TNT[unstable=true]");
+    	case "47:0": return getNamespace("minecraft:BOOKSHELF");
+    	case "48:0": return getNamespace("minecraft:MOSSY_COBBLESTONE");
+    	case "49:0": return getNamespace("minecraft:OBSIDIAN");
+    	case "50:1": return getNamespace("minecraft:WALL_TORCH[facing=east]");
+    	case "50:2": return getNamespace("minecraft:WALL_TORCH[facing=west]");
+    	case "50:3": return getNamespace("minecraft:WALL_TORCH[facing=south]");
+    	case "50:4": return getNamespace("minecraft:WALL_TORCH[facing=north]");
+    	case "50:5": return getNamespace("minecraft:TORCH");
+    	case "51:0": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=0]");
+    	case "51:1": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=1]");
+    	case "51:2": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=2]");
+    	case "51:3": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=3]");
+    	case "51:4": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=4]");
+    	case "51:5": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=5]");
+    	case "51:6": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=6]");
+    	case "51:7": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=7]");
+    	case "51:8": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=8]");
+    	case "51:9": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=9]");
+    	case "51:10": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=10]");
+    	case "51:11": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=11]");
+    	case "51:12": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=12]");
+    	case "51:13": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=13]");
+    	case "51:14": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=14]");
+    	case "51:15": return getNamespace("minecraft:FIRE[east=false,south=false,north=false,west=false,up=false,age=15]");
+    	case "52:0": return getNamespace("minecraft:SPAWNER");
+    	case "53:0": return getNamespace("minecraft:OAK_STAIRS[half=bottom,shape=outer_right,facing=east]");
+    	case "53:1": return getNamespace("minecraft:OAK_STAIRS[half=bottom,shape=outer_right,facing=west]");
+    	case "53:2": return getNamespace("minecraft:OAK_STAIRS[half=bottom,shape=outer_right,facing=south]");
+    	case "53:3": return getNamespace("minecraft:OAK_STAIRS[half=bottom,shape=outer_right,facing=north]");
+    	case "53:4": return getNamespace("minecraft:OAK_STAIRS[half=top,shape=outer_right,facing=east]");
+    	case "53:5": return getNamespace("minecraft:OAK_STAIRS[half=top,shape=outer_right,facing=west]");
+    	case "53:6": return getNamespace("minecraft:OAK_STAIRS[half=top,shape=outer_right,facing=south]");
+    	case "53:7": return getNamespace("minecraft:OAK_STAIRS[half=top,shape=outer_right,facing=north]");
+    	case "54:2": return getNamespace("minecraft:CHEST[facing=north,type=single]");
+    	case "54:3": return getNamespace("minecraft:CHEST[facing=south,type=single]");
+    	case "54:4": return getNamespace("minecraft:CHEST[facing=west,type=single]");
+    	case "54:5": return getNamespace("minecraft:CHEST[facing=east,type=single]");
+    	case "55:0": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=0]");
+    	case "55:1": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=1]");
+    	case "55:2": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=2]");
+    	case "55:3": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=3]");
+    	case "55:4": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=4]");
+    	case "55:5": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=5]");
+    	case "55:6": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=6]");
+    	case "55:7": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=7]");
+    	case "55:8": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=8]");
+    	case "55:9": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=9]");
+    	case "55:10": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=10]");
+    	case "55:11": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=11]");
+    	case "55:12": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=12]");
+    	case "55:13": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=13]");
+    	case "55:14": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=14]");
+    	case "55:15": return getNamespace("minecraft:REDSTONE_WIRE[east=none,south=none,north=none,west=none,power=15]");
+    	case "56:0": return getNamespace("minecraft:DIAMOND_ORE");
+    	case "57:0": return getNamespace("minecraft:DIAMOND_BLOCK");
+    	case "58:0": return getNamespace("minecraft:CRAFTING_TABLE");
+    	case "59:0": return getNamespace("minecraft:WHEAT[age=0]");
+    	case "59:1": return getNamespace("minecraft:WHEAT[age=1]");
+    	case "59:2": return getNamespace("minecraft:WHEAT[age=2]");
+    	case "59:3": return getNamespace("minecraft:WHEAT[age=3]");
+    	case "59:4": return getNamespace("minecraft:WHEAT[age=4]");
+    	case "59:5": return getNamespace("minecraft:WHEAT[age=5]");
+    	case "59:6": return getNamespace("minecraft:WHEAT[age=6]");
+    	case "59:7": return getNamespace("minecraft:WHEAT[age=7]");
+    	case "60:0": return getNamespace("minecraft:FARMLAND[moisture=0]");
+    	case "60:1": return getNamespace("minecraft:FARMLAND[moisture=1]");
+    	case "60:2": return getNamespace("minecraft:FARMLAND[moisture=2]");
+    	case "60:3": return getNamespace("minecraft:FARMLAND[moisture=3]");
+    	case "60:4": return getNamespace("minecraft:FARMLAND[moisture=4]");
+    	case "60:5": return getNamespace("minecraft:FARMLAND[moisture=5]");
+    	case "60:6": return getNamespace("minecraft:FARMLAND[moisture=6]");
+    	case "60:7": return getNamespace("minecraft:FARMLAND[moisture=7]");
+    	case "61:2": return getNamespace("minecraft:FURNACE[facing=north,lit=false]");
+    	case "61:3": return getNamespace("minecraft:FURNACE[facing=south,lit=false]");
+    	case "61:4": return getNamespace("minecraft:FURNACE[facing=west,lit=false]");
+    	case "61:5": return getNamespace("minecraft:FURNACE[facing=east,lit=false]");
+    	case "62:2": return getNamespace("minecraft:FURNACE[facing=north,lit=true]");
+    	case "62:3": return getNamespace("minecraft:FURNACE[facing=south,lit=true]");
+    	case "62:4": return getNamespace("minecraft:FURNACE[facing=west,lit=true]");
+    	case "62:5": return getNamespace("minecraft:FURNACE[facing=east,lit=true]");
+    	case "63:0": return getNamespace("minecraft:OAK_SIGN[rotation=0]");
+    	case "63:1": return getNamespace("minecraft:OAK_SIGN[rotation=1]");
+    	case "63:2": return getNamespace("minecraft:OAK_SIGN[rotation=2]");
+    	case "63:3": return getNamespace("minecraft:OAK_SIGN[rotation=3]");
+    	case "63:4": return getNamespace("minecraft:OAK_SIGN[rotation=4]");
+    	case "63:5": return getNamespace("minecraft:OAK_SIGN[rotation=5]");
+    	case "63:6": return getNamespace("minecraft:OAK_SIGN[rotation=6]");
+    	case "63:7": return getNamespace("minecraft:OAK_SIGN[rotation=7]");
+    	case "63:8": return getNamespace("minecraft:OAK_SIGN[rotation=8]");
+    	case "63:9": return getNamespace("minecraft:OAK_SIGN[rotation=9]");
+    	case "63:10": return getNamespace("minecraft:OAK_SIGN[rotation=10]");
+    	case "63:11": return getNamespace("minecraft:OAK_SIGN[rotation=11]");
+    	case "63:12": return getNamespace("minecraft:OAK_SIGN[rotation=12]");
+    	case "63:13": return getNamespace("minecraft:OAK_SIGN[rotation=13]");
+    	case "63:14": return getNamespace("minecraft:OAK_SIGN[rotation=14]");
+    	case "63:15": return getNamespace("minecraft:OAK_SIGN[rotation=15]");
+    	case "64:0": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=lower,powered=false,facing=east,open=false]");
+    	case "64:1": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=lower,powered=false,facing=south,open=false]");
+    	case "64:2": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=lower,powered=false,facing=west,open=false]");
+    	case "64:3": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=lower,powered=false,facing=north,open=false]");
+    	case "64:4": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=lower,powered=false,facing=east,open=true]");
+    	case "64:5": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=lower,powered=false,facing=south,open=true]");
+    	case "64:6": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=lower,powered=false,facing=west,open=true]");
+    	case "64:7": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=lower,powered=false,facing=north,open=true]");
+    	case "64:8": return getNamespace("minecraft:OAK_DOOR[hinge=left,half=upper,powered=false,facing=east,open=false]");
+    	case "64:9": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=upper,powered=false,facing=east,open=false]");
+    	case "64:10": return getNamespace("minecraft:OAK_DOOR[hinge=left,half=upper,powered=true,facing=east,open=false]");
+    	case "64:11": return getNamespace("minecraft:OAK_DOOR[hinge=right,half=upper,powered=true,facing=east,open=false]");
+    	case "65:2": return getNamespace("minecraft:LADDER[facing=north]");
+    	case "65:3": return getNamespace("minecraft:LADDER[facing=south]");
+    	case "65:4": return getNamespace("minecraft:LADDER[facing=west]");
+    	case "65:5": return getNamespace("minecraft:LADDER[facing=east]");
+    	case "66:0": return getNamespace("minecraft:RAIL[shape=north_south]");
+    	case "66:1": return getNamespace("minecraft:RAIL[shape=east_west]");
+    	case "66:2": return getNamespace("minecraft:RAIL[shape=ascending_east]");
+    	case "66:3": return getNamespace("minecraft:RAIL[shape=ascending_west]");
+    	case "66:4": return getNamespace("minecraft:RAIL[shape=ascending_north]");
+    	case "66:5": return getNamespace("minecraft:RAIL[shape=ascending_south]");
+    	case "66:6": return getNamespace("minecraft:RAIL[shape=south_east]");
+    	case "66:7": return getNamespace("minecraft:RAIL[shape=south_west]");
+    	case "66:8": return getNamespace("minecraft:RAIL[shape=north_west]");
+    	case "66:9": return getNamespace("minecraft:RAIL[shape=north_east]");
+    	case "67:0": return getNamespace("minecraft:COBBLESTONE_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "67:1": return getNamespace("minecraft:COBBLESTONE_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "67:2": return getNamespace("minecraft:COBBLESTONE_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "67:3": return getNamespace("minecraft:COBBLESTONE_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "67:4": return getNamespace("minecraft:COBBLESTONE_STAIRS[half=top,shape=straight,facing=east]");
+    	case "67:5": return getNamespace("minecraft:COBBLESTONE_STAIRS[half=top,shape=straight,facing=west]");
+    	case "67:6": return getNamespace("minecraft:COBBLESTONE_STAIRS[half=top,shape=straight,facing=south]");
+    	case "67:7": return getNamespace("minecraft:COBBLESTONE_STAIRS[half=top,shape=straight,facing=north]");
+    	case "68:2": return getNamespace("minecraft:OAK_SIGN[facing=north]");
+    	case "68:3": return getNamespace("minecraft:OAK_SIGN[facing=south]");
+    	case "68:4": return getNamespace("minecraft:OAK_SIGN[facing=west]");
+    	case "68:5": return getNamespace("minecraft:OAK_SIGN[facing=east]");
+    	case "69:0": return getNamespace("minecraft:LEVER[powered=false,facing=north,face=ceiling]");
+    	case "69:1": return getNamespace("minecraft:LEVER[powered=false,facing=east,face=wall]");
+    	case "69:2": return getNamespace("minecraft:LEVER[powered=false,facing=west,face=wall]");
+    	case "69:3": return getNamespace("minecraft:LEVER[powered=false,facing=south,face=wall]");
+    	case "69:4": return getNamespace("minecraft:LEVER[powered=false,facing=north,face=wall]");
+    	case "69:5": return getNamespace("minecraft:LEVER[powered=false,facing=east,face=floor]");
+    	case "69:6": return getNamespace("minecraft:LEVER[powered=false,facing=north,face=floor]");
+    	case "69:7": return getNamespace("minecraft:LEVER[powered=false,facing=east,face=ceiling]");
+    	case "69:8": return getNamespace("minecraft:LEVER[powered=true,facing=north,face=ceiling]");
+    	case "69:9": return getNamespace("minecraft:LEVER[powered=true,facing=east,face=wall]");
+    	case "69:10": return getNamespace("minecraft:LEVER[powered=true,facing=west,face=wall]");
+    	case "69:11": return getNamespace("minecraft:LEVER[powered=true,facing=south,face=wall]");
+    	case "69:12": return getNamespace("minecraft:LEVER[powered=true,facing=north,face=wall]");
+    	case "69:13": return getNamespace("minecraft:LEVER[powered=true,facing=east,face=floor]");
+    	case "69:14": return getNamespace("minecraft:LEVER[powered=true,facing=north,face=floor]");
+    	case "69:15": return getNamespace("minecraft:LEVER[powered=true,facing=east,face=ceiling]");
+    	case "70:0": return getNamespace("minecraft:STONE_PRESSURE_PLATE[powered=false]");
+    	case "70:1": return getNamespace("minecraft:STONE_PRESSURE_PLATE[powered=true]");
+    	case "71:0": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=lower,powered=false,facing=east,open=false]");
+    	case "71:1": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=lower,powered=false,facing=south,open=false]");
+    	case "71:2": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=lower,powered=false,facing=west,open=false]");
+    	case "71:3": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=lower,powered=false,facing=north,open=false]");
+    	case "71:4": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=lower,powered=false,facing=east,open=true]");
+    	case "71:5": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=lower,powered=false,facing=south,open=true]");
+    	case "71:6": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=lower,powered=false,facing=west,open=true]");
+    	case "71:7": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=lower,powered=false,facing=north,open=true]");
+    	case "71:8": return getNamespace("minecraft:IRON_DOOR[hinge=left,half=upper,powered=false,facing=east,open=false]");
+    	case "71:9": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=upper,powered=false,facing=east,open=false]");
+    	case "71:10": return getNamespace("minecraft:IRON_DOOR[hinge=left,half=upper,powered=true,facing=east,open=false]");
+    	case "71:11": return getNamespace("minecraft:IRON_DOOR[hinge=right,half=upper,powered=true,facing=east,open=false]");
+    	case "72:0": return getNamespace("minecraft:OAK_PRESSURE_PLATE[powered=false]");
+    	case "72:1": return getNamespace("minecraft:OAK_PRESSURE_PLATE[powered=true]");
+    	case "73:0": return getNamespace("minecraft:REDSTONE_ORE[lit=false]");
+    	case "74:0": return getNamespace("minecraft:REDSTONE_ORE[lit=true]");
+    	case "75:1": return getNamespace("minecraft:REDSTONE_WALL_TORCH[facing=east,lit=false]");
+    	case "75:2": return getNamespace("minecraft:REDSTONE_WALL_TORCH[facing=west,lit=false]");
+    	case "75:3": return getNamespace("minecraft:REDSTONE_WALL_TORCH[facing=south,lit=false]");
+    	case "75:4": return getNamespace("minecraft:REDSTONE_WALL_TORCH[facing=north,lit=false]");
+    	case "75:5": return getNamespace("minecraft:REDSTONE_TORCH[lit=false]");
+    	case "76:1": return getNamespace("minecraft:REDSTONE_WALL_TORCH[facing=east,lit=true]");
+    	case "76:2": return getNamespace("minecraft:REDSTONE_WALL_TORCH[facing=west,lit=true]");
+    	case "76:3": return getNamespace("minecraft:REDSTONE_WALL_TORCH[facing=south,lit=true]");
+    	case "76:4": return getNamespace("minecraft:REDSTONE_WALL_TORCH[facing=north,lit=true]");
+    	case "76:5": return getNamespace("minecraft:REDSTONE_TORCH[lit=true]");
+    	case "77:0": return getNamespace("minecraft:STONE_BUTTON[powered=false,facing=east,face=ceiling]");
+    	case "77:1": return getNamespace("minecraft:STONE_BUTTON[powered=false,facing=east,face=wall]");
+    	case "77:2": return getNamespace("minecraft:STONE_BUTTON[powered=false,facing=west,face=wall]");
+    	case "77:3": return getNamespace("minecraft:STONE_BUTTON[powered=false,facing=south,face=wall]");
+    	case "77:4": return getNamespace("minecraft:STONE_BUTTON[powered=false,facing=north,face=wall]");
+    	case "77:5": return getNamespace("minecraft:STONE_BUTTON[powered=false,facing=east,face=floor]");
+    	case "77:8": return getNamespace("minecraft:STONE_BUTTON[powered=true,facing=south,face=ceiling]");
+    	case "77:9": return getNamespace("minecraft:STONE_BUTTON[powered=true,facing=east,face=wall]");
+    	case "77:10": return getNamespace("minecraft:STONE_BUTTON[powered=true,facing=west,face=wall]");
+    	case "77:11": return getNamespace("minecraft:STONE_BUTTON[powered=true,facing=south,face=wall]");
+    	case "77:12": return getNamespace("minecraft:STONE_BUTTON[powered=true,facing=north,face=wall]");
+    	case "77:13": return getNamespace("minecraft:STONE_BUTTON[powered=true,facing=south,face=floor]");
+    	case "78:0": return getNamespace("minecraft:SNOW[layers=1]");
+    	case "78:1": return getNamespace("minecraft:SNOW[layers=2]");
+    	case "78:2": return getNamespace("minecraft:SNOW[layers=3]");
+    	case "78:3": return getNamespace("minecraft:SNOW[layers=4]");
+    	case "78:4": return getNamespace("minecraft:SNOW[layers=5]");
+    	case "78:5": return getNamespace("minecraft:SNOW[layers=6]");
+    	case "78:6": return getNamespace("minecraft:SNOW[layers=7]");
+    	case "78:7": return getNamespace("minecraft:SNOW[layers=8]");
+    	case "79:0": return getNamespace("minecraft:ICE");
+    	case "80:0": return getNamespace("minecraft:SNOW_BLOCK");
+    	case "81:0": return getNamespace("minecraft:CACTUS[age=0]");
+    	case "81:1": return getNamespace("minecraft:CACTUS[age=1]");
+    	case "81:2": return getNamespace("minecraft:CACTUS[age=2]");
+    	case "81:3": return getNamespace("minecraft:CACTUS[age=3]");
+    	case "81:4": return getNamespace("minecraft:CACTUS[age=4]");
+    	case "81:5": return getNamespace("minecraft:CACTUS[age=5]");
+    	case "81:6": return getNamespace("minecraft:CACTUS[age=6]");
+    	case "81:7": return getNamespace("minecraft:CACTUS[age=7]");
+    	case "81:8": return getNamespace("minecraft:CACTUS[age=8]");
+    	case "81:9": return getNamespace("minecraft:CACTUS[age=9]");
+    	case "81:10": return getNamespace("minecraft:CACTUS[age=10]");
+    	case "81:11": return getNamespace("minecraft:CACTUS[age=11]");
+    	case "81:12": return getNamespace("minecraft:CACTUS[age=12]");
+    	case "81:13": return getNamespace("minecraft:CACTUS[age=13]");
+    	case "81:14": return getNamespace("minecraft:CACTUS[age=14]");
+    	case "81:15": return getNamespace("minecraft:CACTUS[age=15]");
+    	case "82:0": return getNamespace("minecraft:CLAY");
+    	case "83:0": return getNamespace("minecraft:SUGAR_CANE[age=0]");
+    	case "83:1": return getNamespace("minecraft:SUGAR_CANE[age=1]");
+    	case "83:2": return getNamespace("minecraft:SUGAR_CANE[age=2]");
+    	case "83:3": return getNamespace("minecraft:SUGAR_CANE[age=3]");
+    	case "83:4": return getNamespace("minecraft:SUGAR_CANE[age=4]");
+    	case "83:5": return getNamespace("minecraft:SUGAR_CANE[age=5]");
+    	case "83:6": return getNamespace("minecraft:SUGAR_CANE[age=6]");
+    	case "83:7": return getNamespace("minecraft:SUGAR_CANE[age=7]");
+    	case "83:8": return getNamespace("minecraft:SUGAR_CANE[age=8]");
+    	case "83:9": return getNamespace("minecraft:SUGAR_CANE[age=9]");
+    	case "83:10": return getNamespace("minecraft:SUGAR_CANE[age=10]");
+    	case "83:11": return getNamespace("minecraft:SUGAR_CANE[age=11]");
+    	case "83:12": return getNamespace("minecraft:SUGAR_CANE[age=12]");
+    	case "83:13": return getNamespace("minecraft:SUGAR_CANE[age=13]");
+    	case "83:14": return getNamespace("minecraft:SUGAR_CANE[age=14]");
+    	case "83:15": return getNamespace("minecraft:SUGAR_CANE[age=15]");
+    	case "84:0": return getNamespace("minecraft:JUKEBOX[has_record=false]");
+    	case "84:1": return getNamespace("minecraft:JUKEBOX[has_record=true]");
+    	case "85:0": return getNamespace("minecraft:OAK_FENCE[east=false,south=false,north=false,west=false]");
+    	case "86:0": return getNamespace("minecraft:CARVED_PUMPKIN[facing=south]");
+    	case "86:1": return getNamespace("minecraft:CARVED_PUMPKIN[facing=west]");
+    	case "86:2": return getNamespace("minecraft:CARVED_PUMPKIN[facing=north]");
+    	case "86:3": return getNamespace("minecraft:CARVED_PUMPKIN[facing=east]");
+    	case "87:0": return getNamespace("minecraft:NETHERRACK");
+    	case "88:0": return getNamespace("minecraft:SOUL_SAND");
+    	case "89:0": return getNamespace("minecraft:GLOWSTONE");
+    	case "90:1": return getNamespace("minecraft:NETHER_PORTAL[axis=x]");
+    	case "90:2": return getNamespace("minecraft:NETHER_PORTAL[axis=z]");
+    	case "91:0": return getNamespace("minecraft:JACK_O_LANTERN[facing=south]");
+    	case "91:1": return getNamespace("minecraft:JACK_O_LANTERN[facing=west]");
+    	case "91:2": return getNamespace("minecraft:JACK_O_LANTERN[facing=north]");
+    	case "91:3": return getNamespace("minecraft:JACK_O_LANTERN[facing=east]");
+    	case "92:0": return getNamespace("minecraft:CAKE[bites=0]");
+    	case "92:1": return getNamespace("minecraft:CAKE[bites=1]");
+    	case "92:2": return getNamespace("minecraft:CAKE[bites=2]");
+    	case "92:3": return getNamespace("minecraft:CAKE[bites=3]");
+    	case "92:4": return getNamespace("minecraft:CAKE[bites=4]");
+    	case "92:5": return getNamespace("minecraft:CAKE[bites=5]");
+    	case "92:6": return getNamespace("minecraft:CAKE[bites=6]");
+    	case "93:0": return getNamespace("minecraft:REPEATER[delay=1,facing=south,locked=false,powered=false]");
+    	case "93:1": return getNamespace("minecraft:REPEATER[delay=1,facing=west,locked=false,powered=false]");
+    	case "93:2": return getNamespace("minecraft:REPEATER[delay=1,facing=north,locked=false,powered=false]");
+    	case "93:3": return getNamespace("minecraft:REPEATER[delay=1,facing=east,locked=false,powered=false]");
+    	case "93:4": return getNamespace("minecraft:REPEATER[delay=2,facing=south,locked=false,powered=false]");
+    	case "93:5": return getNamespace("minecraft:REPEATER[delay=2,facing=west,locked=false,powered=false]");
+    	case "93:6": return getNamespace("minecraft:REPEATER[delay=2,facing=north,locked=false,powered=false]");
+    	case "93:7": return getNamespace("minecraft:REPEATER[delay=2,facing=east,locked=false,powered=false]");
+    	case "93:8": return getNamespace("minecraft:REPEATER[delay=3,facing=south,locked=false,powered=false]");
+    	case "93:9": return getNamespace("minecraft:REPEATER[delay=3,facing=west,locked=false,powered=false]");
+    	case "93:10": return getNamespace("minecraft:REPEATER[delay=3,facing=north,locked=false,powered=false]");
+    	case "93:11": return getNamespace("minecraft:REPEATER[delay=3,facing=east,locked=false,powered=false]");
+    	case "93:12": return getNamespace("minecraft:REPEATER[delay=4,facing=south,locked=false,powered=false]");
+    	case "93:13": return getNamespace("minecraft:REPEATER[delay=4,facing=west,locked=false,powered=false]");
+    	case "93:14": return getNamespace("minecraft:REPEATER[delay=4,facing=north,locked=false,powered=false]");
+    	case "93:15": return getNamespace("minecraft:REPEATER[delay=4,facing=east,locked=false,powered=false]");
+    	case "94:0": return getNamespace("minecraft:REPEATER[delay=1,facing=south,locked=false,powered=true]");
+    	case "94:1": return getNamespace("minecraft:REPEATER[delay=1,facing=west,locked=false,powered=true]");
+    	case "94:2": return getNamespace("minecraft:REPEATER[delay=1,facing=north,locked=false,powered=true]");
+    	case "94:3": return getNamespace("minecraft:REPEATER[delay=1,facing=east,locked=false,powered=true]");
+    	case "94:4": return getNamespace("minecraft:REPEATER[delay=2,facing=south,locked=false,powered=true]");
+    	case "94:5": return getNamespace("minecraft:REPEATER[delay=2,facing=west,locked=false,powered=true]");
+    	case "94:6": return getNamespace("minecraft:REPEATER[delay=2,facing=north,locked=false,powered=true]");
+    	case "94:7": return getNamespace("minecraft:REPEATER[delay=2,facing=east,locked=false,powered=true]");
+    	case "94:8": return getNamespace("minecraft:REPEATER[delay=3,facing=south,locked=false,powered=true]");
+    	case "94:9": return getNamespace("minecraft:REPEATER[delay=3,facing=west,locked=false,powered=true]");
+    	case "94:10": return getNamespace("minecraft:REPEATER[delay=3,facing=north,locked=false,powered=true]");
+    	case "94:11": return getNamespace("minecraft:REPEATER[delay=3,facing=east,locked=false,powered=true]");
+    	case "94:12": return getNamespace("minecraft:REPEATER[delay=4,facing=south,locked=false,powered=true]");
+    	case "94:13": return getNamespace("minecraft:REPEATER[delay=4,facing=west,locked=false,powered=true]");
+    	case "94:14": return getNamespace("minecraft:REPEATER[delay=4,facing=north,locked=false,powered=true]");
+    	case "94:15": return getNamespace("minecraft:REPEATER[delay=4,facing=east,locked=false,powered=true]");
+    	case "95:0": return getNamespace("minecraft:WHITE_STAINED_GLASS");
+    	case "95:1": return getNamespace("minecraft:ORANGE_STAINED_GLASS");
+    	case "95:2": return getNamespace("minecraft:MAGENTA_STAINED_GLASS");
+    	case "95:3": return getNamespace("minecraft:LIGHT_BLUE_STAINED_GLASS");
+    	case "95:4": return getNamespace("minecraft:YELLOW_STAINED_GLASS");
+    	case "95:5": return getNamespace("minecraft:LIME_STAINED_GLASS");
+    	case "95:6": return getNamespace("minecraft:PINK_STAINED_GLASS");
+    	case "95:7": return getNamespace("minecraft:GRAY_STAINED_GLASS");
+    	case "95:8": return getNamespace("minecraft:LIGHT_GRAY_STAINED_GLASS");
+    	case "95:9": return getNamespace("minecraft:CYAN_STAINED_GLASS");
+    	case "95:10": return getNamespace("minecraft:PURPLE_STAINED_GLASS");
+    	case "95:11": return getNamespace("minecraft:BLUE_STAINED_GLASS");
+    	case "95:12": return getNamespace("minecraft:BROWN_STAINED_GLASS");
+    	case "95:13": return getNamespace("minecraft:GREEN_STAINED_GLASS");
+    	case "95:14": return getNamespace("minecraft:RED_STAINED_GLASS");
+    	case "95:15": return getNamespace("minecraft:BLACK_STAINED_GLASS");
+    	case "96:0": return getNamespace("minecraft:OAK_TRAPDOOR[half=bottom,facing=north,open=false,powered=false]");
+    	case "96:1": return getNamespace("minecraft:OAK_TRAPDOOR[half=bottom,facing=south,open=false,powered=false]");
+    	case "96:2": return getNamespace("minecraft:OAK_TRAPDOOR[half=bottom,facing=west,open=false,powered=false]");
+    	case "96:3": return getNamespace("minecraft:OAK_TRAPDOOR[half=bottom,facing=east,open=false,powered=false]");
+    	case "96:4": return getNamespace("minecraft:OAK_TRAPDOOR[half=bottom,facing=north,open=true,powered=true]");
+    	case "96:5": return getNamespace("minecraft:OAK_TRAPDOOR[half=bottom,facing=south,open=true,powered=true]");
+    	case "96:6": return getNamespace("minecraft:OAK_TRAPDOOR[half=bottom,facing=west,open=true,powered=true]");
+    	case "96:7": return getNamespace("minecraft:OAK_TRAPDOOR[half=bottom,facing=east,open=true,powered=true]");
+    	case "96:8": return getNamespace("minecraft:OAK_TRAPDOOR[half=top,facing=north,open=false,powered=false]");
+    	case "96:9": return getNamespace("minecraft:OAK_TRAPDOOR[half=top,facing=south,open=false,powered=false]");
+    	case "96:10": return getNamespace("minecraft:OAK_TRAPDOOR[half=top,facing=west,open=false,powered=false]");
+    	case "96:11": return getNamespace("minecraft:OAK_TRAPDOOR[half=top,facing=east,open=false,powered=false]");
+    	case "96:12": return getNamespace("minecraft:OAK_TRAPDOOR[half=top,facing=north,open=true,powered=true]");
+    	case "96:13": return getNamespace("minecraft:OAK_TRAPDOOR[half=top,facing=south,open=true,powered=true]");
+    	case "96:14": return getNamespace("minecraft:OAK_TRAPDOOR[half=top,facing=west,open=true,powered=true]");
+    	case "96:15": return getNamespace("minecraft:OAK_TRAPDOOR[half=top,facing=east,open=true,powered=true]");
+    	case "97:0": return getNamespace("minecraft:INFESTED_STONE");
+    	case "97:1": return getNamespace("minecraft:INFESTED_COBBLESTONE");
+    	case "97:2": return getNamespace("minecraft:INFESTED_STONE_BRICKS");
+    	case "97:3": return getNamespace("minecraft:INFESTED_MOSSY_STONE_BRICKS");
+    	case "97:4": return getNamespace("minecraft:INFESTED_CRACKED_STONE_BRICKS");
+    	case "97:5": return getNamespace("minecraft:INFESTED_CHISELED_STONE_BRICKS");
+    	case "98:0": return getNamespace("minecraft:STONE_BRICKS");
+    	case "98:1": return getNamespace("minecraft:MOSSY_STONE_BRICKS");
+    	case "98:2": return getNamespace("minecraft:CRACKED_STONE_BRICKS");
+    	case "98:3": return getNamespace("minecraft:CHISELED_STONE_BRICKS");
+    	case "99:0": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=false,east=false,south=false,west=false,up=false,down=false]");
+    	case "99:1": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=true,east=false,south=false,west=true,up=true,down=false]");
+    	case "99:2": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=true,east=false,south=false,west=false,up=true,down=false]");
+    	case "99:3": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=true,east=true,south=false,west=false,up=true,down=false]");
+    	case "99:4": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=false,east=false,south=false,west=true,up=true,down=false]");
+    	case "99:5": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=false,east=false,south=false,west=false,up=true,down=false]");
+    	case "99:6": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=false,east=true,south=false,west=false,up=true,down=false]");
+    	case "99:7": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=false,east=false,south=true,west=true,up=true,down=false]");
+    	case "99:8": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=false,east=false,south=true,west=false,up=true,down=false]");
+    	case "99:9": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=false,east=true,south=true,west=false,up=true,down=false]");
+    	case "99:10": return getNamespace("minecraft:MUSHROOM_STEM[north=true,east=true,south=true,west=true,up=false,down=false]");
+    	case "99:14": return getNamespace("minecraft:BROWN_MUSHROOM_BLOCK[north=true,east=true,south=true,west=true,up=true,down=true]");
+    	case "99:15": return getNamespace("minecraft:MUSHROOM_STEM[north=true,east=true,south=true,west=true,up=true,down=true]");
+    	case "100:0": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=false,east=false,south=false,west=false,up=false,down=false]");
+    	case "100:1": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=true,east=false,south=false,west=true,up=true,down=false]");
+    	case "100:2": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=true,east=false,south=false,west=false,up=true,down=false]");
+    	case "100:3": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=true,east=true,south=false,west=false,up=true,down=false]");
+    	case "100:4": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=false,east=false,south=false,west=true,up=true,down=false]");
+    	case "100:5": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=false,east=false,south=false,west=false,up=true,down=false]");
+    	case "100:6": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=false,east=true,south=false,west=false,up=true,down=false]");
+    	case "100:7": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=false,east=false,south=true,west=true,up=true,down=false]");
+    	case "100:8": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=false,east=false,south=true,west=false,up=true,down=false]");
+    	case "100:9": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=false,east=true,south=true,west=false,up=true,down=false]");
+    	case "100:10": return getNamespace("minecraft:MUSHROOM_STEM[north=true,east=true,south=true,west=true,up=false,down=false]");
+    	case "100:14": return getNamespace("minecraft:RED_MUSHROOM_BLOCK[north=true,east=true,south=true,west=true,up=true,down=true]");
+    	case "100:15": return getNamespace("minecraft:MUSHROOM_STEM[north=true,east=true,south=true,west=true,up=true,down=true]");
+    	case "101:0": return getNamespace("minecraft:IRON_BARS[east=false,south=false,north=false,west=false]");
+    	case "102:0": return getNamespace("minecraft:GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "103:0": return getNamespace("minecraft:MELON");
+    	case "104:0": return getNamespace("minecraft:PUMPKIN_STEM[age=0]");
+    	case "104:1": return getNamespace("minecraft:PUMPKIN_STEM[age=1]");
+    	case "104:2": return getNamespace("minecraft:PUMPKIN_STEM[age=2]");
+    	case "104:3": return getNamespace("minecraft:PUMPKIN_STEM[age=3]");
+    	case "104:4": return getNamespace("minecraft:PUMPKIN_STEM[age=4]");
+    	case "104:5": return getNamespace("minecraft:PUMPKIN_STEM[age=5]");
+    	case "104:6": return getNamespace("minecraft:PUMPKIN_STEM[age=6]");
+    	case "104:7": return getNamespace("minecraft:PUMPKIN_STEM[age=7]");
+    	case "105:0": return getNamespace("minecraft:MELON_STEM[age=0]");
+    	case "105:1": return getNamespace("minecraft:MELON_STEM[age=1]");
+    	case "105:2": return getNamespace("minecraft:MELON_STEM[age=2]");
+    	case "105:3": return getNamespace("minecraft:MELON_STEM[age=3]");
+    	case "105:4": return getNamespace("minecraft:MELON_STEM[age=4]");
+    	case "105:5": return getNamespace("minecraft:MELON_STEM[age=5]");
+    	case "105:6": return getNamespace("minecraft:MELON_STEM[age=6]");
+    	case "105:7": return getNamespace("minecraft:MELON_STEM[age=7]");
+    	case "106:0": return getNamespace("minecraft:VINE[east=false,south=false,north=false,west=false,up=false]");
+    	case "106:1": return getNamespace("minecraft:VINE[east=false,south=true,north=false,west=false,up=false]");
+    	case "106:2": return getNamespace("minecraft:VINE[east=false,south=false,north=false,west=true,up=false]");
+    	case "106:3": return getNamespace("minecraft:VINE[east=false,south=true,north=false,west=true,up=false]");
+    	case "106:4": return getNamespace("minecraft:VINE[east=false,south=false,north=true,west=false,up=false]");
+    	case "106:5": return getNamespace("minecraft:VINE[east=false,south=true,north=true,west=false,up=false]");
+    	case "106:6": return getNamespace("minecraft:VINE[east=false,south=false,north=true,west=true,up=false]");
+    	case "106:7": return getNamespace("minecraft:VINE[east=false,south=true,north=true,west=true,up=false]");
+    	case "106:8": return getNamespace("minecraft:VINE[east=true,south=false,north=false,west=false,up=false]");
+    	case "106:9": return getNamespace("minecraft:VINE[east=true,south=true,north=false,west=false,up=false]");
+    	case "106:10": return getNamespace("minecraft:VINE[east=true,south=false,north=false,west=true,up=false]");
+    	case "106:11": return getNamespace("minecraft:VINE[east=true,south=true,north=false,west=true,up=false]");
+    	case "106:12": return getNamespace("minecraft:VINE[east=true,south=false,north=true,west=false,up=false]");
+    	case "106:13": return getNamespace("minecraft:VINE[east=true,south=true,north=true,west=false,up=false]");
+    	case "106:14": return getNamespace("minecraft:VINE[east=true,south=false,north=true,west=true,up=false]");
+    	case "106:15": return getNamespace("minecraft:VINE[east=true,south=true,north=true,west=true,up=false]");
+    	case "107:0": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=false,facing=south,open=false]");
+    	case "107:1": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=false,facing=west,open=false]");
+    	case "107:2": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=false,facing=north,open=false]");
+    	case "107:3": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=false,facing=east,open=false]");
+    	case "107:4": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=false,facing=south,open=true]");
+    	case "107:5": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=false,facing=west,open=true]");
+    	case "107:6": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=false,facing=north,open=true]");
+    	case "107:7": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=false,facing=east,open=true]");
+    	case "107:8": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=true,facing=south,open=false]");
+    	case "107:9": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=true,facing=west,open=false]");
+    	case "107:10": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=true,facing=north,open=false]");
+    	case "107:11": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=true,facing=east,open=false]");
+    	case "107:12": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=true,facing=south,open=true]");
+    	case "107:13": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=true,facing=west,open=true]");
+    	case "107:14": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=true,facing=north,open=true]");
+    	case "107:15": return getNamespace("minecraft:OAK_FENCE_GATE[in_wall=false,powered=true,facing=east,open=true]");
+    	case "108:0": return getNamespace("minecraft:BRICK_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "108:1": return getNamespace("minecraft:BRICK_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "108:2": return getNamespace("minecraft:BRICK_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "108:3": return getNamespace("minecraft:BRICK_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "108:4": return getNamespace("minecraft:BRICK_STAIRS[half=top,shape=straight,facing=east]");
+    	case "108:5": return getNamespace("minecraft:BRICK_STAIRS[half=top,shape=straight,facing=west]");
+    	case "108:6": return getNamespace("minecraft:BRICK_STAIRS[half=top,shape=straight,facing=south]");
+    	case "108:7": return getNamespace("minecraft:BRICK_STAIRS[half=top,shape=straight,facing=north]");
+    	case "109:0": return getNamespace("minecraft:STONE_BRICK_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "109:1": return getNamespace("minecraft:STONE_BRICK_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "109:2": return getNamespace("minecraft:STONE_BRICK_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "109:3": return getNamespace("minecraft:STONE_BRICK_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "109:4": return getNamespace("minecraft:STONE_BRICK_STAIRS[half=top,shape=straight,facing=east]");
+    	case "109:5": return getNamespace("minecraft:STONE_BRICK_STAIRS[half=top,shape=straight,facing=west]");
+    	case "109:6": return getNamespace("minecraft:STONE_BRICK_STAIRS[half=top,shape=straight,facing=south]");
+    	case "109:7": return getNamespace("minecraft:STONE_BRICK_STAIRS[half=top,shape=straight,facing=north]");
+    	case "110:0": return getNamespace("minecraft:MYCELIUM[snowy=false]");
+    	case "111:0": return getNamespace("minecraft:LILY_PAD");
+    	case "112:0": return getNamespace("minecraft:NETHER_BRICKS");
+    	case "113:0": return getNamespace("minecraft:NETHER_BRICK_FENCE[east=false,south=false,north=false,west=false]");
+    	case "114:0": return getNamespace("minecraft:NETHER_BRICK_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "114:1": return getNamespace("minecraft:NETHER_BRICK_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "114:2": return getNamespace("minecraft:NETHER_BRICK_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "114:3": return getNamespace("minecraft:NETHER_BRICK_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "114:4": return getNamespace("minecraft:NETHER_BRICK_STAIRS[half=top,shape=straight,facing=east]");
+    	case "114:5": return getNamespace("minecraft:NETHER_BRICK_STAIRS[half=top,shape=straight,facing=west]");
+    	case "114:6": return getNamespace("minecraft:NETHER_BRICK_STAIRS[half=top,shape=straight,facing=south]");
+    	case "114:7": return getNamespace("minecraft:NETHER_BRICK_STAIRS[half=top,shape=straight,facing=north]");
+    	case "115:0": return getNamespace("minecraft:NETHER_WART[age=0]");
+    	case "115:1": return getNamespace("minecraft:NETHER_WART[age=1]");
+    	case "115:2": return getNamespace("minecraft:NETHER_WART[age=2]");
+    	case "115:3": return getNamespace("minecraft:NETHER_WART[age=3]");
+    	case "116:0": return getNamespace("minecraft:ENCHANTING_TABLE");
+    	case "117:0": return getNamespace("minecraft:BREWING_STAND[has_bottle_0=false,has_bottle_1=false,has_bottle_2=false]");
+    	case "117:1": return getNamespace("minecraft:BREWING_STAND[has_bottle_0=true,has_bottle_1=false,has_bottle_2=false]");
+    	case "117:2": return getNamespace("minecraft:BREWING_STAND[has_bottle_0=false,has_bottle_1=true,has_bottle_2=false]");
+    	case "117:3": return getNamespace("minecraft:BREWING_STAND[has_bottle_0=true,has_bottle_1=true,has_bottle_2=false]");
+    	case "117:4": return getNamespace("minecraft:BREWING_STAND[has_bottle_0=false,has_bottle_1=false,has_bottle_2=true]");
+    	case "117:5": return getNamespace("minecraft:BREWING_STAND[has_bottle_0=true,has_bottle_1=false,has_bottle_2=true]");
+    	case "117:6": return getNamespace("minecraft:BREWING_STAND[has_bottle_0=false,has_bottle_1=true,has_bottle_2=true]");
+    	case "117:7": return getNamespace("minecraft:BREWING_STAND[has_bottle_0=true,has_bottle_1=true,has_bottle_2=true]");
+    	case "118:0": return getNamespace("minecraft:CAULDRON[level=0]");
+    	case "118:1": return getNamespace("minecraft:CAULDRON[level=1]");
+    	case "118:2": return getNamespace("minecraft:CAULDRON[level=2]");
+    	case "118:3": return getNamespace("minecraft:CAULDRON[level=3]");
+    	case "119:0": return getNamespace("minecraft:END_PORTAL");
+    	case "120:0": return getNamespace("minecraft:END_PORTAL_FRAME[eye=false,facing=south]");
+    	case "120:1": return getNamespace("minecraft:END_PORTAL_FRAME[eye=false,facing=west]");
+    	case "120:2": return getNamespace("minecraft:END_PORTAL_FRAME[eye=false,facing=north]");
+    	case "120:3": return getNamespace("minecraft:END_PORTAL_FRAME[eye=false,facing=east]");
+    	case "120:4": return getNamespace("minecraft:END_PORTAL_FRAME[eye=true,facing=south]");
+    	case "120:5": return getNamespace("minecraft:END_PORTAL_FRAME[eye=true,facing=west]");
+    	case "120:6": return getNamespace("minecraft:END_PORTAL_FRAME[eye=true,facing=north]");
+    	case "120:7": return getNamespace("minecraft:END_PORTAL_FRAME[eye=true,facing=east]");
+    	case "121:0": return getNamespace("minecraft:END_STONE");
+    	case "122:0": return getNamespace("minecraft:DRAGON_EGG");
+    	case "123:0": return getNamespace("minecraft:REDSTONE_LAMP[lit=false]");
+    	case "124:0": return getNamespace("minecraft:REDSTONE_LAMP[lit=true]");
+    	case "125:0": return getNamespace("minecraft:OAK_SLAB[type=double]");
+    	case "125:1": return getNamespace("minecraft:SPRUCE_SLAB[type=double]");
+    	case "125:2": return getNamespace("minecraft:BIRCH_SLAB[type=double]");
+    	case "125:3": return getNamespace("minecraft:JUNGLE_SLAB[type=double]");
+    	case "125:4": return getNamespace("minecraft:ACACIA_SLAB[type=double]");
+    	case "125:5": return getNamespace("minecraft:DARK_OAK_SLAB[type=double]");
+    	case "126:0": return getNamespace("minecraft:OAK_SLAB[type=bottom]");
+    	case "126:1": return getNamespace("minecraft:SPRUCE_SLAB[type=bottom]");
+    	case "126:2": return getNamespace("minecraft:BIRCH_SLAB[type=bottom]");
+    	case "126:3": return getNamespace("minecraft:JUNGLE_SLAB[type=bottom]");
+    	case "126:4": return getNamespace("minecraft:ACACIA_SLAB[type=bottom]");
+    	case "126:5": return getNamespace("minecraft:DARK_OAK_SLAB[type=bottom]");
+    	case "126:8": return getNamespace("minecraft:OAK_SLAB[type=top]");
+    	case "126:9": return getNamespace("minecraft:SPRUCE_SLAB[type=top]");
+    	case "126:10": return getNamespace("minecraft:BIRCH_SLAB[type=top]");
+    	case "126:11": return getNamespace("minecraft:JUNGLE_SLAB[type=top]");
+    	case "126:12": return getNamespace("minecraft:ACACIA_SLAB[type=top]");
+    	case "126:13": return getNamespace("minecraft:DARK_OAK_SLAB[type=top]");
+    	case "127:0": return getNamespace("minecraft:COCOA[facing=south,age=0]");
+    	case "127:1": return getNamespace("minecraft:COCOA[facing=west,age=0]");
+    	case "127:2": return getNamespace("minecraft:COCOA[facing=north,age=0]");
+    	case "127:3": return getNamespace("minecraft:COCOA[facing=east,age=0]");
+    	case "127:4": return getNamespace("minecraft:COCOA[facing=south,age=1]");
+    	case "127:5": return getNamespace("minecraft:COCOA[facing=west,age=1]");
+    	case "127:6": return getNamespace("minecraft:COCOA[facing=north,age=1]");
+    	case "127:7": return getNamespace("minecraft:COCOA[facing=east,age=1]");
+    	case "127:8": return getNamespace("minecraft:COCOA[facing=south,age=2]");
+    	case "127:9": return getNamespace("minecraft:COCOA[facing=west,age=2]");
+    	case "127:10": return getNamespace("minecraft:COCOA[facing=north,age=2]");
+    	case "127:11": return getNamespace("minecraft:COCOA[facing=east,age=2]");
+    	case "128:0": return getNamespace("minecraft:SANDSTONE_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "128:1": return getNamespace("minecraft:SANDSTONE_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "128:2": return getNamespace("minecraft:SANDSTONE_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "128:3": return getNamespace("minecraft:SANDSTONE_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "128:4": return getNamespace("minecraft:SANDSTONE_STAIRS[half=top,shape=straight,facing=east]");
+    	case "128:5": return getNamespace("minecraft:SANDSTONE_STAIRS[half=top,shape=straight,facing=west]");
+    	case "128:6": return getNamespace("minecraft:SANDSTONE_STAIRS[half=top,shape=straight,facing=south]");
+    	case "128:7": return getNamespace("minecraft:SANDSTONE_STAIRS[half=top,shape=straight,facing=north]");
+    	case "129:0": return getNamespace("minecraft:EMERALD_ORE");
+    	case "130:2": return getNamespace("minecraft:ENDER_CHEST[facing=north]");
+    	case "130:3": return getNamespace("minecraft:ENDER_CHEST[facing=south]");
+    	case "130:4": return getNamespace("minecraft:ENDER_CHEST[facing=west]");
+    	case "130:5": return getNamespace("minecraft:ENDER_CHEST[facing=east]");
+    	case "131:0": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=false,attached=false,facing=south]");
+    	case "131:1": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=false,attached=false,facing=west]");
+    	case "131:2": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=false,attached=false,facing=north]");
+    	case "131:3": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=false,attached=false,facing=east]");
+    	case "131:4": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=false,attached=true,facing=south]");
+    	case "131:5": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=false,attached=true,facing=west]");
+    	case "131:6": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=false,attached=true,facing=north]");
+    	case "131:7": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=false,attached=true,facing=east]");
+    	case "131:8": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=true,attached=false,facing=south]");
+    	case "131:9": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=true,attached=false,facing=west]");
+    	case "131:10": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=true,attached=false,facing=north]");
+    	case "131:11": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=true,attached=false,facing=east]");
+    	case "131:12": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=true,attached=true,facing=south]");
+    	case "131:13": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=true,attached=true,facing=west]");
+    	case "131:14": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=true,attached=true,facing=north]");
+    	case "131:15": return getNamespace("minecraft:TRIPWIRE_HOOK[powered=true,attached=true,facing=east]");
+    	case "132:0": return getNamespace("minecraft:TRIPWIRE[disarmed=false,east=false,powered=false,south=false,north=false,west=false,attached=false]");
+    	case "132:1": return getNamespace("minecraft:TRIPWIRE[disarmed=false,east=false,powered=true,south=false,north=false,west=false,attached=false]");
+    	case "132:4": return getNamespace("minecraft:TRIPWIRE[disarmed=false,east=false,powered=false,south=false,north=false,west=false,attached=true]");
+    	case "132:5": return getNamespace("minecraft:TRIPWIRE[disarmed=false,east=false,powered=true,south=false,north=false,west=false,attached=true]");
+    	case "132:8": return getNamespace("minecraft:TRIPWIRE[disarmed=true,east=false,powered=false,south=false,north=false,west=false,attached=false]");
+    	case "132:9": return getNamespace("minecraft:TRIPWIRE[disarmed=true,east=false,powered=true,south=false,north=false,west=false,attached=false]");
+    	case "132:12": return getNamespace("minecraft:TRIPWIRE[disarmed=true,east=false,powered=false,south=false,north=false,west=false,attached=true]");
+    	case "132:13": return getNamespace("minecraft:TRIPWIRE[disarmed=true,east=false,powered=true,south=false,north=false,west=false,attached=true]");
+    	case "133:0": return getNamespace("minecraft:EMERALD_BLOCK");
+    	case "134:0": return getNamespace("minecraft:SPRUCE_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "134:1": return getNamespace("minecraft:SPRUCE_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "134:2": return getNamespace("minecraft:SPRUCE_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "134:3": return getNamespace("minecraft:SPRUCE_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "134:4": return getNamespace("minecraft:SPRUCE_STAIRS[half=top,shape=straight,facing=east]");
+    	case "134:5": return getNamespace("minecraft:SPRUCE_STAIRS[half=top,shape=straight,facing=west]");
+    	case "134:6": return getNamespace("minecraft:SPRUCE_STAIRS[half=top,shape=straight,facing=south]");
+    	case "134:7": return getNamespace("minecraft:SPRUCE_STAIRS[half=top,shape=straight,facing=north]");
+    	case "135:0": return getNamespace("minecraft:BIRCH_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "135:1": return getNamespace("minecraft:BIRCH_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "135:2": return getNamespace("minecraft:BIRCH_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "135:3": return getNamespace("minecraft:BIRCH_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "135:4": return getNamespace("minecraft:BIRCH_STAIRS[half=top,shape=straight,facing=east]");
+    	case "135:5": return getNamespace("minecraft:BIRCH_STAIRS[half=top,shape=straight,facing=west]");
+    	case "135:6": return getNamespace("minecraft:BIRCH_STAIRS[half=top,shape=straight,facing=south]");
+    	case "135:7": return getNamespace("minecraft:BIRCH_STAIRS[half=top,shape=straight,facing=north]");
+    	case "136:0": return getNamespace("minecraft:JUNGLE_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "136:1": return getNamespace("minecraft:JUNGLE_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "136:2": return getNamespace("minecraft:JUNGLE_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "136:3": return getNamespace("minecraft:JUNGLE_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "136:4": return getNamespace("minecraft:JUNGLE_STAIRS[half=top,shape=straight,facing=east]");
+    	case "136:5": return getNamespace("minecraft:JUNGLE_STAIRS[half=top,shape=straight,facing=west]");
+    	case "136:6": return getNamespace("minecraft:JUNGLE_STAIRS[half=top,shape=straight,facing=south]");
+    	case "136:7": return getNamespace("minecraft:JUNGLE_STAIRS[half=top,shape=straight,facing=north]");
+    	case "137:0": return getNamespace("minecraft:COMMAND_BLOCK[conditional=false,facing=down]");
+    	case "137:1": return getNamespace("minecraft:COMMAND_BLOCK[conditional=false,facing=up]");
+    	case "137:2": return getNamespace("minecraft:COMMAND_BLOCK[conditional=false,facing=north]");
+    	case "137:3": return getNamespace("minecraft:COMMAND_BLOCK[conditional=false,facing=south]");
+    	case "137:4": return getNamespace("minecraft:COMMAND_BLOCK[conditional=false,facing=west]");
+    	case "137:5": return getNamespace("minecraft:COMMAND_BLOCK[conditional=false,facing=east]");
+    	case "137:8": return getNamespace("minecraft:COMMAND_BLOCK[conditional=true,facing=down]");
+    	case "137:9": return getNamespace("minecraft:COMMAND_BLOCK[conditional=true,facing=up]");
+    	case "137:10": return getNamespace("minecraft:COMMAND_BLOCK[conditional=true,facing=north]");
+    	case "137:11": return getNamespace("minecraft:COMMAND_BLOCK[conditional=true,facing=south]");
+    	case "137:12": return getNamespace("minecraft:COMMAND_BLOCK[conditional=true,facing=west]");
+    	case "137:13": return getNamespace("minecraft:COMMAND_BLOCK[conditional=true,facing=east]");
+    	case "138:0": return getNamespace("minecraft:BEACON");
+    	case "139:0": return getNamespace("minecraft:COBBLESTONE_WALL[east=false,south=false,north=false,west=false,up=false]");
+    	case "139:1": return getNamespace("minecraft:MOSSY_COBBLESTONE_WALL[east=false,south=false,north=false,west=false,up=false]");
+    	case "140:0": return getNamespace("minecraft:FLOWER_POT");
+    	case "140:1": return getNamespace("minecraft:POTTED_POPPY");
+    	case "140:2": return getNamespace("minecraft:POTTED_DANDELION");
+    	case "140:3": return getNamespace("minecraft:POTTED_OAK_SAPLING");
+    	case "140:4": return getNamespace("minecraft:POTTED_SPRUCE_SAPLING");
+    	case "140:5": return getNamespace("minecraft:POTTED_BIRCH_SAPLING");
+    	case "140:6": return getNamespace("minecraft:POTTED_JUNGLE_SAPLING");
+    	case "140:7": return getNamespace("minecraft:POTTED_RED_MUSHROOM");
+    	case "140:8": return getNamespace("minecraft:POTTED_BROWN_MUSHROOM");
+    	case "140:9": return getNamespace("minecraft:POTTED_CACTUS");
+    	case "140:10": return getNamespace("minecraft:POTTED_DEAD_BUSH");
+    	case "140:11": return getNamespace("minecraft:POTTED_FERN");
+    	case "140:12": return getNamespace("minecraft:POTTED_ACACIA_SAPLING");
+    	case "140:13": return getNamespace("minecraft:POTTED_DARK_OAK_SAPLING");
+    	case "140:14": return getNamespace("minecraft:POTTED_BLUE_ORCHID");
+    	case "140:15": return getNamespace("minecraft:POTTED_ALLIUM");
+    	case "141:0": return getNamespace("minecraft:CARROTS[age=0]");
+    	case "141:1": return getNamespace("minecraft:CARROTS[age=1]");
+    	case "141:2": return getNamespace("minecraft:CARROTS[age=2]");
+    	case "141:3": return getNamespace("minecraft:CARROTS[age=3]");
+    	case "141:4": return getNamespace("minecraft:CARROTS[age=4]");
+    	case "141:5": return getNamespace("minecraft:CARROTS[age=5]");
+    	case "141:6": return getNamespace("minecraft:CARROTS[age=6]");
+    	case "141:7": return getNamespace("minecraft:CARROTS[age=7]");
+    	case "142:0": return getNamespace("minecraft:POTATOES[age=0]");
+    	case "142:1": return getNamespace("minecraft:POTATOES[age=1]");
+    	case "142:2": return getNamespace("minecraft:POTATOES[age=2]");
+    	case "142:3": return getNamespace("minecraft:POTATOES[age=3]");
+    	case "142:4": return getNamespace("minecraft:POTATOES[age=4]");
+    	case "142:5": return getNamespace("minecraft:POTATOES[age=5]");
+    	case "142:6": return getNamespace("minecraft:POTATOES[age=6]");
+    	case "142:7": return getNamespace("minecraft:POTATOES[age=7]");
+    	case "143:0": return getNamespace("minecraft:OAK_BUTTON[powered=false,facing=east,face=ceiling]");
+    	case "143:1": return getNamespace("minecraft:OAK_BUTTON[powered=false,facing=east,face=wall]");
+    	case "143:2": return getNamespace("minecraft:OAK_BUTTON[powered=false,facing=west,face=wall]");
+    	case "143:3": return getNamespace("minecraft:OAK_BUTTON[powered=false,facing=south,face=wall]");
+    	case "143:4": return getNamespace("minecraft:OAK_BUTTON[powered=false,facing=north,face=wall]");
+    	case "143:5": return getNamespace("minecraft:OAK_BUTTON[powered=false,facing=east,face=floor]");
+    	case "143:8": return getNamespace("minecraft:OAK_BUTTON[powered=true,facing=south,face=ceiling]");
+    	case "143:9": return getNamespace("minecraft:OAK_BUTTON[powered=true,facing=east,face=wall]");
+    	case "143:10": return getNamespace("minecraft:OAK_BUTTON[powered=true,facing=west,face=wall]");
+    	case "143:11": return getNamespace("minecraft:OAK_BUTTON[powered=true,facing=south,face=wall]");
+    	case "143:12": return getNamespace("minecraft:OAK_BUTTON[powered=true,facing=north,face=wall]");
+    	case "143:13": return getNamespace("minecraft:OAK_BUTTON[powered=true,facing=south,face=floor]");
+    	case "144:0": return getNamespace("minecraft:SKELETON_SKULL[rotation=0]");
+    	case "144:1": return getNamespace("minecraft:SKELETON_SKULL[rotation=4]");
+    	case "144:2": return getNamespace("minecraft:SKELETON_WALL_SKULL[facing=north]");
+    	case "144:3": return getNamespace("minecraft:SKELETON_WALL_SKULL[facing=south]");
+    	case "144:4": return getNamespace("minecraft:SKELETON_WALL_SKULL[facing=west]");
+    	case "144:5": return getNamespace("minecraft:SKELETON_WALL_SKULL[facing=east]");
+    	case "144:8": return getNamespace("minecraft:SKELETON_SKULL[rotation=8]");
+    	case "144:9": return getNamespace("minecraft:SKELETON_SKULL[rotation=12]");
+    	case "144:10": return getNamespace("minecraft:SKELETON_WALL_SKULL[facing=north]");
+    	case "144:11": return getNamespace("minecraft:SKELETON_WALL_SKULL[facing=south]");
+    	case "144:12": return getNamespace("minecraft:SKELETON_WALL_SKULL[facing=west]");
+    	case "144:13": return getNamespace("minecraft:SKELETON_WALL_SKULL[facing=east]");
+    	case "145:0": return getNamespace("minecraft:ANVIL[facing=south]");
+    	case "145:1": return getNamespace("minecraft:ANVIL[facing=west]");
+    	case "145:2": return getNamespace("minecraft:ANVIL[facing=north]");
+    	case "145:3": return getNamespace("minecraft:ANVIL[facing=east]");
+    	case "145:4": return getNamespace("minecraft:CHIPPED_ANVIL[facing=south]");
+    	case "145:5": return getNamespace("minecraft:CHIPPED_ANVIL[facing=west]");
+    	case "145:6": return getNamespace("minecraft:CHIPPED_ANVIL[facing=north]");
+    	case "145:7": return getNamespace("minecraft:CHIPPED_ANVIL[facing=east]");
+    	case "145:8": return getNamespace("minecraft:DAMAGED_ANVIL[facing=south]");
+    	case "145:9": return getNamespace("minecraft:DAMAGED_ANVIL[facing=west]");
+    	case "145:10": return getNamespace("minecraft:DAMAGED_ANVIL[facing=north]");
+    	case "145:11": return getNamespace("minecraft:DAMAGED_ANVIL[facing=east]");
+    	case "146:2": return getNamespace("minecraft:TRAPPED_CHEST[facing=north,type=single]");
+    	case "146:3": return getNamespace("minecraft:TRAPPED_CHEST[facing=south,type=single]");
+    	case "146:4": return getNamespace("minecraft:TRAPPED_CHEST[facing=west,type=single]");
+    	case "146:5": return getNamespace("minecraft:TRAPPED_CHEST[facing=east,type=single]");
+    	case "147:0": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=0]");
+    	case "147:1": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=1]");
+    	case "147:2": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=2]");
+    	case "147:3": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=3]");
+    	case "147:4": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=4]");
+    	case "147:5": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=5]");
+    	case "147:6": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=6]");
+    	case "147:7": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=7]");
+    	case "147:8": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=8]");
+    	case "147:9": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=9]");
+    	case "147:10": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=10]");
+    	case "147:11": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=11]");
+    	case "147:12": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=12]");
+    	case "147:13": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=13]");
+    	case "147:14": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=14]");
+    	case "147:15": return getNamespace("minecraft:LIGHT_WEIGHTED_PRESSURE_PLATE[power=15]");
+    	case "148:0": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=0]");
+    	case "148:1": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=1]");
+    	case "148:2": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=2]");
+    	case "148:3": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=3]");
+    	case "148:4": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=4]");
+    	case "148:5": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=5]");
+    	case "148:6": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=6]");
+    	case "148:7": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=7]");
+    	case "148:8": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=8]");
+    	case "148:9": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=9]");
+    	case "148:10": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=10]");
+    	case "148:11": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=11]");
+    	case "148:12": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=12]");
+    	case "148:13": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=13]");
+    	case "148:14": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=14]");
+    	case "148:15": return getNamespace("minecraft:HEAVY_WEIGHTED_PRESSURE_PLATE[power=15]");
+    	case "149:0": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=false,facing=south]");
+    	case "149:1": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=false,facing=west]");
+    	case "149:2": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=false,facing=north]");
+    	case "149:3": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=false,facing=east]");
+    	case "149:4": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=false,facing=south]");
+    	case "149:5": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=false,facing=west]");
+    	case "149:6": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=false,facing=north]");
+    	case "149:7": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=false,facing=east]");
+    	case "149:8": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=false,facing=south]");
+    	case "149:9": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=false,facing=west]");
+    	case "149:10": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=false,facing=north]");
+    	case "149:11": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=false,facing=east]");
+    	case "149:12": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=false,facing=south]");
+    	case "149:13": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=false,facing=west]");
+    	case "149:14": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=false,facing=north]");
+    	case "149:15": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=false,facing=east]");
+    	case "150:0": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=true,facing=south]");
+    	case "150:1": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=true,facing=west]");
+    	case "150:2": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=true,facing=north]");
+    	case "150:3": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=true,facing=east]");
+    	case "150:4": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=true,facing=south]");
+    	case "150:5": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=true,facing=west]");
+    	case "150:6": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=true,facing=north]");
+    	case "150:7": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=true,facing=east]");
+    	case "150:8": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=true,facing=south]");
+    	case "150:9": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=true,facing=west]");
+    	case "150:10": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=true,facing=north]");
+    	case "150:11": return getNamespace("minecraft:COMPARATOR[mode=compare,powered=true,facing=east]");
+    	case "150:12": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=true,facing=south]");
+    	case "150:13": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=true,facing=west]");
+    	case "150:14": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=true,facing=north]");
+    	case "150:15": return getNamespace("minecraft:COMPARATOR[mode=subtract,powered=true,facing=east]");
+    	case "151:0": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=0]");
+    	case "151:1": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=1]");
+    	case "151:2": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=2]");
+    	case "151:3": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=3]");
+    	case "151:4": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=4]");
+    	case "151:5": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=5]");
+    	case "151:6": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=6]");
+    	case "151:7": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=7]");
+    	case "151:8": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=8]");
+    	case "151:9": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=9]");
+    	case "151:10": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=10]");
+    	case "151:11": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=11]");
+    	case "151:12": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=12]");
+    	case "151:13": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=13]");
+    	case "151:14": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=14]");
+    	case "151:15": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=false,power=15]");
+    	case "152:0": return getNamespace("minecraft:REDSTONE_BLOCK");
+    	case "153:0": return getNamespace("minecraft:NETHER_QUARTZ_ORE");
+    	case "154:0": return getNamespace("minecraft:HOPPER[facing=down,enabled=true]");
+    	case "154:2": return getNamespace("minecraft:HOPPER[facing=north,enabled=true]");
+    	case "154:3": return getNamespace("minecraft:HOPPER[facing=south,enabled=true]");
+    	case "154:4": return getNamespace("minecraft:HOPPER[facing=west,enabled=true]");
+    	case "154:5": return getNamespace("minecraft:HOPPER[facing=east,enabled=true]");
+    	case "154:8": return getNamespace("minecraft:HOPPER[facing=down,enabled=false]");
+    	case "154:10": return getNamespace("minecraft:HOPPER[facing=north,enabled=false]");
+    	case "154:11": return getNamespace("minecraft:HOPPER[facing=south,enabled=false]");
+    	case "154:12": return getNamespace("minecraft:HOPPER[facing=west,enabled=false]");
+    	case "154:13": return getNamespace("minecraft:HOPPER[facing=east,enabled=false]");
+    	case "155:0": return getNamespace("minecraft:QUARTZ_BLOCK");
+    	case "155:1": return getNamespace("minecraft:CHISELED_QUARTZ_BLOCK");
+    	case "155:2": return getNamespace("minecraft:QUARTZ_PILLAR[axis=y]");
+    	case "155:3": return getNamespace("minecraft:QUARTZ_PILLAR[axis=x]");
+    	case "155:4": return getNamespace("minecraft:QUARTZ_PILLAR[axis=z]");
+    	case "155:6": return getNamespace("minecraft:QUARTZ_PILLAR[axis=x]");
+    	case "155:10": return getNamespace("minecraft:QUARTZ_PILLAR[axis=z]");
+    	case "156:0": return getNamespace("minecraft:QUARTZ_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "156:1": return getNamespace("minecraft:QUARTZ_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "156:2": return getNamespace("minecraft:QUARTZ_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "156:3": return getNamespace("minecraft:QUARTZ_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "156:4": return getNamespace("minecraft:QUARTZ_STAIRS[half=top,shape=straight,facing=east]");
+    	case "156:5": return getNamespace("minecraft:QUARTZ_STAIRS[half=top,shape=straight,facing=west]");
+    	case "156:6": return getNamespace("minecraft:QUARTZ_STAIRS[half=top,shape=straight,facing=south]");
+    	case "156:7": return getNamespace("minecraft:QUARTZ_STAIRS[half=top,shape=straight,facing=north]");
+    	case "157:0": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=north_south,powered=false]");
+    	case "157:1": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=east_west,powered=false]");
+    	case "157:2": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=ascending_east,powered=false]");
+    	case "157:3": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=ascending_west,powered=false]");
+    	case "157:4": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=ascending_north,powered=false]");
+    	case "157:5": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=ascending_south,powered=false]");
+    	case "157:8": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=north_south,powered=true]");
+    	case "157:9": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=east_west,powered=true]");
+    	case "157:10": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=ascending_east,powered=true]");
+    	case "157:11": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=ascending_west,powered=true]");
+    	case "157:12": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=ascending_north,powered=true]");
+    	case "157:13": return getNamespace("minecraft:ACTIVATOR_RAIL[shape=ascending_south,powered=true]");
+    	case "158:0": return getNamespace("minecraft:DROPPER[triggered=false,facing=down]");
+    	case "158:1": return getNamespace("minecraft:DROPPER[triggered=false,facing=up]");
+    	case "158:2": return getNamespace("minecraft:DROPPER[triggered=false,facing=north]");
+    	case "158:3": return getNamespace("minecraft:DROPPER[triggered=false,facing=south]");
+    	case "158:4": return getNamespace("minecraft:DROPPER[triggered=false,facing=west]");
+    	case "158:5": return getNamespace("minecraft:DROPPER[triggered=false,facing=east]");
+    	case "158:8": return getNamespace("minecraft:DROPPER[triggered=true,facing=down]");
+    	case "158:9": return getNamespace("minecraft:DROPPER[triggered=true,facing=up]");
+    	case "158:10": return getNamespace("minecraft:DROPPER[triggered=true,facing=north]");
+    	case "158:11": return getNamespace("minecraft:DROPPER[triggered=true,facing=south]");
+    	case "158:12": return getNamespace("minecraft:DROPPER[triggered=true,facing=west]");
+    	case "158:13": return getNamespace("minecraft:DROPPER[triggered=true,facing=east]");
+    	case "159:0": return getNamespace("minecraft:WHITE_TERRACOTTA");
+    	case "159:1": return getNamespace("minecraft:ORANGE_TERRACOTTA");
+    	case "159:2": return getNamespace("minecraft:MAGENTA_TERRACOTTA");
+    	case "159:3": return getNamespace("minecraft:LIGHT_BLUE_TERRACOTTA");
+    	case "159:4": return getNamespace("minecraft:YELLOW_TERRACOTTA");
+    	case "159:5": return getNamespace("minecraft:LIME_TERRACOTTA");
+    	case "159:6": return getNamespace("minecraft:PINK_TERRACOTTA");
+    	case "159:7": return getNamespace("minecraft:GRAY_TERRACOTTA");
+    	case "159:8": return getNamespace("minecraft:LIGHT_GRAY_TERRACOTTA");
+    	case "159:9": return getNamespace("minecraft:CYAN_TERRACOTTA");
+    	case "159:10": return getNamespace("minecraft:PURPLE_TERRACOTTA");
+    	case "159:11": return getNamespace("minecraft:BLUE_TERRACOTTA");
+    	case "159:12": return getNamespace("minecraft:BROWN_TERRACOTTA");
+    	case "159:13": return getNamespace("minecraft:GREEN_TERRACOTTA");
+    	case "159:14": return getNamespace("minecraft:RED_TERRACOTTA");
+    	case "159:15": return getNamespace("minecraft:BLACK_TERRACOTTA");
+    	case "160:0": return getNamespace("minecraft:WHITE_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:1": return getNamespace("minecraft:ORANGE_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:2": return getNamespace("minecraft:MAGENTA_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:3": return getNamespace("minecraft:LIGHT_BLUE_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:4": return getNamespace("minecraft:YELLOW_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:5": return getNamespace("minecraft:LIME_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:6": return getNamespace("minecraft:PINK_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:7": return getNamespace("minecraft:GRAY_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:8": return getNamespace("minecraft:LIGHT_GRAY_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:9": return getNamespace("minecraft:CYAN_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:10": return getNamespace("minecraft:PURPLE_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:11": return getNamespace("minecraft:BLUE_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:12": return getNamespace("minecraft:BROWN_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:13": return getNamespace("minecraft:GREEN_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:14": return getNamespace("minecraft:RED_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "160:15": return getNamespace("minecraft:BLACK_STAINED_GLASS_PANE[east=false,south=false,north=false,west=false]");
+    	case "161:0": return getNamespace("minecraft:ACACIA_LEAVES[persistent=false,distance=1]");
+    	case "161:1": return getNamespace("minecraft:DARK_OAK_LEAVES[persistent=false,distance=1]");
+    	case "161:4": return getNamespace("minecraft:ACACIA_LEAVES[persistent=true,distance=1]");
+    	case "161:5": return getNamespace("minecraft:DARK_OAK_LEAVES[persistent=true,distance=1]");
+    	case "161:8": return getNamespace("minecraft:ACACIA_LEAVES[persistent=false,distance=1]");
+    	case "161:9": return getNamespace("minecraft:DARK_OAK_LEAVES[persistent=false,distance=1]");
+    	case "161:12": return getNamespace("minecraft:ACACIA_LEAVES[persistent=true,distance=1]");
+    	case "161:13": return getNamespace("minecraft:DARK_OAK_LEAVES[persistent=true,distance=1]");
+    	case "162:0": return getNamespace("minecraft:ACACIA_LOG[axis=y]");
+    	case "162:1": return getNamespace("minecraft:DARK_OAK_LOG[axis=y]");
+    	case "162:4": return getNamespace("minecraft:ACACIA_LOG[axis=x]");
+    	case "162:5": return getNamespace("minecraft:DARK_OAK_LOG[axis=x]");
+    	case "162:8": return getNamespace("minecraft:ACACIA_LOG[axis=z]");
+    	case "162:9": return getNamespace("minecraft:DARK_OAK_LOG[axis=z]");
+    	case "162:12": return getNamespace("minecraft:ACACIA_WOOD");
+    	case "162:13": return getNamespace("minecraft:DARK_OAK_WOOD");
+    	case "163:0": return getNamespace("minecraft:ACACIA_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "163:1": return getNamespace("minecraft:ACACIA_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "163:2": return getNamespace("minecraft:ACACIA_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "163:3": return getNamespace("minecraft:ACACIA_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "163:4": return getNamespace("minecraft:ACACIA_STAIRS[half=top,shape=straight,facing=east]");
+    	case "163:5": return getNamespace("minecraft:ACACIA_STAIRS[half=top,shape=straight,facing=west]");
+    	case "163:6": return getNamespace("minecraft:ACACIA_STAIRS[half=top,shape=straight,facing=south]");
+    	case "163:7": return getNamespace("minecraft:ACACIA_STAIRS[half=top,shape=straight,facing=north]");
+    	case "164:0": return getNamespace("minecraft:DARK_OAK_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "164:1": return getNamespace("minecraft:DARK_OAK_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "164:2": return getNamespace("minecraft:DARK_OAK_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "164:3": return getNamespace("minecraft:DARK_OAK_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "164:4": return getNamespace("minecraft:DARK_OAK_STAIRS[half=top,shape=straight,facing=east]");
+    	case "164:5": return getNamespace("minecraft:DARK_OAK_STAIRS[half=top,shape=straight,facing=west]");
+    	case "164:6": return getNamespace("minecraft:DARK_OAK_STAIRS[half=top,shape=straight,facing=south]");
+    	case "164:7": return getNamespace("minecraft:DARK_OAK_STAIRS[half=top,shape=straight,facing=north]");
+    	case "165:0": return getNamespace("minecraft:SLIME_BLOCK");
+    	case "166:0": return getNamespace("minecraft:BARRIER");
+    	case "167:0": return getNamespace("minecraft:IRON_TRAPDOOR[half=bottom,facing=north,open=false]");
+    	case "167:1": return getNamespace("minecraft:IRON_TRAPDOOR[half=bottom,facing=south,open=false]");
+    	case "167:2": return getNamespace("minecraft:IRON_TRAPDOOR[half=bottom,facing=west,open=false]");
+    	case "167:3": return getNamespace("minecraft:IRON_TRAPDOOR[half=bottom,facing=east,open=false]");
+    	case "167:4": return getNamespace("minecraft:IRON_TRAPDOOR[half=bottom,facing=north,open=true]");
+    	case "167:5": return getNamespace("minecraft:IRON_TRAPDOOR[half=bottom,facing=south,open=true]");
+    	case "167:6": return getNamespace("minecraft:IRON_TRAPDOOR[half=bottom,facing=west,open=true]");
+    	case "167:7": return getNamespace("minecraft:IRON_TRAPDOOR[half=bottom,facing=east,open=true]");
+    	case "167:8": return getNamespace("minecraft:IRON_TRAPDOOR[half=top,facing=north,open=false]");
+    	case "167:9": return getNamespace("minecraft:IRON_TRAPDOOR[half=top,facing=south,open=false]");
+    	case "167:10": return getNamespace("minecraft:IRON_TRAPDOOR[half=top,facing=west,open=false]");
+    	case "167:11": return getNamespace("minecraft:IRON_TRAPDOOR[half=top,facing=east,open=false]");
+    	case "167:12": return getNamespace("minecraft:IRON_TRAPDOOR[half=top,facing=north,open=true]");
+    	case "167:13": return getNamespace("minecraft:IRON_TRAPDOOR[half=top,facing=south,open=true]");
+    	case "167:14": return getNamespace("minecraft:IRON_TRAPDOOR[half=top,facing=west,open=true]");
+    	case "167:15": return getNamespace("minecraft:IRON_TRAPDOOR[half=top,facing=east,open=true]");
+    	case "168:0": return getNamespace("minecraft:PRISMARINE");
+    	case "168:1": return getNamespace("minecraft:PRISMARINE_BRICKS");
+    	case "168:2": return getNamespace("minecraft:DARK_PRISMARINE");
+    	case "169:0": return getNamespace("minecraft:SEA_LANTERN");
+    	case "170:0": return getNamespace("minecraft:HAY_BLOCK[axis=y]");
+    	case "170:4": return getNamespace("minecraft:HAY_BLOCK[axis=x]");
+    	case "170:8": return getNamespace("minecraft:HAY_BLOCK[axis=z]");
+    	case "171:0": return getNamespace("minecraft:WHITE_CARPET");
+    	case "171:1": return getNamespace("minecraft:ORANGE_CARPET");
+    	case "171:2": return getNamespace("minecraft:MAGENTA_CARPET");
+    	case "171:3": return getNamespace("minecraft:LIGHT_BLUE_CARPET");
+    	case "171:4": return getNamespace("minecraft:YELLOW_CARPET");
+    	case "171:5": return getNamespace("minecraft:LIME_CARPET");
+    	case "171:6": return getNamespace("minecraft:PINK_CARPET");
+    	case "171:7": return getNamespace("minecraft:GRAY_CARPET");
+    	case "171:8": return getNamespace("minecraft:LIGHT_GRAY_CARPET");
+    	case "171:9": return getNamespace("minecraft:CYAN_CARPET");
+    	case "171:10": return getNamespace("minecraft:PURPLE_CARPET");
+    	case "171:11": return getNamespace("minecraft:BLUE_CARPET");
+    	case "171:12": return getNamespace("minecraft:BROWN_CARPET");
+    	case "171:13": return getNamespace("minecraft:GREEN_CARPET");
+    	case "171:14": return getNamespace("minecraft:RED_CARPET");
+    	case "171:15": return getNamespace("minecraft:BLACK_CARPET");
+    	case "172:0": return getNamespace("minecraft:TERRACOTTA");
+    	case "173:0": return getNamespace("minecraft:COAL_BLOCK");
+    	case "174:0": return getNamespace("minecraft:PACKED_ICE");
+    	case "175:0": return getNamespace("minecraft:SUNFLOWER[half=lower]");
+    	case "175:1": return getNamespace("minecraft:LILAC[half=lower]");
+    	case "175:2": return getNamespace("minecraft:TALL_GRASS[half=lower]");
+    	case "175:3": return getNamespace("minecraft:LARGE_FERN[half=lower]");
+    	case "175:4": return getNamespace("minecraft:ROSE_BUSH[half=lower]");
+    	case "175:5": return getNamespace("minecraft:PEONY[half=lower]");
+    	case "175:8": return getNamespace("minecraft:SUNFLOWER[half=upper]");
+    	case "175:9": return getNamespace("minecraft:LILAC[half=upper]");
+    	case "175:10": return getNamespace("minecraft:TALL_GRASS[half=upper]");
+    	case "175:11": return getNamespace("minecraft:LARGE_FERN[half=upper]");
+    	case "175:12": return getNamespace("minecraft:ROSE_BUSH[half=upper]");
+    	case "175:13": return getNamespace("minecraft:PEONY[half=upper]");
+    	case "176:0": return getNamespace("minecraft:WHITE_BANNER[rotation=0]");
+    	case "176:1": return getNamespace("minecraft:WHITE_BANNER[rotation=1]");
+    	case "176:2": return getNamespace("minecraft:WHITE_BANNER[rotation=2]");
+    	case "176:3": return getNamespace("minecraft:WHITE_BANNER[rotation=3]");
+    	case "176:4": return getNamespace("minecraft:WHITE_BANNER[rotation=4]");
+    	case "176:5": return getNamespace("minecraft:WHITE_BANNER[rotation=5]");
+    	case "176:6": return getNamespace("minecraft:WHITE_BANNER[rotation=6]");
+    	case "176:7": return getNamespace("minecraft:WHITE_BANNER[rotation=7]");
+    	case "176:8": return getNamespace("minecraft:WHITE_BANNER[rotation=8]");
+    	case "176:9": return getNamespace("minecraft:WHITE_BANNER[rotation=9]");
+    	case "176:10": return getNamespace("minecraft:WHITE_BANNER[rotation=10]");
+    	case "176:11": return getNamespace("minecraft:WHITE_BANNER[rotation=11]");
+    	case "176:12": return getNamespace("minecraft:WHITE_BANNER[rotation=12]");
+    	case "176:13": return getNamespace("minecraft:WHITE_BANNER[rotation=13]");
+    	case "176:14": return getNamespace("minecraft:WHITE_BANNER[rotation=14]");
+    	case "176:15": return getNamespace("minecraft:WHITE_BANNER[rotation=15]");
+    	case "177:2": return getNamespace("minecraft:WHITE_WALL_BANNER[facing=north]");
+    	case "177:3": return getNamespace("minecraft:WHITE_WALL_BANNER[facing=south]");
+    	case "177:4": return getNamespace("minecraft:WHITE_WALL_BANNER[facing=west]");
+    	case "177:5": return getNamespace("minecraft:WHITE_WALL_BANNER[facing=east]");
+    	case "178:0": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=0]");
+    	case "178:1": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=1]");
+    	case "178:2": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=2]");
+    	case "178:3": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=3]");
+    	case "178:4": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=4]");
+    	case "178:5": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=5]");
+    	case "178:6": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=6]");
+    	case "178:7": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=7]");
+    	case "178:8": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=8]");
+    	case "178:9": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=9]");
+    	case "178:10": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=10]");
+    	case "178:11": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=11]");
+    	case "178:12": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=12]");
+    	case "178:13": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=13]");
+    	case "178:14": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=14]");
+    	case "178:15": return getNamespace("minecraft:DAYLIGHT_DETECTOR[inverted=true,power=15]");
+    	case "179:0": return getNamespace("minecraft:RED_SANDSTONE");
+    	case "179:1": return getNamespace("minecraft:CHISELED_RED_SANDSTONE");
+    	case "179:2": return getNamespace("minecraft:CUT_RED_SANDSTONE");
+    	case "180:0": return getNamespace("minecraft:RED_SANDSTONE_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "180:1": return getNamespace("minecraft:RED_SANDSTONE_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "180:2": return getNamespace("minecraft:RED_SANDSTONE_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "180:3": return getNamespace("minecraft:RED_SANDSTONE_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "180:4": return getNamespace("minecraft:RED_SANDSTONE_STAIRS[half=top,shape=straight,facing=east]");
+    	case "180:5": return getNamespace("minecraft:RED_SANDSTONE_STAIRS[half=top,shape=straight,facing=west]");
+    	case "180:6": return getNamespace("minecraft:RED_SANDSTONE_STAIRS[half=top,shape=straight,facing=south]");
+    	case "180:7": return getNamespace("minecraft:RED_SANDSTONE_STAIRS[half=top,shape=straight,facing=north]");
+    	case "181:0": return getNamespace("minecraft:RED_SANDSTONE_SLAB[type=double]");
+    	case "181:8": return getNamespace("minecraft:SMOOTH_RED_SANDSTONE");
+    	case "182:0": return getNamespace("minecraft:RED_SANDSTONE_SLAB[type=bottom]");
+    	case "182:8": return getNamespace("minecraft:RED_SANDSTONE_SLAB[type=top]");
+    	case "183:0": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=false,facing=south,open=false]");
+    	case "183:1": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=false,facing=west,open=false]");
+    	case "183:2": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=false,facing=north,open=false]");
+    	case "183:3": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=false,facing=east,open=false]");
+    	case "183:4": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=false,facing=south,open=true]");
+    	case "183:5": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=false,facing=west,open=true]");
+    	case "183:6": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=false,facing=north,open=true]");
+    	case "183:7": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=false,facing=east,open=true]");
+    	case "183:8": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=true,facing=south,open=false]");
+    	case "183:9": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=true,facing=west,open=false]");
+    	case "183:10": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=true,facing=north,open=false]");
+    	case "183:11": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=true,facing=east,open=false]");
+    	case "183:12": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=true,facing=south,open=true]");
+    	case "183:13": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=true,facing=west,open=true]");
+    	case "183:14": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=true,facing=north,open=true]");
+    	case "183:15": return getNamespace("minecraft:SPRUCE_FENCE_GATE[in_wall=false,powered=true,facing=east,open=true]");
+    	case "184:0": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=false,facing=south,open=false]");
+    	case "184:1": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=false,facing=west,open=false]");
+    	case "184:2": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=false,facing=north,open=false]");
+    	case "184:3": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=false,facing=east,open=false]");
+    	case "184:4": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=false,facing=south,open=true]");
+    	case "184:5": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=false,facing=west,open=true]");
+    	case "184:6": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=false,facing=north,open=true]");
+    	case "184:7": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=false,facing=east,open=true]");
+    	case "184:8": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=true,facing=south,open=false]");
+    	case "184:9": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=true,facing=west,open=false]");
+    	case "184:10": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=true,facing=north,open=false]");
+    	case "184:11": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=true,facing=east,open=false]");
+    	case "184:12": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=true,facing=south,open=true]");
+    	case "184:13": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=true,facing=west,open=true]");
+    	case "184:14": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=true,facing=north,open=true]");
+    	case "184:15": return getNamespace("minecraft:BIRCH_FENCE_GATE[in_wall=false,powered=true,facing=east,open=true]");
+    	case "185:0": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=false,facing=south,open=false]");
+    	case "185:1": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=false,facing=west,open=false]");
+    	case "185:2": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=false,facing=north,open=false]");
+    	case "185:3": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=false,facing=east,open=false]");
+    	case "185:4": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=false,facing=south,open=true]");
+    	case "185:5": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=false,facing=west,open=true]");
+    	case "185:6": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=false,facing=north,open=true]");
+    	case "185:7": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=false,facing=east,open=true]");
+    	case "185:8": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=true,facing=south,open=false]");
+    	case "185:9": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=true,facing=west,open=false]");
+    	case "185:10": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=true,facing=north,open=false]");
+    	case "185:11": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=true,facing=east,open=false]");
+    	case "185:12": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=true,facing=south,open=true]");
+    	case "185:13": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=true,facing=west,open=true]");
+    	case "185:14": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=true,facing=north,open=true]");
+    	case "185:15": return getNamespace("minecraft:JUNGLE_FENCE_GATE[in_wall=false,powered=true,facing=east,open=true]");
+    	case "186:0": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=false,facing=south,open=false]");
+    	case "186:1": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=false,facing=west,open=false]");
+    	case "186:2": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=false,facing=north,open=false]");
+    	case "186:3": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=false,facing=east,open=false]");
+    	case "186:4": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=false,facing=south,open=true]");
+    	case "186:5": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=false,facing=west,open=true]");
+    	case "186:6": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=false,facing=north,open=true]");
+    	case "186:7": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=false,facing=east,open=true]");
+    	case "186:8": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=true,facing=south,open=false]");
+    	case "186:9": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=true,facing=west,open=false]");
+    	case "186:10": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=true,facing=north,open=false]");
+    	case "186:11": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=true,facing=east,open=false]");
+    	case "186:12": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=true,facing=south,open=true]");
+    	case "186:13": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=true,facing=west,open=true]");
+    	case "186:14": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=true,facing=north,open=true]");
+    	case "186:15": return getNamespace("minecraft:DARK_OAK_FENCE_GATE[in_wall=false,powered=true,facing=east,open=true]");
+    	case "187:0": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=false,facing=south,open=false]");
+    	case "187:1": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=false,facing=west,open=false]");
+    	case "187:2": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=false,facing=north,open=false]");
+    	case "187:3": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=false,facing=east,open=false]");
+    	case "187:4": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=false,facing=south,open=true]");
+    	case "187:5": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=false,facing=west,open=true]");
+    	case "187:6": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=false,facing=north,open=true]");
+    	case "187:7": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=false,facing=east,open=true]");
+    	case "187:8": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=true,facing=south,open=false]");
+    	case "187:9": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=true,facing=west,open=false]");
+    	case "187:10": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=true,facing=north,open=false]");
+    	case "187:11": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=true,facing=east,open=false]");
+    	case "187:12": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=true,facing=south,open=true]");
+    	case "187:13": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=true,facing=west,open=true]");
+    	case "187:14": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=true,facing=north,open=true]");
+    	case "187:15": return getNamespace("minecraft:ACACIA_FENCE_GATE[in_wall=false,powered=true,facing=east,open=true]");
+    	case "188:0": return getNamespace("minecraft:SPRUCE_FENCE[east=false,south=false,north=false,west=false]");
+    	case "189:0": return getNamespace("minecraft:BIRCH_FENCE[east=false,south=false,north=false,west=false]");
+    	case "190:0": return getNamespace("minecraft:JUNGLE_FENCE[east=false,south=false,north=false,west=false]");
+    	case "191:0": return getNamespace("minecraft:DARK_OAK_FENCE[east=false,south=false,north=false,west=false]");
+    	case "192:0": return getNamespace("minecraft:ACACIA_FENCE[east=false,south=false,north=false,west=false]");
+    	case "193:0": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=lower,powered=false,facing=east,open=false]");
+    	case "193:1": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=lower,powered=false,facing=south,open=false]");
+    	case "193:2": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=lower,powered=false,facing=west,open=false]");
+    	case "193:3": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=lower,powered=false,facing=north,open=false]");
+    	case "193:4": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=lower,powered=false,facing=east,open=true]");
+    	case "193:5": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=lower,powered=false,facing=south,open=true]");
+    	case "193:6": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=lower,powered=false,facing=west,open=true]");
+    	case "193:7": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=lower,powered=false,facing=north,open=true]");
+    	case "193:8": return getNamespace("minecraft:SPRUCE_DOOR[hinge=left,half=upper,powered=false,facing=east,open=false]");
+    	case "193:9": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=upper,powered=false,facing=east,open=false]");
+    	case "193:10": return getNamespace("minecraft:SPRUCE_DOOR[hinge=left,half=upper,powered=true,facing=east,open=false]");
+    	case "193:11": return getNamespace("minecraft:SPRUCE_DOOR[hinge=right,half=upper,powered=true,facing=east,open=false]");
+    	case "194:0": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=lower,powered=false,facing=east,open=false]");
+    	case "194:1": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=lower,powered=false,facing=south,open=false]");
+    	case "194:2": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=lower,powered=false,facing=west,open=false]");
+    	case "194:3": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=lower,powered=false,facing=north,open=false]");
+    	case "194:4": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=lower,powered=false,facing=east,open=true]");
+    	case "194:5": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=lower,powered=false,facing=south,open=true]");
+    	case "194:6": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=lower,powered=false,facing=west,open=true]");
+    	case "194:7": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=lower,powered=false,facing=north,open=true]");
+    	case "194:8": return getNamespace("minecraft:BIRCH_DOOR[hinge=left,half=upper,powered=false,facing=east,open=false]");
+    	case "194:9": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=upper,powered=false,facing=east,open=false]");
+    	case "194:10": return getNamespace("minecraft:BIRCH_DOOR[hinge=left,half=upper,powered=true,facing=east,open=false]");
+    	case "194:11": return getNamespace("minecraft:BIRCH_DOOR[hinge=right,half=upper,powered=true,facing=east,open=false]");
+    	case "195:0": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=lower,powered=false,facing=east,open=false]");
+    	case "195:1": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=lower,powered=false,facing=south,open=false]");
+    	case "195:2": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=lower,powered=false,facing=west,open=false]");
+    	case "195:3": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=lower,powered=false,facing=north,open=false]");
+    	case "195:4": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=lower,powered=false,facing=east,open=true]");
+    	case "195:5": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=lower,powered=false,facing=south,open=true]");
+    	case "195:6": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=lower,powered=false,facing=west,open=true]");
+    	case "195:7": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=lower,powered=false,facing=north,open=true]");
+    	case "195:8": return getNamespace("minecraft:JUNGLE_DOOR[hinge=left,half=upper,powered=false,facing=east,open=false]");
+    	case "195:9": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=upper,powered=false,facing=east,open=false]");
+    	case "195:10": return getNamespace("minecraft:JUNGLE_DOOR[hinge=left,half=upper,powered=true,facing=east,open=false]");
+    	case "195:11": return getNamespace("minecraft:JUNGLE_DOOR[hinge=right,half=upper,powered=true,facing=east,open=false]");
+    	case "196:0": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=lower,powered=false,facing=east,open=false]");
+    	case "196:1": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=lower,powered=false,facing=south,open=false]");
+    	case "196:2": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=lower,powered=false,facing=west,open=false]");
+    	case "196:3": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=lower,powered=false,facing=north,open=false]");
+    	case "196:4": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=lower,powered=false,facing=east,open=true]");
+    	case "196:5": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=lower,powered=false,facing=south,open=true]");
+    	case "196:6": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=lower,powered=false,facing=west,open=true]");
+    	case "196:7": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=lower,powered=false,facing=north,open=true]");
+    	case "196:8": return getNamespace("minecraft:ACACIA_DOOR[hinge=left,half=upper,powered=false,facing=east,open=false]");
+    	case "196:9": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=upper,powered=false,facing=east,open=false]");
+    	case "196:10": return getNamespace("minecraft:ACACIA_DOOR[hinge=left,half=upper,powered=true,facing=east,open=false]");
+    	case "196:11": return getNamespace("minecraft:ACACIA_DOOR[hinge=right,half=upper,powered=true,facing=east,open=false]");
+    	case "197:0": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=lower,powered=false,facing=east,open=false]");
+    	case "197:1": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=lower,powered=false,facing=south,open=false]");
+    	case "197:2": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=lower,powered=false,facing=west,open=false]");
+    	case "197:3": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=lower,powered=false,facing=north,open=false]");
+    	case "197:4": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=lower,powered=false,facing=east,open=true]");
+    	case "197:5": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=lower,powered=false,facing=south,open=true]");
+    	case "197:6": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=lower,powered=false,facing=west,open=true]");
+    	case "197:7": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=lower,powered=false,facing=north,open=true]");
+    	case "197:8": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=left,half=upper,powered=false,facing=east,open=false]");
+    	case "197:9": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=upper,powered=false,facing=east,open=false]");
+    	case "197:10": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=left,half=upper,powered=true,facing=east,open=false]");
+    	case "197:11": return getNamespace("minecraft:DARK_OAK_DOOR[hinge=right,half=upper,powered=true,facing=east,open=false]");
+    	case "198:0": return getNamespace("minecraft:END_ROD[facing=down]");
+    	case "198:1": return getNamespace("minecraft:END_ROD[facing=up]");
+    	case "198:2": return getNamespace("minecraft:END_ROD[facing=north]");
+    	case "198:3": return getNamespace("minecraft:END_ROD[facing=south]");
+    	case "198:4": return getNamespace("minecraft:END_ROD[facing=west]");
+    	case "198:5": return getNamespace("minecraft:END_ROD[facing=east]");
+    	case "199:0": return getNamespace("minecraft:CHORUS_PLANT[east=false,south=false,north=false,west=false,up=false,down=false]");
+    	case "200:0": return getNamespace("minecraft:CHORUS_FLOWER[age=0]");
+    	case "200:1": return getNamespace("minecraft:CHORUS_FLOWER[age=1]");
+    	case "200:2": return getNamespace("minecraft:CHORUS_FLOWER[age=2]");
+    	case "200:3": return getNamespace("minecraft:CHORUS_FLOWER[age=3]");
+    	case "200:4": return getNamespace("minecraft:CHORUS_FLOWER[age=4]");
+    	case "200:5": return getNamespace("minecraft:CHORUS_FLOWER[age=5]");
+    	case "201:0": return getNamespace("minecraft:PURPUR_BLOCK");
+    	case "202:0": return getNamespace("minecraft:PURPUR_PILLAR[axis=y]");
+    	case "202:4": return getNamespace("minecraft:PURPUR_PILLAR[axis=x]");
+    	case "202:8": return getNamespace("minecraft:PURPUR_PILLAR[axis=z]");
+    	case "203:0": return getNamespace("minecraft:PURPUR_STAIRS[half=bottom,shape=straight,facing=east]");
+    	case "203:1": return getNamespace("minecraft:PURPUR_STAIRS[half=bottom,shape=straight,facing=west]");
+    	case "203:2": return getNamespace("minecraft:PURPUR_STAIRS[half=bottom,shape=straight,facing=south]");
+    	case "203:3": return getNamespace("minecraft:PURPUR_STAIRS[half=bottom,shape=straight,facing=north]");
+    	case "203:4": return getNamespace("minecraft:PURPUR_STAIRS[half=top,shape=straight,facing=east]");
+    	case "203:5": return getNamespace("minecraft:PURPUR_STAIRS[half=top,shape=straight,facing=west]");
+    	case "203:6": return getNamespace("minecraft:PURPUR_STAIRS[half=top,shape=straight,facing=south]");
+    	case "203:7": return getNamespace("minecraft:PURPUR_STAIRS[half=top,shape=straight,facing=north]");
+    	case "204:0": return getNamespace("minecraft:PURPUR_SLAB[type=double]");
+    	case "205:0": return getNamespace("minecraft:PURPUR_SLAB[type=bottom]");
+    	case "205:8": return getNamespace("minecraft:PURPUR_SLAB[type=top]");
+    	case "206:0": return getNamespace("minecraft:END_STONE_BRICKS");
+    	case "207:0": return getNamespace("minecraft:BEETROOTS[age=0]");
+    	case "207:1": return getNamespace("minecraft:BEETROOTS[age=1]");
+    	case "207:2": return getNamespace("minecraft:BEETROOTS[age=2]");
+    	case "207:3": return getNamespace("minecraft:BEETROOTS[age=3]");
+    	case "208:0": return getNamespace("minecraft:GRASS_PATH");
+    	case "209:0": return getNamespace("minecraft:END_GATEWAY");
+    	case "210:0": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=false,facing=down]");
+    	case "210:1": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=false,facing=up]");
+    	case "210:2": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=false,facing=north]");
+    	case "210:3": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=false,facing=south]");
+    	case "210:4": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=false,facing=west]");
+    	case "210:5": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=false,facing=east]");
+    	case "210:8": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=true,facing=down]");
+    	case "210:9": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=true,facing=up]");
+    	case "210:10": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=true,facing=north]");
+    	case "210:11": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=true,facing=south]");
+    	case "210:12": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=true,facing=west]");
+    	case "210:13": return getNamespace("minecraft:REPEATING_COMMAND_BLOCK[conditional=true,facing=east]");
+    	case "211:0": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=false,facing=down]");
+    	case "211:1": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=false,facing=up]");
+    	case "211:2": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=false,facing=north]");
+    	case "211:3": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=false,facing=south]");
+    	case "211:4": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=false,facing=west]");
+    	case "211:5": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=false,facing=east]");
+    	case "211:8": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=true,facing=down]");
+    	case "211:9": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=true,facing=up]");
+    	case "211:10": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=true,facing=north]");
+    	case "211:11": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=true,facing=south]");
+    	case "211:12": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=true,facing=west]");
+    	case "211:13": return getNamespace("minecraft:CHAIN_COMMAND_BLOCK[conditional=true,facing=east]");
+    	case "212:0": return getNamespace("minecraft:FROSTED_ICE[age=0]");
+    	case "212:1": return getNamespace("minecraft:FROSTED_ICE[age=1]");
+    	case "212:2": return getNamespace("minecraft:FROSTED_ICE[age=2]");
+    	case "212:3": return getNamespace("minecraft:FROSTED_ICE[age=3]");
+    	case "213:0": return getNamespace("minecraft:MAGMA_BLOCK");
+    	case "214:0": return getNamespace("minecraft:NETHER_WART_BLOCK");
+    	case "215:0": return getNamespace("minecraft:RED_NETHER_BRICKS");
+    	case "216:0": return getNamespace("minecraft:BONE_BLOCK[axis=y]");
+    	case "216:4": return getNamespace("minecraft:BONE_BLOCK[axis=x]");
+    	case "216:8": return getNamespace("minecraft:BONE_BLOCK[axis=z]");
+    	case "217:0": return getNamespace("minecraft:STRUCTURE_VOID");
+    	case "218:0": return getNamespace("minecraft:OBSERVER[powered=false,facing=down]");
+    	case "218:1": return getNamespace("minecraft:OBSERVER[powered=false,facing=up]");
+    	case "218:2": return getNamespace("minecraft:OBSERVER[powered=false,facing=north]");
+    	case "218:3": return getNamespace("minecraft:OBSERVER[powered=false,facing=south]");
+    	case "218:4": return getNamespace("minecraft:OBSERVER[powered=false,facing=west]");
+    	case "218:5": return getNamespace("minecraft:OBSERVER[powered=false,facing=east]");
+    	case "218:8": return getNamespace("minecraft:OBSERVER[powered=true,facing=down]");
+    	case "218:9": return getNamespace("minecraft:OBSERVER[powered=true,facing=up]");
+    	case "218:10": return getNamespace("minecraft:OBSERVER[powered=true,facing=north]");
+    	case "218:11": return getNamespace("minecraft:OBSERVER[powered=true,facing=south]");
+    	case "218:12": return getNamespace("minecraft:OBSERVER[powered=true,facing=west]");
+    	case "218:13": return getNamespace("minecraft:OBSERVER[powered=true,facing=east]");
+    	case "219:0": return getNamespace("minecraft:WHITE_SHULKER_BOX[facing=down]");
+    	case "219:1": return getNamespace("minecraft:WHITE_SHULKER_BOX[facing=up]");
+    	case "219:2": return getNamespace("minecraft:WHITE_SHULKER_BOX[facing=north]");
+    	case "219:3": return getNamespace("minecraft:WHITE_SHULKER_BOX[facing=south]");
+    	case "219:4": return getNamespace("minecraft:WHITE_SHULKER_BOX[facing=west]");
+    	case "219:5": return getNamespace("minecraft:WHITE_SHULKER_BOX[facing=east]");
+    	case "220:0": return getNamespace("minecraft:ORANGE_SHULKER_BOX[facing=down]");
+    	case "220:1": return getNamespace("minecraft:ORANGE_SHULKER_BOX[facing=up]");
+    	case "220:2": return getNamespace("minecraft:ORANGE_SHULKER_BOX[facing=north]");
+    	case "220:3": return getNamespace("minecraft:ORANGE_SHULKER_BOX[facing=south]");
+    	case "220:4": return getNamespace("minecraft:ORANGE_SHULKER_BOX[facing=west]");
+    	case "220:5": return getNamespace("minecraft:ORANGE_SHULKER_BOX[facing=east]");
+    	case "221:0": return getNamespace("minecraft:MAGENTA_SHULKER_BOX[facing=down]");
+    	case "221:1": return getNamespace("minecraft:MAGENTA_SHULKER_BOX[facing=up]");
+    	case "221:2": return getNamespace("minecraft:MAGENTA_SHULKER_BOX[facing=north]");
+    	case "221:3": return getNamespace("minecraft:MAGENTA_SHULKER_BOX[facing=south]");
+    	case "221:4": return getNamespace("minecraft:MAGENTA_SHULKER_BOX[facing=west]");
+    	case "221:5": return getNamespace("minecraft:MAGENTA_SHULKER_BOX[facing=east]");
+    	case "222:0": return getNamespace("minecraft:LIGHT_BLUE_SHULKER_BOX[facing=down]");
+    	case "222:1": return getNamespace("minecraft:LIGHT_BLUE_SHULKER_BOX[facing=up]");
+    	case "222:2": return getNamespace("minecraft:LIGHT_BLUE_SHULKER_BOX[facing=north]");
+    	case "222:3": return getNamespace("minecraft:LIGHT_BLUE_SHULKER_BOX[facing=south]");
+    	case "222:4": return getNamespace("minecraft:LIGHT_BLUE_SHULKER_BOX[facing=west]");
+    	case "222:5": return getNamespace("minecraft:LIGHT_BLUE_SHULKER_BOX[facing=east]");
+    	case "223:0": return getNamespace("minecraft:YELLOW_SHULKER_BOX[facing=down]");
+    	case "223:1": return getNamespace("minecraft:YELLOW_SHULKER_BOX[facing=up]");
+    	case "223:2": return getNamespace("minecraft:YELLOW_SHULKER_BOX[facing=north]");
+    	case "223:3": return getNamespace("minecraft:YELLOW_SHULKER_BOX[facing=south]");
+    	case "223:4": return getNamespace("minecraft:YELLOW_SHULKER_BOX[facing=west]");
+    	case "223:5": return getNamespace("minecraft:YELLOW_SHULKER_BOX[facing=east]");
+    	case "224:0": return getNamespace("minecraft:LIME_SHULKER_BOX[facing=down]");
+    	case "224:1": return getNamespace("minecraft:LIME_SHULKER_BOX[facing=up]");
+    	case "224:2": return getNamespace("minecraft:LIME_SHULKER_BOX[facing=north]");
+    	case "224:3": return getNamespace("minecraft:LIME_SHULKER_BOX[facing=south]");
+    	case "224:4": return getNamespace("minecraft:LIME_SHULKER_BOX[facing=west]");
+    	case "224:5": return getNamespace("minecraft:LIME_SHULKER_BOX[facing=east]");
+    	case "225:0": return getNamespace("minecraft:PINK_SHULKER_BOX[facing=down]");
+    	case "225:1": return getNamespace("minecraft:PINK_SHULKER_BOX[facing=up]");
+    	case "225:2": return getNamespace("minecraft:PINK_SHULKER_BOX[facing=north]");
+    	case "225:3": return getNamespace("minecraft:PINK_SHULKER_BOX[facing=south]");
+    	case "225:4": return getNamespace("minecraft:PINK_SHULKER_BOX[facing=west]");
+    	case "225:5": return getNamespace("minecraft:PINK_SHULKER_BOX[facing=east]");
+    	case "226:0": return getNamespace("minecraft:GRAY_SHULKER_BOX[facing=down]");
+    	case "226:1": return getNamespace("minecraft:GRAY_SHULKER_BOX[facing=up]");
+    	case "226:2": return getNamespace("minecraft:GRAY_SHULKER_BOX[facing=north]");
+    	case "226:3": return getNamespace("minecraft:GRAY_SHULKER_BOX[facing=south]");
+    	case "226:4": return getNamespace("minecraft:GRAY_SHULKER_BOX[facing=west]");
+    	case "226:5": return getNamespace("minecraft:GRAY_SHULKER_BOX[facing=east]");
+    	case "227:0": return getNamespace("minecraft:LIGHT_GRAY_SHULKER_BOX[facing=down]");
+    	case "227:1": return getNamespace("minecraft:LIGHT_GRAY_SHULKER_BOX[facing=up]");
+    	case "227:2": return getNamespace("minecraft:LIGHT_GRAY_SHULKER_BOX[facing=north]");
+    	case "227:3": return getNamespace("minecraft:LIGHT_GRAY_SHULKER_BOX[facing=south]");
+    	case "227:4": return getNamespace("minecraft:LIGHT_GRAY_SHULKER_BOX[facing=west]");
+    	case "227:5": return getNamespace("minecraft:LIGHT_GRAY_SHULKER_BOX[facing=east]");
+    	case "228:0": return getNamespace("minecraft:CYAN_SHULKER_BOX[facing=down]");
+    	case "228:1": return getNamespace("minecraft:CYAN_SHULKER_BOX[facing=up]");
+    	case "228:2": return getNamespace("minecraft:CYAN_SHULKER_BOX[facing=north]");
+    	case "228:3": return getNamespace("minecraft:CYAN_SHULKER_BOX[facing=south]");
+    	case "228:4": return getNamespace("minecraft:CYAN_SHULKER_BOX[facing=west]");
+    	case "228:5": return getNamespace("minecraft:CYAN_SHULKER_BOX[facing=east]");
+    	case "229:0": return getNamespace("minecraft:PURPLE_SHULKER_BOX[facing=down]");
+    	case "229:1": return getNamespace("minecraft:PURPLE_SHULKER_BOX[facing=up]");
+    	case "229:2": return getNamespace("minecraft:PURPLE_SHULKER_BOX[facing=north]");
+    	case "229:3": return getNamespace("minecraft:PURPLE_SHULKER_BOX[facing=south]");
+    	case "229:4": return getNamespace("minecraft:PURPLE_SHULKER_BOX[facing=west]");
+    	case "229:5": return getNamespace("minecraft:PURPLE_SHULKER_BOX[facing=east]");
+    	case "230:0": return getNamespace("minecraft:BLUE_SHULKER_BOX[facing=down]");
+    	case "230:1": return getNamespace("minecraft:BLUE_SHULKER_BOX[facing=up]");
+    	case "230:2": return getNamespace("minecraft:BLUE_SHULKER_BOX[facing=north]");
+    	case "230:3": return getNamespace("minecraft:BLUE_SHULKER_BOX[facing=south]");
+    	case "230:4": return getNamespace("minecraft:BLUE_SHULKER_BOX[facing=west]");
+    	case "230:5": return getNamespace("minecraft:BLUE_SHULKER_BOX[facing=east]");
+    	case "231:0": return getNamespace("minecraft:BROWN_SHULKER_BOX[facing=down]");
+    	case "231:1": return getNamespace("minecraft:BROWN_SHULKER_BOX[facing=up]");
+    	case "231:2": return getNamespace("minecraft:BROWN_SHULKER_BOX[facing=north]");
+    	case "231:3": return getNamespace("minecraft:BROWN_SHULKER_BOX[facing=south]");
+    	case "231:4": return getNamespace("minecraft:BROWN_SHULKER_BOX[facing=west]");
+    	case "231:5": return getNamespace("minecraft:BROWN_SHULKER_BOX[facing=east]");
+    	case "232:0": return getNamespace("minecraft:GREEN_SHULKER_BOX[facing=down]");
+    	case "232:1": return getNamespace("minecraft:GREEN_SHULKER_BOX[facing=up]");
+    	case "232:2": return getNamespace("minecraft:GREEN_SHULKER_BOX[facing=north]");
+    	case "232:3": return getNamespace("minecraft:GREEN_SHULKER_BOX[facing=south]");
+    	case "232:4": return getNamespace("minecraft:GREEN_SHULKER_BOX[facing=west]");
+    	case "232:5": return getNamespace("minecraft:GREEN_SHULKER_BOX[facing=east]");
+    	case "233:0": return getNamespace("minecraft:RED_SHULKER_BOX[facing=down]");
+    	case "233:1": return getNamespace("minecraft:RED_SHULKER_BOX[facing=up]");
+    	case "233:2": return getNamespace("minecraft:RED_SHULKER_BOX[facing=north]");
+    	case "233:3": return getNamespace("minecraft:RED_SHULKER_BOX[facing=south]");
+    	case "233:4": return getNamespace("minecraft:RED_SHULKER_BOX[facing=west]");
+    	case "233:5": return getNamespace("minecraft:RED_SHULKER_BOX[facing=east]");
+    	case "234:0": return getNamespace("minecraft:BLACK_SHULKER_BOX[facing=down]");
+    	case "234:1": return getNamespace("minecraft:BLACK_SHULKER_BOX[facing=up]");
+    	case "234:2": return getNamespace("minecraft:BLACK_SHULKER_BOX[facing=north]");
+    	case "234:3": return getNamespace("minecraft:BLACK_SHULKER_BOX[facing=south]");
+    	case "234:4": return getNamespace("minecraft:BLACK_SHULKER_BOX[facing=west]");
+    	case "234:5": return getNamespace("minecraft:BLACK_SHULKER_BOX[facing=east]");
+    	case "235:0": return getNamespace("minecraft:WHITE_GLAZED_TERRACOTTA[facing=south]");
+    	case "235:1": return getNamespace("minecraft:WHITE_GLAZED_TERRACOTTA[facing=west]");
+    	case "235:2": return getNamespace("minecraft:WHITE_GLAZED_TERRACOTTA[facing=north]");
+    	case "235:3": return getNamespace("minecraft:WHITE_GLAZED_TERRACOTTA[facing=east]");
+    	case "236:0": return getNamespace("minecraft:ORANGE_GLAZED_TERRACOTTA[facing=south]");
+    	case "236:1": return getNamespace("minecraft:ORANGE_GLAZED_TERRACOTTA[facing=west]");
+    	case "236:2": return getNamespace("minecraft:ORANGE_GLAZED_TERRACOTTA[facing=north]");
+    	case "236:3": return getNamespace("minecraft:ORANGE_GLAZED_TERRACOTTA[facing=east]");
+    	case "237:0": return getNamespace("minecraft:MAGENTA_GLAZED_TERRACOTTA[facing=south]");
+    	case "237:1": return getNamespace("minecraft:MAGENTA_GLAZED_TERRACOTTA[facing=west]");
+    	case "237:2": return getNamespace("minecraft:MAGENTA_GLAZED_TERRACOTTA[facing=north]");
+    	case "237:3": return getNamespace("minecraft:MAGENTA_GLAZED_TERRACOTTA[facing=east]");
+    	case "238:0": return getNamespace("minecraft:LIGHT_BLUE_GLAZED_TERRACOTTA[facing=south]");
+    	case "238:1": return getNamespace("minecraft:LIGHT_BLUE_GLAZED_TERRACOTTA[facing=west]");
+    	case "238:2": return getNamespace("minecraft:LIGHT_BLUE_GLAZED_TERRACOTTA[facing=north]");
+    	case "238:3": return getNamespace("minecraft:LIGHT_BLUE_GLAZED_TERRACOTTA[facing=east]");
+    	case "239:0": return getNamespace("minecraft:YELLOW_GLAZED_TERRACOTTA[facing=south]");
+    	case "239:1": return getNamespace("minecraft:YELLOW_GLAZED_TERRACOTTA[facing=west]");
+    	case "239:2": return getNamespace("minecraft:YELLOW_GLAZED_TERRACOTTA[facing=north]");
+    	case "239:3": return getNamespace("minecraft:YELLOW_GLAZED_TERRACOTTA[facing=east]");
+    	case "240:0": return getNamespace("minecraft:LIME_GLAZED_TERRACOTTA[facing=south]");
+    	case "240:1": return getNamespace("minecraft:LIME_GLAZED_TERRACOTTA[facing=west]");
+    	case "240:2": return getNamespace("minecraft:LIME_GLAZED_TERRACOTTA[facing=north]");
+    	case "240:3": return getNamespace("minecraft:LIME_GLAZED_TERRACOTTA[facing=east]");
+    	case "241:0": return getNamespace("minecraft:PINK_GLAZED_TERRACOTTA[facing=south]");
+    	case "241:1": return getNamespace("minecraft:PINK_GLAZED_TERRACOTTA[facing=west]");
+    	case "241:2": return getNamespace("minecraft:PINK_GLAZED_TERRACOTTA[facing=north]");
+    	case "241:3": return getNamespace("minecraft:PINK_GLAZED_TERRACOTTA[facing=east]");
+    	case "242:0": return getNamespace("minecraft:GRAY_GLAZED_TERRACOTTA[facing=south]");
+    	case "242:1": return getNamespace("minecraft:GRAY_GLAZED_TERRACOTTA[facing=west]");
+    	case "242:2": return getNamespace("minecraft:GRAY_GLAZED_TERRACOTTA[facing=north]");
+    	case "242:3": return getNamespace("minecraft:GRAY_GLAZED_TERRACOTTA[facing=east]");
+    	case "243:0": return getNamespace("minecraft:LIGHT_GRAY_GLAZED_TERRACOTTA[facing=south]");
+    	case "243:1": return getNamespace("minecraft:LIGHT_GRAY_GLAZED_TERRACOTTA[facing=west]");
+    	case "243:2": return getNamespace("minecraft:LIGHT_GRAY_GLAZED_TERRACOTTA[facing=north]");
+    	case "243:3": return getNamespace("minecraft:LIGHT_GRAY_GLAZED_TERRACOTTA[facing=east]");
+    	case "244:0": return getNamespace("minecraft:CYAN_GLAZED_TERRACOTTA[facing=south]");
+    	case "244:1": return getNamespace("minecraft:CYAN_GLAZED_TERRACOTTA[facing=west]");
+    	case "244:2": return getNamespace("minecraft:CYAN_GLAZED_TERRACOTTA[facing=north]");
+    	case "244:3": return getNamespace("minecraft:CYAN_GLAZED_TERRACOTTA[facing=east]");
+    	case "245:0": return getNamespace("minecraft:PURPLE_GLAZED_TERRACOTTA[facing=south]");
+    	case "245:1": return getNamespace("minecraft:PURPLE_GLAZED_TERRACOTTA[facing=west]");
+    	case "245:2": return getNamespace("minecraft:PURPLE_GLAZED_TERRACOTTA[facing=north]");
+    	case "245:3": return getNamespace("minecraft:PURPLE_GLAZED_TERRACOTTA[facing=east]");
+    	case "246:0": return getNamespace("minecraft:BLUE_GLAZED_TERRACOTTA[facing=south]");
+    	case "246:1": return getNamespace("minecraft:BLUE_GLAZED_TERRACOTTA[facing=west]");
+    	case "246:2": return getNamespace("minecraft:BLUE_GLAZED_TERRACOTTA[facing=north]");
+    	case "246:3": return getNamespace("minecraft:BLUE_GLAZED_TERRACOTTA[facing=east]");
+    	case "247:0": return getNamespace("minecraft:BROWN_GLAZED_TERRACOTTA[facing=south]");
+    	case "247:1": return getNamespace("minecraft:BROWN_GLAZED_TERRACOTTA[facing=west]");
+    	case "247:2": return getNamespace("minecraft:BROWN_GLAZED_TERRACOTTA[facing=north]");
+    	case "247:3": return getNamespace("minecraft:BROWN_GLAZED_TERRACOTTA[facing=east]");
+    	case "248:0": return getNamespace("minecraft:GREEN_GLAZED_TERRACOTTA[facing=south]");
+    	case "248:1": return getNamespace("minecraft:GREEN_GLAZED_TERRACOTTA[facing=west]");
+    	case "248:2": return getNamespace("minecraft:GREEN_GLAZED_TERRACOTTA[facing=north]");
+    	case "248:3": return getNamespace("minecraft:GREEN_GLAZED_TERRACOTTA[facing=east]");
+    	case "249:0": return getNamespace("minecraft:RED_GLAZED_TERRACOTTA[facing=south]");
+    	case "249:1": return getNamespace("minecraft:RED_GLAZED_TERRACOTTA[facing=west]");
+    	case "249:2": return getNamespace("minecraft:RED_GLAZED_TERRACOTTA[facing=north]");
+    	case "249:3": return getNamespace("minecraft:RED_GLAZED_TERRACOTTA[facing=east]");
+    	case "250:0": return getNamespace("minecraft:BLACK_GLAZED_TERRACOTTA[facing=south]");
+    	case "250:1": return getNamespace("minecraft:BLACK_GLAZED_TERRACOTTA[facing=west]");
+    	case "250:2": return getNamespace("minecraft:BLACK_GLAZED_TERRACOTTA[facing=north]");
+    	case "250:3": return getNamespace("minecraft:BLACK_GLAZED_TERRACOTTA[facing=east]");
+    	case "251:0": return getNamespace("minecraft:WHITE_CONCRETE");
+    	case "251:1": return getNamespace("minecraft:ORANGE_CONCRETE");
+    	case "251:2": return getNamespace("minecraft:MAGENTA_CONCRETE");
+    	case "251:3": return getNamespace("minecraft:LIGHT_BLUE_CONCRETE");
+    	case "251:4": return getNamespace("minecraft:YELLOW_CONCRETE");
+    	case "251:5": return getNamespace("minecraft:LIME_CONCRETE");
+    	case "251:6": return getNamespace("minecraft:PINK_CONCRETE");
+    	case "251:7": return getNamespace("minecraft:GRAY_CONCRETE");
+    	case "251:8": return getNamespace("minecraft:LIGHT_GRAY_CONCRETE");
+    	case "251:9": return getNamespace("minecraft:CYAN_CONCRETE");
+    	case "251:10": return getNamespace("minecraft:PURPLE_CONCRETE");
+    	case "251:11": return getNamespace("minecraft:BLUE_CONCRETE");
+    	case "251:12": return getNamespace("minecraft:BROWN_CONCRETE");
+    	case "251:13": return getNamespace("minecraft:GREEN_CONCRETE");
+    	case "251:14": return getNamespace("minecraft:RED_CONCRETE");
+    	case "251:15": return getNamespace("minecraft:BLACK_CONCRETE");
+    	case "252:0": return getNamespace("minecraft:WHITE_CONCRETE_POWDER");
+    	case "252:1": return getNamespace("minecraft:ORANGE_CONCRETE_POWDER");
+    	case "252:2": return getNamespace("minecraft:MAGENTA_CONCRETE_POWDER");
+    	case "252:3": return getNamespace("minecraft:LIGHT_BLUE_CONCRETE_POWDER");
+    	case "252:4": return getNamespace("minecraft:YELLOW_CONCRETE_POWDER");
+    	case "252:5": return getNamespace("minecraft:LIME_CONCRETE_POWDER");
+    	case "252:6": return getNamespace("minecraft:PINK_CONCRETE_POWDER");
+    	case "252:7": return getNamespace("minecraft:GRAY_CONCRETE_POWDER");
+    	case "252:8": return getNamespace("minecraft:LIGHT_GRAY_CONCRETE_POWDER");
+    	case "252:9": return getNamespace("minecraft:CYAN_CONCRETE_POWDER");
+    	case "252:10": return getNamespace("minecraft:PURPLE_CONCRETE_POWDER");
+    	case "252:11": return getNamespace("minecraft:BLUE_CONCRETE_POWDER");
+    	case "252:12": return getNamespace("minecraft:BROWN_CONCRETE_POWDER");
+    	case "252:13": return getNamespace("minecraft:GREEN_CONCRETE_POWDER");
+    	case "252:14": return getNamespace("minecraft:RED_CONCRETE_POWDER");
+    	case "252:15": return getNamespace("minecraft:BLACK_CONCRETE_POWDER");
+    	case "255:0": return getNamespace("minecraft:STRUCTURE_BLOCK[mode=save]");
+    	case "255:1": return getNamespace("minecraft:STRUCTURE_BLOCK[mode=load]");
+    	case "255:2": return getNamespace("minecraft:STRUCTURE_BLOCK[mode=corner]");
+    	case "255:3": return getNamespace("minecraft:STRUCTURE_BLOCK[mode=data]");
             default:
-                return Block.AIR;
+            	return getNamespace("minecraft:AIR");
         }
     }
 }
