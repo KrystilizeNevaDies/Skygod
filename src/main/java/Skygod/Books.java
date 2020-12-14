@@ -41,6 +41,13 @@ public class Books {
 					.append(ColoredText.of("\n\n"))
 				// Line 2
 				.append(ColoredText.of(ChatColor.BLACK, "\u2699\n\u2588\u2588\n\u2588\u2588"))
+					.setHoverEvent(
+						ChatHoverEvent.showText(
+							ColoredText.of(ChatColor.BRIGHT_GREEN, 
+								"\u250F\n  Settings\n                  \u251B"
+							)
+						)
+					)
 					.setClickEvent(
 						ChatClickEvent.runCommand("settings")
 					)

@@ -65,6 +65,10 @@ public class TutorialInstance implements SkygodInstance {
 		
 		song.setMidiFile(new File("Songs/ZZZ.mid"));
 		
+		song.setEndScript((midiSong) -> {
+			midiSong.play();
+		});
+		
 		song.play();
 		
 	}

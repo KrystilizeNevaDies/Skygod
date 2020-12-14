@@ -1,5 +1,7 @@
 package skygod.stages.blank;
 
+import java.io.File;
+
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerChatEvent;
@@ -16,6 +18,7 @@ import skygod.Gradient;
 import skygod.Gradients;
 import skygod.PlayerData;
 import skygod.StageType;
+import skygod.sound.NBSSong;
 import skygod.stages.BlankGenerator;
 import skygod.stages.InstanceList;
 import skygod.stages.SkygodInstance;
@@ -85,6 +88,8 @@ public class BlankInstance implements SkygodInstance {
 			}
 			
 		}).delay((long) 1, TimeUnit.TICK).schedule();
+		
+		NBSSong.playNBSFile(new File("Songs/test.nbs"), player);
 	}
 
 	public void playerLeave(Instance playerInstance, Player player) {
