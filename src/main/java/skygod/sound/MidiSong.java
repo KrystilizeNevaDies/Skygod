@@ -542,11 +542,6 @@ public class MidiSong {
                 return null;
             }
         }
-
-        public static Sound getInstrument(int note) {
-            // TODO: Get Instrument
-            return null;
-        }
     }
 
     public static class MidiInfo {

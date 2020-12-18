@@ -21,7 +21,6 @@ public class SkygodServer {
         // Testing Area
         // Do testing code here
         
-        
         // Start the server
         minecraftServer.start("localhost", 25565);
     }
