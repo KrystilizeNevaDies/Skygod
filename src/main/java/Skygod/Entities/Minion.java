@@ -10,8 +10,8 @@ import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.utils.Position;
-import skygod.Gradient;
-import skygod.Gradients;
+import skygod.text.Gradient;
+import skygod.text.Gradients;
 
 public class Minion extends EntityCreature{
 	
@@ -26,11 +26,6 @@ public class Minion extends EntityCreature{
 		this.setCustomNameVisible(true);
 	}
 	
-	public Minion() {
-		super(EntityType.ZOMBIE, new Position(0, 0, 0));
-		this.setCustomName(Gradient.of(Gradients.MINION, "Minion lv. " + 0));
-	}
-	
 	@Override
 	public void spawn() {
 		this.setGlowing(true);
@@ -41,24 +36,26 @@ public class Minion extends EntityCreature{
 		if (!instance.getPlayers().isEmpty()) {
 			
 			// Find nearest player
-			Position playerPosition = new Position(0, 10000, 0);
+			Player player = null;
 			
 			Player[] players = Arrays.copyOf(instance.getPlayers().toArray(), instance.getPlayers().size(), Player[].class);
 			
 			for (int i = 0; i < players.length; i++) {
-				if (this.getPosition().getDistance(players[i].getPosition()) < this.getPosition().getDistance(playerPosition)) {
-					playerPosition = players[i].getPosition();
+				if (player == null) {
+					player = players[i];
+					continue;
+				}
+				
+				if (getPosition().getDistance(players[i].getPosition()) < getPosition().getDistance(player.getPosition())) {
+					player = players[i];
+					continue;
 				}
 			}
 			
 			
 			// Pathfind to player
 			if (instance.getWorldAge() % 5 == 0)
-				if (!(this.getPathPosition() == playerPosition))
-					this.setPathTo(playerPosition);
-			
-			if (this.getPosition().getDistance(playerPosition) < 2)
-				this.moveTowards(playerPosition, this.getAttributeValue(Attribute.fromKey("MOVEMENT_SPEED")));
+				this.setTarget(player);
 		}
 		
 		// Do regular entitycreature updates

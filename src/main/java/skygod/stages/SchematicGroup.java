@@ -4,7 +4,7 @@ import java.util.Map;
 
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.utils.BlockPosition;
-import skygod.Schematic;
+import skygod.blocks.Schematic;
 
 public interface SchematicGroup {
 	abstract Map<Schematic, BlockPosition> getGroup();

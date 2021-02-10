@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minestom.server.utils.BlockPosition;
-import skygod.Schematic;
-import skygod.SchematicType;
+import skygod.blocks.Schematic;
 import skygod.stages.SchematicGroup;
 
 public class TutorialSchematicGroup implements SchematicGroup {
@@ -23,10 +22,10 @@ public class TutorialSchematicGroup implements SchematicGroup {
 	
 	private static SchematicGroup largeTent() {
 		Schematic[] schematics = {
-			new Schematic("Schematics/LargeTent1.schem", SchematicType.SCHEM),
-			new Schematic("Schematics/LargeTent2.schem", SchematicType.SCHEM),
-			new Schematic("Schematics/LargeTent3.schem", SchematicType.SCHEM),
-			new Schematic("Schematics/LargeTent4.schem", SchematicType.SCHEM)
+			new Schematic("Schematics/LargeTent1.schem", Schematic.SchematicType.SCHEM),
+			new Schematic("Schematics/LargeTent2.schem", Schematic.SchematicType.SCHEM),
+			new Schematic("Schematics/LargeTent3.schem", Schematic.SchematicType.SCHEM),
+			new Schematic("Schematics/LargeTent4.schem", Schematic.SchematicType.SCHEM)
 		};
 		BlockPosition[] positions = {
 			new BlockPosition(2, -2, 2),
@@ -40,7 +39,7 @@ public class TutorialSchematicGroup implements SchematicGroup {
 	
 	public static SchematicGroup debris() {
 		Schematic[] schematics = {
-			new Schematic("Schematics/RandomDebris" + (int) ((Math.random() * 4) + 1) + ".schem", SchematicType.SCHEM)
+			new Schematic("Schematics/RandomDebris" + (int) ((Math.random() * 4) + 1) + ".schem", Schematic.SchematicType.SCHEM)
 		};
 		BlockPosition[] positions = {
 			new BlockPosition(-2, -2, -2),

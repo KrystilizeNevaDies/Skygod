@@ -8,6 +8,7 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.utils.binary.BinaryReader;
 
 public class NBSSong {
+	@SuppressWarnings("unused")
 	public static void playNBSFile(File file, Player player) {
     	try {
 			BinaryReader reader = new BinaryReader(Files.readAllBytes(file.toPath()));

@@ -34,8 +34,8 @@ public class MidiSong {
     private NoteSender receiver;
     private Consumer<MidiSong> endScript;
 
-    public void setMidiFile(File file) {
-        this.file = file;
+    public void setMidiFile(String file) {
+        this.file = new File(file);
     }
 
     public void setTempo(float tempo) {

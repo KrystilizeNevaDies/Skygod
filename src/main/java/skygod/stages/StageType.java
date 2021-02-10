@@ -1,4 +1,4 @@
-package skygod;
+package skygod.stages;
 
 public enum StageType {
 	BLANK,

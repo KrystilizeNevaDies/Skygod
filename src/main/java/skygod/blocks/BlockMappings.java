@@ -1,4 +1,4 @@
-package skygod;
+package skygod.blocks;
 
 import java.util.HashMap;
 import java.util.Map;

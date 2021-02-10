@@ -15,7 +15,7 @@ public class Books {
 	public static ArrayList<RichMessage> serverSelect = serverSelectBook();
 	
 	public static void addPages(WrittenBookMeta meta, ArrayList<RichMessage> book) {
-		ArrayList<JsonMessage> pages = meta.getPages();
+		ArrayList<JsonMessage> pages = (ArrayList<JsonMessage>) meta.getPages();
 		book.forEach(page -> {
 			pages.add(page);
 		});

@@ -5,6 +5,7 @@ import net.minestom.server.instance.Instance;
 import skygod.Settings;
 import skygod.entities.Minion;
 import skygod.stages.InstanceList;
+import skygod.stages.SkygodInstance;
 
 public class TutorialSpawners {
 	
@@ -16,10 +17,10 @@ public class TutorialSpawners {
 
 	
 	protected void tick() {
-		Player player = InstanceList.INSTANCE.getInstancesPlayer(instance);
-		
-		if (instance.getCreatures().size() < Integer.valueOf((String) Settings.get().getSetting("EntityLimit")) && player instanceof Player) {
-			new Minion(instance, player.getPosition(), 1);
-		}
+		InstanceList.getInstancesPlayer((SkygodInstance) instance).acquire((player) -> {
+			if (instance.getCreatures().size() < Integer.valueOf((String) Settings.get().getSetting("EntityLimit")) && player instanceof Player) {
+				new Minion(instance, player.getPosition(), 1);
+			}
+		});
 	}
 }

@@ -1,4 +1,4 @@
-package skygod;
+package skygod.blocks;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,8 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import de.piegames.nbt.CompoundTag;
-import de.piegames.nbt.stream.NBTInputStream;
+import org.jglrxavpok.hephaistos.nbt.NBT;
+import org.jglrxavpok.hephaistos.nbt.NBTCompound;
+import org.jglrxavpok.hephaistos.nbt.NBTInt;
+import org.jglrxavpok.hephaistos.nbt.NBTReader;
+
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.batch.BlockBatch;
 import net.minestom.server.instance.block.Block;
@@ -44,24 +47,26 @@ public class Schematic {
 		try {   
             InputStream fis = new FileInputStream(new File(name));
             
-            NBTInputStream input = new NBTInputStream(fis);
+            NBTReader input = new NBTReader(fis);
             
-            CompoundTag nbtdata = input.readTag().getAsCompoundTag().get();
+            NBTCompound nbtdata = (NBTCompound) input.read();
  
             Map<Integer, String> palette = new HashMap<Integer, String>();
             
-            short width = nbtdata.getAsShortTag("Width").get().getValue();
-            short height = nbtdata.getAsShortTag("Height").get().getValue();
-            short length = nbtdata.getAsShortTag("Length").get().getValue();;
+            short width = nbtdata.getAsShort("Width");
+            short height = nbtdata.getAsShort("Height");
+            short length = nbtdata.getAsShort("Length");
             
  
         	// Get blocks
-            byte[] blockData = nbtdata.getAsByteArrayTag("BlockData").get().getValue();
+            byte[] blockData = nbtdata.getByteArray("BlockData");
 
-            CompoundTag blockIDs = nbtdata.getAsCompoundTag("Palette").get();
+            NBTCompound blockIDs = nbtdata.getCompound("Palette");
             
-            blockIDs.getValue().forEach((string, tag) -> {
-            	palette.put(tag.getAsIntTag().get().getValue(), string);
+            blockIDs.iterator().forEachRemaining((pair) -> {
+            	String string = pair.getFirst();
+            	NBT tag = pair.getSecond();
+            	palette.put(((NBTInt) tag).getValue(), string);
             });
             
             fis.close();
@@ -93,19 +98,19 @@ public class Schematic {
 		try {
             InputStream fis = new FileInputStream(new File(name));
             
-            NBTInputStream input = new NBTInputStream(fis);
+            NBTReader input = new NBTReader(fis);
             
-            CompoundTag nbtdata = input.readTag().getAsCompoundTag().get();
+            NBTCompound nbtdata = (NBTCompound) input.read();
             
             
-            short width = nbtdata.getAsShortTag("Width").get().getValue();
-            short height = nbtdata.getAsShortTag("Height").get().getValue();
-            short length = nbtdata.getAsShortTag("Length").get().getValue();;
+            short width = nbtdata.getAsShort("Width");
+            short height = nbtdata.getAsShort("Height");
+            short length = nbtdata.getAsShort("Length");
             
             
         	// Get blocks
-            byte[] blockId = nbtdata.getAsByteArrayTag("Blocks").get().getValue();
-            byte[] blockData = nbtdata.getAsByteArrayTag("Data").get().getValue();
+            byte[] blockId = nbtdata.getByteArray("Blocks");
+            byte[] blockData = nbtdata.getByteArray("Data");
             byte[] addId = new byte[0];
             short[] blocks = new short[blockId.length]; // Have to later combine IDs
             
@@ -202,5 +207,11 @@ public class Schematic {
 				);
 		});
 		batch.flush(null);
+	}
+	
+	public enum SchematicType {
+		TEXT, 
+		LEGACY,
+		SCHEM;
 	}
 }

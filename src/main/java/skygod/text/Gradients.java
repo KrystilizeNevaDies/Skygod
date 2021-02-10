@@ -1,4 +1,4 @@
-package skygod;
+package skygod.text;
 
 import net.minestom.server.chat.ChatColor;
 

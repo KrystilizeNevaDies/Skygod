@@ -7,8 +7,8 @@ import net.minestom.server.advancements.FrameType;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import skygod.Gradient;
-import skygod.Gradients;
+import skygod.text.Gradient;
+import skygod.text.Gradients;
 
 public class TutorialAdvancements{
 	

@@ -7,26 +7,20 @@ import java.util.UUID;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
-import net.minestom.server.instance.Instance;
+import net.minestom.server.lock.Acquirable;
 
-public enum InstanceList {
-	
-	INSTANCE;
+public class InstanceList {
 	
 	// Map of all player instances
-	Map<UUID, Instance> instanceMap;
-	
-	private InstanceList() {
-		instanceMap = new HashMap<UUID, Instance>();
-	}
+	private static Map<UUID, SkygodInstance> instanceMap = new HashMap<UUID, SkygodInstance>();
 	
 	/**
 	 * Gets an ArrayList of every instance that has an associated pair
 	 * @return ArrayList<Instance>
 	 */
-	public ArrayList<Instance> getPlayerInstances() {
+	public static ArrayList<SkygodInstance> getPlayerInstances() {
 		
-		ArrayList<Instance> returnlist = new ArrayList<Instance>();
+		ArrayList<SkygodInstance> returnlist = new ArrayList<SkygodInstance>();
 		
 		instanceMap.forEach((uuid, instance) -> {
 			returnlist.add(instance);
@@ -39,8 +33,8 @@ public enum InstanceList {
      * @param Player
      * @return Instance
      */
-    public Instance getPlayerInstance(Player player) {
-    	return instanceMap.get(player.getUuid());
+    public static SkygodInstance getPlayerInstance(Acquirable<Player> player) {
+    	return instanceMap.get(player.unwrap().getUuid());
     }
     
     /**
@@ -49,16 +43,16 @@ public enum InstanceList {
      * @param instance
      * @return
      */
-    public void registerPlayerInstance(Player player, Instance instance) {
+    public static void registerPlayerInstance(Player player, SkygodInstance instance) {
     	instanceMap.put(player.getUuid(), instance);
     }
     
     /**
      * Removes a specific player's instance from the list
-     * @param player
+     * @param acqPlayer
      */
-    public void removePlayerInstance(Player player) {
-    	instanceMap.remove(player.getUuid());
+    public static void removePlayerInstance(Acquirable<Player> acqPlayer) {
+    	instanceMap.remove(acqPlayer.unwrap().getUuid());
     }
     
     /**
@@ -66,8 +60,7 @@ public enum InstanceList {
      * @param instance
      * @return Player
      */
-    public Player getInstancesPlayer(Instance instance) {
-    	
+    public static Acquirable<Player> getInstancesPlayer(SkygodInstance instance) {
     	Object[] keySet = instanceMap.keySet().toArray();
     	
     	for (int i = 0; i < keySet.length; i++) {
